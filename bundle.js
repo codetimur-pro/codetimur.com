@@ -152,12 +152,12 @@ const Hero = () => {
         @media (max-width: 880px)  {
           .hero__bg-img {
             max-width: none;
-            width: 82%;
+            width: 80%;
             height: 88%;
             top: 4%;
-            right: -28%;
+            right: 0;
             opacity: 0.9;
-            object-position: 42% top;
+            object-position: 52% top;
             object-fit: cover;
           }
         }
