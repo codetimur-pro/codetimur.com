@@ -657,8 +657,8 @@ setTimeout(() => window.__attachReveal && window.__attachReveal(), 50);
 const SPHERES = [{
   key: "mission",
   n: "I",
-  title: "Реализация миссии",
-  tag: "миссии",
+  title: "Миссия",
+  fullTitle: "Реализация миссии",
   sub: "Какую ценность я создаю для мира?",
   body: "Твоя конечная цель и глобальный смысл. То, ради чего всё это создаётся. Желание помочь людям вырасти и развиться, которое масштабируется через твои проекты.",
   pos: {
@@ -669,8 +669,8 @@ const SPHERES = [{
 }, {
   key: "projects",
   n: "II",
-  title: "Реализация проектов",
-  tag: "проектов",
+  title: "Проекты",
+  fullTitle: "Реализация проектов",
   sub: "Каким способом я создаю?",
   body: "Сферы, к которым тянется внимание — здоровье, технологии, искусство. Любимый способ, через который ты доставляешь ценность миру.",
   pos: {
@@ -681,8 +681,8 @@ const SPHERES = [{
 }, {
   key: "roles",
   n: "III",
-  title: "Реализация ролей",
-  tag: "ролей",
+  title: "Роли",
+  fullTitle: "Реализация ролей",
   sub: "Кто я в этом?",
   body: "Уникальная комбинация твоих истинных качеств и навыков. Осознанный выбор ролей, которые ты играешь в бизнесе — чтобы процессы шли легко, из состояния силы.",
   pos: {
@@ -843,7 +843,7 @@ const Avatar = () => {
     className: "avatar__detail"
   }, /*#__PURE__*/React.createElement("div", {
     className: "avatar__detail-tag"
-  }, active === 'center' ? 'Центр пересечения' : `Сфера реализации ${detail.tag}`), /*#__PURE__*/React.createElement("h3", {
+  }, active === 'center' ? 'Центр пересечения' : 'Сфера реализации'), /*#__PURE__*/React.createElement("h3", {
     className: "avatar__detail-title"
   }, detail.title), detail.sub && /*#__PURE__*/React.createElement("div", {
     className: "avatar__detail-sub"
@@ -865,7 +865,7 @@ const Avatar = () => {
     className: "avatar__legend-n"
   }, s.n), /*#__PURE__*/React.createElement("span", {
     className: "avatar__legend-name"
-  }, s.title))), /*#__PURE__*/React.createElement("button", {
+  }, s.fullTitle))), /*#__PURE__*/React.createElement("button", {
     className: `avatar__legend-item avatar__legend-item--core ${active === 'center' ? 'is-active' : ''}`,
     onMouseEnter: () => setActive('center'),
     onClick: () => setActive('center')
