@@ -566,7 +566,7 @@ const Diagnosis = () => {
         @media (max-width: 620px)  { .diag__grid { grid-template-columns: 1fr; } }
 
         .diag-card {
-          aspect-ratio: 3/2.8;
+          aspect-ratio: 3/2.65;
           cursor: pointer;
           position: relative;
           perspective: 1400px;
