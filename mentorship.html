@@ -326,19 +326,9 @@ section + section { border-top: 1px solid var(--line-soft); }
     nav.classList.toggle('scrolled', window.scrollY > 12);
   }, { passive: true });
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-
   const revealVisible = () => {
     document.querySelectorAll('.reveal:not(.in)').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.93) {
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.93) {
         el.classList.add('in');
       }
     });
@@ -346,21 +336,18 @@ section + section { border-top: 1px solid var(--line-soft); }
 
   window.__attachReveal = (root) => {
     const isDesktop = window.matchMedia('(min-width: 981px)').matches;
-    (root || document).querySelectorAll('.reveal:not(.in)').forEach(el => {
-      if (isDesktop) {
-        io.observe(el);
-      } else {
-        el.classList.add('in');
-      }
-    });
+    if (!isDesktop) {
+      (root || document).querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+      return;
+    }
+    revealVisible();
   };
 
-  // Fallback: scroll listener catches reveals that IO misses (e.g. after sticky sections)
-  let rafReveal = null;
-  window.addEventListener('scroll', () => {
-    if (rafReveal) return;
-    rafReveal = requestAnimationFrame(() => { rafReveal = null; revealVisible(); });
-  }, { passive: true });
+  // Scroll-based reveal — fires on every scroll event, no debounce so nothing is missed
+  window.addEventListener('scroll', revealVisible, { passive: true });
+  // Also check after bundle finishes mounting components
+  setTimeout(revealVisible, 400);
+  setTimeout(revealVisible, 1200);
 
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
