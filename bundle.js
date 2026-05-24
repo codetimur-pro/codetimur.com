@@ -152,11 +152,13 @@ const Hero = () => {
         @media (max-width: 880px)  {
           .hero__bg-img {
             max-width: none;
-            width: 130%;
-            right: -15%;
-            opacity: 0.55;
-            object-position: 70% center;
+            width: 78%;
+            right: 0;
+            opacity: 0.82;
+            object-position: 38% top;
             object-fit: cover;
+            height: 78%;
+            top: 8%;
           }
         }
 
@@ -172,8 +174,8 @@ const Hero = () => {
         @media (max-width: 880px) {
           .hero__bg-shade {
             background:
-              linear-gradient(180deg, rgba(7,7,7,0.55) 0%, rgba(7,7,7,0.35) 25%, rgba(7,7,7,0.85) 70%, rgba(7,7,7,0.95) 100%),
-              linear-gradient(90deg, rgba(7,7,7,0.55), transparent 50%);
+              linear-gradient(90deg, #070707 0%, #070707 30%, rgba(7,7,7,0.92) 44%, rgba(7,7,7,0.5) 58%, rgba(7,7,7,0.15) 72%, transparent 85%),
+              linear-gradient(180deg, rgba(7,7,7,0.55) 0%, rgba(7,7,7,0.2) 22%, rgba(7,7,7,0.5) 68%, rgba(7,7,7,0.95) 100%);
           }
         }
 
@@ -415,6 +417,34 @@ const Hero = () => {
         }
         @media (max-width: 720px) { .hero__scroll { display: none; } }
 
+        /* ── Mobile refinements ── */
+        @media (max-width: 880px) {
+          /* Bigger title */
+          .hero__title { font-size: clamp(46px, 12vw, 62px); }
+
+          /* Prevent subtitle overflowing viewport */
+          .hero__sub { max-width: 100%; }
+
+          /* More breathing between copy blocks */
+          .hero__copy { gap: 28px; max-width: 100%; }
+
+          /* Stats: compact to fit small screens */
+          .hero__meta {
+            gap: 14px;
+            max-width: 100%;
+            flex-wrap: nowrap;
+          }
+          .hero__meta-num { font-size: 26px; }
+          .hero__meta-label {
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            margin-top: 5px;
+          }
+          .hero__meta-divider { height: 26px; }
+
+          /* Actions row: stack on very small screens */
+          .hero__actions { gap: 20px; }
+        }
       `));
 };
 const heroRoot = ReactDOM.createRoot(document.getElementById('hero-root'));
