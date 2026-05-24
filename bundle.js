@@ -152,13 +152,13 @@ const Hero = () => {
         @media (max-width: 880px)  {
           .hero__bg-img {
             max-width: none;
-            width: 78%;
+            width: 92%;
+            height: 90%;
+            top: 4%;
             right: 0;
-            opacity: 0.82;
-            object-position: 38% top;
+            opacity: 0.88;
+            object-position: 68% top;
             object-fit: cover;
-            height: 78%;
-            top: 8%;
           }
         }
 
@@ -174,8 +174,8 @@ const Hero = () => {
         @media (max-width: 880px) {
           .hero__bg-shade {
             background:
-              linear-gradient(90deg, #070707 0%, #070707 30%, rgba(7,7,7,0.92) 44%, rgba(7,7,7,0.5) 58%, rgba(7,7,7,0.15) 72%, transparent 85%),
-              linear-gradient(180deg, rgba(7,7,7,0.55) 0%, rgba(7,7,7,0.2) 22%, rgba(7,7,7,0.5) 68%, rgba(7,7,7,0.95) 100%);
+              linear-gradient(90deg, #070707 0%, #070707 24%, rgba(7,7,7,0.95) 36%, rgba(7,7,7,0.6) 48%, rgba(7,7,7,0.15) 60%, transparent 72%),
+              linear-gradient(180deg, rgba(7,7,7,0.6) 0%, rgba(7,7,7,0.15) 18%, rgba(7,7,7,0.4) 62%, rgba(7,7,7,0.97) 100%);
           }
         }
 
@@ -235,7 +235,7 @@ const Hero = () => {
           82%  { opacity: calc(var(--bright, 0.7) * 0.9); }
           100% { opacity: 0; transform: translate(var(--drift), -56px) scale(0.7); }
         }
-        @media (max-width: 880px) { .hero__particles { display: none; } }
+        @media (max-width: 880px) { .hero__particles { opacity: 0.7; } }
 
         /* Slow streak traversing the arrow path */
         .hero__streak {
@@ -422,17 +422,22 @@ const Hero = () => {
           /* Bigger title */
           .hero__title { font-size: clamp(46px, 12vw, 62px); }
 
-          /* Prevent subtitle overflowing viewport */
-          .hero__sub { max-width: 100%; }
+          /* Narrow subtitle so face is visible on right */
+          .hero__sub { max-width: 54%; }
 
-          /* More breathing between copy blocks */
-          .hero__copy { gap: 28px; max-width: 100%; }
+          /* More vertical breathing between copy blocks */
+          .hero__copy { gap: 36px; max-width: 100%; }
+
+          /* Push actions down with more space */
+          .hero__actions { margin-top: 20px; gap: 20px; }
 
           /* Stats: compact to fit small screens */
           .hero__meta {
             gap: 14px;
             max-width: 100%;
             flex-wrap: nowrap;
+            margin-top: 36px;
+            padding-top: 24px;
           }
           .hero__meta-num { font-size: 26px; }
           .hero__meta-label {
@@ -441,9 +446,6 @@ const Hero = () => {
             margin-top: 5px;
           }
           .hero__meta-divider { height: 26px; }
-
-          /* Actions row: stack on very small screens */
-          .hero__actions { gap: 20px; }
         }
       `));
 };
