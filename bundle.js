@@ -152,12 +152,12 @@ const Hero = () => {
         @media (max-width: 880px)  {
           .hero__bg-img {
             max-width: none;
-            width: 92%;
+            width: 86%;
             height: 90%;
             top: 4%;
             right: 0;
             opacity: 0.88;
-            object-position: 68% top;
+            object-position: 74% top;
             object-fit: cover;
           }
         }
@@ -174,7 +174,7 @@ const Hero = () => {
         @media (max-width: 880px) {
           .hero__bg-shade {
             background:
-              linear-gradient(90deg, #070707 0%, #070707 24%, rgba(7,7,7,0.95) 36%, rgba(7,7,7,0.6) 48%, rgba(7,7,7,0.15) 60%, transparent 72%),
+              linear-gradient(90deg, #070707 0%, #070707 30%, rgba(7,7,7,0.97) 44%, rgba(7,7,7,0.7) 50%, rgba(7,7,7,0.2) 58%, transparent 68%),
               linear-gradient(180deg, rgba(7,7,7,0.6) 0%, rgba(7,7,7,0.15) 18%, rgba(7,7,7,0.4) 62%, rgba(7,7,7,0.97) 100%);
           }
         }
@@ -422,8 +422,8 @@ const Hero = () => {
           /* Bigger title */
           .hero__title { font-size: clamp(46px, 12vw, 62px); }
 
-          /* Narrow subtitle so face is visible on right */
-          .hero__sub { max-width: 54%; }
+          /* Subtitle: wide enough to read, stops before face center */
+          .hero__sub { max-width: 62%; }
 
           /* More vertical breathing between copy blocks */
           .hero__copy { gap: 36px; max-width: 100%; }
