@@ -55,7 +55,7 @@ const Hero = () => {
   }), /*#__PURE__*/React.createElement("div", {
     className: "hero__bg-grain"
   })), /*#__PURE__*/React.createElement("div", {
-    className: "container hero__inner"
+    className: "hero__inner"
   }, /*#__PURE__*/React.createElement("div", {
     className: "hero__copy"
   }, /*#__PURE__*/React.createElement("h1", {
@@ -273,13 +273,15 @@ const Hero = () => {
           width: 100%;
           padding-top: 110px;
           padding-bottom: 120px;
+          padding-left: 48px;
+          padding-right: 48px;
           min-height: 100vh;
           display: flex;
           flex-direction: column;
           justify-content: center;
         }
         @media (max-width: 880px) {
-          .hero__inner { padding-top: 100px; padding-bottom: 100px; }
+          .hero__inner { padding-top: 100px; padding-bottom: 100px; padding-left: 24px; padding-right: 24px; }
         }
 
         .hero__copy {
@@ -413,10 +415,6 @@ const Hero = () => {
         }
         @media (max-width: 720px) { .hero__scroll { display: none; } }
 
-        /* Larger headline since it now has a full canvas behind it */
-        @media (min-width: 1200px) {
-          .hero h1 { font-size: clamp(56px, 7.2vw, 110px); }
-        }
       `));
 };
 const heroRoot = ReactDOM.createRoot(document.getElementById('hero-root'));
