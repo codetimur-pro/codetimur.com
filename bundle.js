@@ -2523,14 +2523,39 @@ setTimeout(() => window.__attachReveal && window.__attachReveal(), 50);
 
 const Session = () => {
   const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [form, setForm] = React.useState({
     name: "",
     contact: "",
     note: ""
   });
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault();
-    if (!form.name || !form.contact) return;
+    if (!form.name || !form.contact || loading) return;
+    setLoading(true);
+    const BOT_TOKEN = '8756592455:AAGt-swHhonDIo-7-v__8jEAklj47TKNfgE';
+    const CHAT_ID = '91508403';
+    const now = new Date().toLocaleString('ru-RU', {
+      timeZone: 'Europe/Moscow',
+      day: 'numeric',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    const text = ['📬 Новая заявка на стратегическую сессию', '', `👤 Имя: ${form.name}`, `📱 Контакт: ${form.contact}`, form.note ? `💬 Запрос: ${form.note}` : null, '', `🕐 ${now} (МСК)`].filter(l => l !== null).join('\n');
+    try {
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text
+        })
+      });
+    } catch (_) {}
+    setLoading(false);
     setSubmitted(true);
   };
   return /*#__PURE__*/React.createElement("section", {
@@ -2632,8 +2657,12 @@ const Session = () => {
     })
   })), /*#__PURE__*/React.createElement("button", {
     type: "submit",
-    className: "btn btn--solid session__submit"
-  }, /*#__PURE__*/React.createElement("span", null, "\u0417\u0430\u043F\u0438\u0441\u0430\u0442\u044C\u0441\u044F \u043D\u0430 \u0440\u0430\u0437\u0431\u043E\u0440"), /*#__PURE__*/React.createElement("span", {
+    className: "btn btn--solid session__submit",
+    disabled: loading,
+    style: {
+      opacity: loading ? 0.7 : 1
+    }
+  }, /*#__PURE__*/React.createElement("span", null, loading ? 'Отправка...' : 'Записаться на разбор'), !loading && /*#__PURE__*/React.createElement("span", {
     className: "arrow"
   })), /*#__PURE__*/React.createElement("div", {
     className: "session__fine"
