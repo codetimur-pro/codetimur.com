@@ -152,12 +152,12 @@ const Hero = () => {
         @media (max-width: 880px)  {
           .hero__bg-img {
             max-width: none;
-            width: 86%;
-            height: 90%;
+            width: 82%;
+            height: 88%;
             top: 4%;
-            right: 0;
-            opacity: 0.88;
-            object-position: 74% top;
+            right: -28%;
+            opacity: 0.9;
+            object-position: 42% top;
             object-fit: cover;
           }
         }
@@ -174,8 +174,8 @@ const Hero = () => {
         @media (max-width: 880px) {
           .hero__bg-shade {
             background:
-              linear-gradient(90deg, #070707 0%, #070707 30%, rgba(7,7,7,0.97) 44%, rgba(7,7,7,0.7) 50%, rgba(7,7,7,0.2) 58%, transparent 68%),
-              linear-gradient(180deg, rgba(7,7,7,0.6) 0%, rgba(7,7,7,0.15) 18%, rgba(7,7,7,0.4) 62%, rgba(7,7,7,0.97) 100%);
+              linear-gradient(90deg, #070707 0%, #070707 22%, rgba(7,7,7,0.9) 36%, rgba(7,7,7,0.35) 50%, transparent 62%),
+              linear-gradient(180deg, rgba(7,7,7,0.6) 0%, rgba(7,7,7,0.1) 18%, rgba(7,7,7,0.4) 62%, rgba(7,7,7,0.97) 100%);
           }
         }
 
