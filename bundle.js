@@ -711,7 +711,7 @@ const Avatar = () => {
     className: "numeral"
   }, "02", /*#__PURE__*/React.createElement("em", null, " / 07 \u2014 \u0410\u0440\u0445\u0438\u0442\u0435\u043A\u0442\u0443\u0440\u0430"))), /*#__PURE__*/React.createElement("h2", {
     className: "reveal"
-  }, "\u0424\u043E\u0440\u043C\u0443\u043B\u0430 \u0442\u0432\u043E\u0435\u0433\u043E \u0410\u0432\u0430\u0442\u0430\u0440\u0430", /*#__PURE__*/React.createElement("span", {
+  }, "\u0424\u043E\u0440\u043C\u0443\u043B\u0430 \u0442\u0432\u043E\u0435\u0439 \u0440\u0435\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u0438", /*#__PURE__*/React.createElement("span", {
     style: {
       color: 'var(--gold)'
     }
