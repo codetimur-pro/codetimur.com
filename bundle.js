@@ -566,7 +566,7 @@ const Diagnosis = () => {
         @media (max-width: 620px)  { .diag__grid { grid-template-columns: 1fr; } }
 
         .diag-card {
-          aspect-ratio: 3/4;
+          aspect-ratio: 3/3.1;
           cursor: pointer;
           position: relative;
           perspective: 1400px;
@@ -578,7 +578,7 @@ const Diagnosis = () => {
 
         .diag-card__face {
           position: absolute; inset: 0;
-          padding: 32px 28px;
+          padding: 24px 28px;
           display: flex; flex-direction: column;
           justify-content: space-between;
           background: linear-gradient(165deg, #0e0d0b 0%, #070707 100%);
