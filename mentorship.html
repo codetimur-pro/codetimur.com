@@ -224,14 +224,25 @@ section + section { border-top: 1px solid var(--line-soft); }
   transform: none;
   transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1);
 }
-/* Анимация появления — только если JS успел добавить класс ДО первой отрисовки */
-html.js-ready .reveal:not(.in) {
-  opacity: 0;
-  transform: translateY(28px);
+
+/* На десктопе — плавное появление заголовков и элементов при скролле */
+@media (min-width: 981px) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
 }
-html.js-ready .reveal.in {
-  opacity: 1;
-  transform: none;
+
+/* На мобильном — всё видно сразу, статичное */
+@media (max-width: 980px) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .footer {
@@ -324,13 +335,14 @@ html.js-ready .reveal.in {
     });
   }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
   window.__attachReveal = (root) => {
+    const isDesktop = window.matchMedia('(min-width: 981px)').matches;
     (root || document).querySelectorAll('.reveal:not(.in)').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      // Элемент уже в зоне видимости или выше — показываем сразу
-      if (rect.top < window.innerHeight + 40) {
-        el.classList.add('in');
-      } else {
+      if (isDesktop) {
+        // На десктопе — наблюдать элементы, показывать при скролле
         io.observe(el);
+      } else {
+        // На мобильном — показывать все сразу (CSS их скрывает)
+        el.classList.add('in');
       }
     });
   };
