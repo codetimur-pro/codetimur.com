@@ -334,18 +334,33 @@ section + section { border-top: 1px solid var(--line-soft); }
       }
     });
   }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-  window.__attachReveal = (root) => {
-    const isDesktop = window.matchMedia('(min-width: 981px)').matches;
-    (root || document).querySelectorAll('.reveal:not(.in)').forEach(el => {
-      if (isDesktop) {
-        // На десктопе — наблюдать элементы, показывать при скролле
-        io.observe(el);
-      } else {
-        // На мобильном — показывать все сразу (CSS их скрывает)
+
+  const revealVisible = () => {
+    document.querySelectorAll('.reveal:not(.in)').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.93) {
         el.classList.add('in');
       }
     });
   };
+
+  window.__attachReveal = (root) => {
+    const isDesktop = window.matchMedia('(min-width: 981px)').matches;
+    (root || document).querySelectorAll('.reveal:not(.in)').forEach(el => {
+      if (isDesktop) {
+        io.observe(el);
+      } else {
+        el.classList.add('in');
+      }
+    });
+  };
+
+  // Fallback: scroll listener catches reveals that IO misses (e.g. after sticky sections)
+  let rafReveal = null;
+  window.addEventListener('scroll', () => {
+    if (rafReveal) return;
+    rafReveal = requestAnimationFrame(() => { rafReveal = null; revealVisible(); });
+  }, { passive: true });
 
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
