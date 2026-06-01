@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <radialGradient id="orb" cx="54%" cy="50%" r="46%">
+      <stop offset="0%"   stop-color="#c87c28" stop-opacity=".52"/>
+      <stop offset="38%"  stop-color="#7a4818" stop-opacity=".30"/>
+      <stop offset="72%"  stop-color="#2a1608" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#e8c07a" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#e8c07a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5"/>
+    </filter>
+  </defs>
+
+  <!-- Deep space background -->
+  <rect width="1080" height="1080" fill="#06050c"/>
+
+  <!-- Distant stars -->
+  <g fill="#e8dcc8" opacity=".18">
+    <circle cx="112" cy="88"  r="1.1"/><circle cx="298" cy="42"  r=".8"/>
+    <circle cx="520" cy="72"  r="1.2"/><circle cx="780" cy="55"  r=".9"/>
+    <circle cx="940" cy="130" r="1.1"/><circle cx="68"  cy="250" r=".7"/>
+    <circle cx="180" cy="340" r=".9"/><circle cx="62"  cy="480" r="1.0"/>
+    <circle cx="95"  cy="640" r=".8"/><circle cx="155" cy="760" r="1.1"/>
+    <circle cx="230" cy="900" r=".7"/><circle cx="400" cy="970" r="1.0"/>
+    <circle cx="650" cy="990" r=".9"/><circle cx="870" cy="960" r="1.2"/>
+    <circle cx="1010" cy="880" r=".8"/><circle cx="1050" cy="640" r="1.0"/>
+    <circle cx="1025" cy="380" r=".9"/><circle cx="995" cy="200" r="1.1"/>
+    <circle cx="820" cy="155" r=".7"/><circle cx="688" cy="36"  r="1.0"/>
+    <circle cx="348" cy="980" r=".8"/><circle cx="500" cy="1040" r=".6"/>
+    <circle cx="124" cy="920" r=".9"/><circle cx="44"  cy="750" r=".7"/>
+    <circle cx="32"  cy="155" r="1.0"/><circle cx="860" cy="800" r=".8"/>
+    <circle cx="920" cy="450" r="1.1"/><circle cx="740" cy="900" r=".6"/>
+  </g>
+
+  <!-- Ambient orb glow -->
+  <ellipse cx="582" cy="520" rx="498" ry="468" fill="url(#orb)"/>
+
+  <!-- Grid cells — 3×3, centered at (582, 516) -->
+  <!-- Cell size 188×162, gap 9px; grid total 582×500 → start (291, 266) -->
+  <g fill="none" stroke="#c8922a" stroke-width="1" opacity=".28">
+    <!-- Row 0 -->
+    <rect x="291" y="266" width="188" height="162"/>
+    <rect x="488" y="266" width="188" height="162"/>
+    <rect x="685" y="266" width="188" height="162"/>
+    <!-- Row 1 -->
+    <rect x="291" y="437" width="188" height="162"/>
+    <rect x="488" y="437" width="188" height="162"/>
+    <rect x="685" y="437" width="188" height="162"/>
+    <!-- Row 2 -->
+    <rect x="291" y="608" width="188" height="162"/>
+    <rect x="488" y="608" width="188" height="162"/>
+    <rect x="685" y="608" width="188" height="162"/>
+  </g>
+
+  <!-- Cell highlight (subtle inner fill on a few cells) -->
+  <g opacity=".07">
+    <rect x="291" y="266" width="188" height="162" fill="#c8922a"/>
+    <rect x="488" y="437" width="188" height="162" fill="#c8922a"/>
+    <rect x="685" y="608" width="188" height="162" fill="#c8922a"/>
+  </g>
+
+  <!-- Node dots with glow -->
+  <!-- (0,0) cell center → 291+94=385, 266+81=347 -->
+  <circle cx="376" cy="340" r="14" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="376" cy="340" r="3.5" fill="#f0d090"/>
+
+  <!-- (0,2) cell center → 685+94=779, 266+81=347 -->
+  <circle cx="772" cy="340" r="14" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="772" cy="340" r="3.5" fill="#f0d090"/>
+
+  <!-- (1,1) cell center → 488+94=582, 437+81=518 -->
+  <circle cx="582" cy="518" r="18" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="582" cy="518" r="4.5" fill="#f5e0a0"/>
+
+  <!-- (2,0) cell → 291+94=385, 608+81=689 -->
+  <circle cx="376" cy="692" r="13" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="376" cy="692" r="3.5" fill="#f0d090"/>
+
+  <!-- (2,2) cell → 685+94=779, 608+81=689 -->
+  <circle cx="772" cy="692" r="13" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="772" cy="692" r="3.5" fill="#f0d090"/>
+
+  <!-- Connector lines between dots (faint) -->
+  <g stroke="#c8922a" stroke-width=".7" opacity=".18" stroke-dasharray="6 5">
+    <line x1="376" y1="340" x2="582" y2="518"/>
+    <line x1="772" y1="340" x2="582" y2="518"/>
+    <line x1="376" y1="692" x2="582" y2="518"/>
+    <line x1="772" y1="692" x2="582" y2="518"/>
+    <line x1="376" y1="340" x2="772" y2="340"/>
+    <line x1="376" y1="692" x2="772" y2="692"/>
+  </g>
+</svg>
