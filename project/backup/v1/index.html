@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Покори Олимп — Экосистема IT-сервисов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/sections.css" />
+</head>
+<body>
+
+<!-- ===================== Навигация ===================== -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#hero" aria-label="Покори Олимп">
+      <img class="brand__logo" src="assets/codetimur-logo.png" alt="CODE TIMUR" />
+    </a>
+    <nav class="nav__links">
+      <a href="#core">Ядро</a>
+      <a href="#avatar">Аватар</a>
+      <a href="#paths">Пути</a>
+      <a href="#services">Сервисы</a>
+      <a href="#game">Игра</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== ЭКРАН 1 — Hero ===================== -->
+<section class="screen hero" id="hero" data-screen-label="01 — Hero">
+  <canvas class="hero__canvas" id="ecoCanvas"></canvas>
+  <div class="hero__veil"></div>
+  <div class="container"><div class="hero__inner">
+    <span class="eyebrow" style="font-size: 12px">ИГРОВАЯ ЭКОСИСТЕМА РАЗВИТИЯ ЧЕЛОВЕКА</span>
+    <h1>Ускоритель
+<span style="color:#d4a574">твоего роста</span></h1>
+    <p class="lede hero__lede">Мотивационная IT-платформа и твой личный навигатор. Пока ты играешь и развиваешься, система изучает твой Аватар, выстраивая кратчайший путь к целям.</p>
+    <div class="hero__actions">
+      <a class="btn btn--solid" href="#core"><span>Исследовать экосистему</span> <span class="arr">→</span></a>
+    </div>
+  </div></div>
+  <a class="scroll-hint" href="#core" aria-label="Прокрутить вниз">
+    <span class="rail"></span>
+    Вниз
+  </a>
+  <div class="hero__pyramid-label">Покори Олимп</div>
+</section>
+
+<!-- ===================== ЭКРАН 2 — Ядро системы ===================== -->
+<section class="screen" id="core" data-screen-label="02 — Ядро системы">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ядро системы</span>
+      <h2>Как работает экосистема</h2>
+      <p class="lede">Самообучающаяся система, которая непрерывно улучшает твой маршрут, делая путь к истинным целям и самореализации максимально эффективным</p>
+    </div>
+
+    <div class="core reveal">
+      <div class="core__stage" id="coreStage">
+        <svg class="core__svg" viewBox="0 0 400 400" aria-hidden="true">
+          <circle class="ring" cx="200" cy="200" r="150"/>
+          <circle class="flow spin" cx="200" cy="200" r="150"/>
+        </svg>
+        <div class="core__center">
+          <div class="k">∞</div>
+          <div class="s">Самообучение</div>
+        </div>
+        <!-- узлы позиционируются JS -->
+      </div>
+
+      <div class="core__info" id="coreInfo">
+        <p class="ph">Выбери узел цикла, чтобы раскрыть его смысл →</p>
+
+        <div class="core__panel" data-node="test">
+          <h3>Тестирование</h3>
+          <p>Твой профиль уточняется органично в процессе самой игры, дополняясь через лёгкие, интуитивные тесты.</p>
+          <button class="jump" data-jump="#tests"><span>Перейти к тестам</span> <span>→</span></button>
+        </div>
+
+        <div class="core__panel" data-node="avatar">
+          <h3>Аватар</h3>
+          <p>Детальная оцифровка личности: глубокое понимание твоей природы, а не просто база знаний.</p>
+          <button class="jump" data-jump="#avatar"><span>Структура Аватара</span> <span>→</span></button>
+        </div>
+
+        <div class="core__panel" data-node="path">
+          <h3>Путь развития</h3>
+          <p>Умная траектория, которая перестраивается под твой Аватар в реальном времени.</p>
+          <button class="jump" data-jump="#paths"><span>Пути развития</span> <span>→</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 3 — Тестирование ===================== -->
+<section class="screen" id="tests" data-screen-label="03 — Тестирование">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Три источника данных</span>
+      <h2>Три теста, что формируют Аватар</h2>
+      <p class="lede">Прошлое, настоящее и будущее. Нажми на карточку, чтобы раскрыть содержание.</p>
+    </div>
+
+    <div class="tests reveal">
+      <div class="flip" tabindex="0">
+        <div class="flip__in">
+          <div class="flip__face flip__front">
+            <div class="tag">БАЗОВЫЙ ТЕСТ</div>
+            <h3>Достижения</h3>
+            <p class="desc">Внешние результаты и факты</p>
+            <div class="hint"><span class="dot"></span> Раскрыть</div>
+          </div>
+          <div class="flip__face flip__back">
+            <div class="tag">ПРОШЛЫЕ ДЕЙСТВИЯ</div>
+            <p class="lead">Оцифровка твоего фундамента. Как твои прошлые шаги и решения сформировали твою реальность сегодня.</p>
+            <ul>
+              <li><b>Сферы жизни:</b> <span>здоровье, отношения, благосостояние</span></li>
+              <li><b>Способности:</b> <span>привычки, навыки, качества</span></li>
+              <li><b>Реализация:</b> <span>роли, проекты, миссия</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0">
+        <div class="flip__in">
+          <div class="flip__face flip__front">
+            <div class="tag">ОСНОВНОЙ ТЕСТ</div>
+            <h3>Психотип</h3>
+            <p class="desc">Твоё внутреннее состояние</p>
+            <div class="hint"><span class="dot"></span> Раскрыть</div>
+          </div>
+          <div class="flip__face flip__back">
+            <div class="tag">КАКОЙ Я СЕЙЧАС?</div>
+            <p class="lead">Показатель твоей внутренней энергии и устройства психики в настоящий момент времени.</p>
+            <ul>
+              <li><b>Тело:</b> <span>энергетические центры, каналы, тонкие тела</span></li>
+              <li><b>Ум:</b> <span>эмоции, убеждения, подсознательные установки</span></li>
+              <li><b>Душа:</b> <span>теневые качества, травмы, первопричины</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0">
+        <div class="flip__in">
+          <div class="flip__face flip__front">
+            <div class="tag">ГЛУБИННЫЙ ТЕСТ</div>
+            <h3>Генетика</h3>
+            <p class="desc">Врождённый потенциал</p>
+            <div class="hint"><span class="dot"></span> Раскрыть</div>
+          </div>
+          <div class="flip__face flip__back">
+            <div class="tag">ПЛАН ДУШИ</div>
+            <p class="lead">Твой истинный маршрут. Глубинная распаковка на основе даты рождения и генных ключей.</p>
+            <ul>
+              <li>Глубинные данные об Аватаре</li>
+              <li>Золотой путь</li>
+              <li>Дополнительный слой точности для персонального пути</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 4 — Структура Аватара ===================== -->
+<section class="screen" id="avatar" data-screen-label="04 — Структура Аватара">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">ТРИ УРОВНЯ ИГРЫ</span>
+      <h2>Трехуровневая архитектура Аватара</h2>
+      <p class="lede">Твой цифровой профиль формируется на трех взаимосвязанных слоях: внутренняя механика, внешняя реализация и глобальные силы влияния.</p>
+    </div>
+
+    <div class="avatar reveal" id="avatarBlock">
+      <div class="avatar__vis">
+        <div class="avatar__frame">
+          <canvas class="avatar__canvas" id="avCanvas"></canvas>
+          <svg class="avatar__svg" id="avatarSvg" viewBox="0 0 400 316">
+            <!-- Большой: внешнее влияние (level 3) -->
+            <polygon class="av-tri" id="avTriL" data-level="3"
+              points="200,12 372,308 28,308" />
+            <!-- Средний: внутренняя энергия (level 2) -->
+            <polygon class="av-tri" id="avTriM" data-level="2"
+              points="200,85 308,268 92,268" />
+            <!-- Малый: внешняя энергия (level 1, default) -->
+            <polygon class="av-tri" id="avTriS" data-level="1"
+              points="200,158 242,224 158,224" />
+          </svg>
+        </div>
+
+      </div>
+
+      <div class="avatar__panel" id="avatarPanel">
+        <div class="avatar__level on" data-level="1">
+          <h3>Как ты проявлен в мире</h3>
+          <div class="avatar__groups">
+            <div class="agroup"><h4>Сферы жизни</h4><p>Здоровье, деньги, отношения</p></div>
+            <div class="agroup"><h4>Способности</h4><p>Привычки, навыки, качества</p></div>
+            <div class="agroup"><h4>Самореализация</h4><p>Роли, проекты, миссия</p></div>
+          </div>
+        </div>
+        <div class="avatar__level" data-level="2">
+          <h3>Что движет тобой изнутри</h3>
+          <div class="avatar__groups">
+            <div class="agroup"><h4>Тело</h4><p>Энергетическая архитектура, тонкие тела и центры</p></div>
+            <div class="agroup"><h4>Ум</h4><p>Эмоциональное состояние, убеждения и установки</p></div>
+            <div class="agroup"><h4>Душа</h4><p>Теневые стороны, травмы и первопричины</p></div>
+          </div>
+        </div>
+        <div class="avatar__level" data-level="3">
+          <h3>Силы, что влияют на тебя</h3>
+          <div class="avatar__groups">
+            <div class="agroup"><h4>Наследие</h4><p>Генетическая память, влияние рода и код предков</p></div>
+            <div class="agroup"><h4>Системы общества</h4><p>Наука, государство, массовые эгрегоры и законы общества</p></div>
+            <div class="agroup"><h4>Духовный план</h4><p>Космические циклы, влияние планет и план души</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 5 — Пути развития ===================== -->
+<section class="screen" id="paths" data-screen-label="05 — Пути развития">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Как платформа ведёт тебя</span>
+      <h2>Три пути развития</h2>
+      <p class="lede">Выбери свой путь — и увидишь, как он проходит по карте развития.</p>
+    </div>
+
+    <div class="paths reveal" id="pathsBlock">
+      <div class="paths__controls">
+        <button class="pathbtn on" data-path="evo">
+          <span class="pi">↔</span>
+          <span class="pt"><span class="k">Путь эволюции</span><span class="d">Путь ясности, зрелости и влияния</span></span>
+        </button>
+        <button class="pathbtn" data-path="master">
+          <span class="pi">↕</span>
+          <span class="pt"><span class="k">Путь мастерства</span><span class="d">Путь молодости, богатства и любви</span></span>
+        </button>
+        <button class="pathbtn" data-path="person">
+          <span class="pi">✦</span>
+          <span class="pt"><span class="k">Персональный путь</span><span class="d">Собирается под твой Аватар в реальном времени</span></span>
+        </button>
+      </div>
+
+      <div class="paths__diagram">
+        <div class="pd-corner"></div>
+        <div class="pd-cols">
+          <span data-col="0">Молодость</span>
+          <span data-col="1">Богатство</span>
+          <span data-col="2">Любовь</span>
+        </div>
+        <div class="pd-rows">
+          <span data-row="0">Ясность</span>
+          <span data-row="1">Зрелость</span>
+          <span data-row="2">Влияние</span>
+        </div>
+        <div class="grid3" id="pathGrid" aria-hidden="true">
+          <svg class="pd-lines" id="pathLines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+          <!-- узлы строит JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 6 — Окружение ===================== -->
+<section class="screen" id="env" data-screen-label="06 — Окружение">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">9+ СОЦИАЛЬНЫХ СЕРВИСОВ</span>
+      <h2>Объединение людей</h2>
+      <p class="lede">Комплекс IT-сервисов для поиска своих людей. Умная система анализирует Аватары и подбирает идеальных партнеров для крепкой дружбы, семьи, бизнеса и наставничества.</p>
+    </div>
+
+    <div class="env reveal">
+      <div class="env__stage">
+        <svg class="env__svg" id="envSvg" viewBox="0 0 400 400">
+          <circle class="ec" id="ecOuter" cx="200" cy="200" r="180" data-ring="leaders"/>
+          <circle class="ec" id="ecMid" cx="200" cy="200" r="120" data-ring="mentors"/>
+          <circle class="ec" id="ecInner" cx="200" cy="200" r="62" data-ring="peers"/>
+          <circle class="core" cx="200" cy="200" r="6"/>
+          <g id="envParticles"></g>
+        </svg>
+      </div>
+
+      <div class="env__controls">
+        <button class="envbtn on" data-ring="peers">
+          <div class="k"><span class="ring-i"></span> Единомышленники</div>
+          <div class="etag">Для поиска своих людей</div>
+          <div class="d">Умный подбор бади, алгоритмы для создания гармоничных пар и HR-сервис для поиска надежных бизнес-партнеров и сотрудников.</div>
+        </button>
+        <button class="envbtn" data-ring="mentors">
+          <div class="k"><span class="ring-i"></span> Наставники</div>
+          <div class="etag">Для быстрого роста</div>
+          <div class="d">Платформа для продвижения экспертов, обучение профессиям будущего и сеть подбора идеального наставника точно под ваш запрос и Аватар.</div>
+        </button>
+        <button class="envbtn" data-ring="leaders">
+          <div class="k"><span class="ring-i"></span> Лидеры</div>
+          <div class="etag">Для глобального масштаба</div>
+          <div class="d">IT-инструменты для создания собственных клубов, управления стартапами и объединения самых зрелых личностей вокруг единой мировой миссии</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 7 — Карта проектов ===================== -->
+<section class="screen" id="services" data-screen-label="07 — Карта проектов">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">КАРТА ЭКОСИСТЕМЫ</span>
+      <h2>Созвездие твоих возможностей</h2>
+      <p class="lede">29 уникальных IT-решений, разделённых на базовый, глубинный и социальный уровни. Наводи на элементы, чтобы узнать детали.</p>
+    </div>
+
+    <div class="svc-filters reveal">
+      <button class="sfilt on" data-cat="all">ВСЕ</button>
+      <button class="sfilt" data-cat="base">БАЗОВЫЕ</button>
+      <button class="sfilt" data-cat="deep">ГЛУБИННЫЕ</button>
+      <button class="sfilt" data-cat="social">СОЦИАЛЬНЫЕ</button>
+    </div>
+
+    <div class="services__cloud reveal" id="svcCloud">
+      <canvas id="svcCanvas"></canvas>
+      <div class="svc-tip" id="svcTip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 8 — Атмосфера игры ===================== -->
+<section class="screen fullshot game" id="game" data-screen-label="08 — Атмосфера игры">
+  <div class="fullshot__media">
+    <img src="assets/pegasus.png" alt="Пегас — атмосфера игры" />
+  </div>
+  <div class="fullshot__scrim"></div>
+  <div class="container fullshot__overlay">
+    <div class="fullshot__copy reveal">
+      <span class="eyebrow">Атмосфера игры</span>
+      <h2>Пробуди свой<br/>внутренний огонь</h2>
+      <div class="q">Главный герой — ты сам.</div>
+      <p>Путь богатства: проработка денежного мышления в формате игры с сюжетной линией.</p>
+      <div class="game__chars">
+        <span class="chip">Персонажи: Пегас, Минотавр и Джин</span>
+      </div>
+      <div class="fullshot__actions">
+        <a class="btn" href="https://codetimur.com/mentorship.html" target="_blank" rel="noopener"><span>ПРЕДВАРИТЕЛЬНАЯ ЗАПИСЬ НА ИГРУ</span> <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЭКРАН 9 — Наставничество ===================== -->
+<section class="screen fullshot mentor" id="mentor" data-screen-label="09 — Наставничество">
+  <div class="fullshot__media">
+    <img src="assets/mentor.png" alt="Автор — наставник" style="object-position: 55% 15%; transform: scale(0.88); transform-origin: 60% 0%;" />
+  </div>
+  <div class="fullshot__scrim"></div>
+  <div class="container fullshot__overlay">
+    <div class="fullshot__copy reveal">
+      <span class="eyebrow">Наставничество</span>
+      <h2>Путь Богатства</h2>
+      <p class="mentor__intro">Вступай в наставничество, пока система и сервисы ещё формируются. Сейчас идёт набор в Путь Богатства — разбираем темы лично и в группах.</p>
+      <div class="mentor__steps">
+        <div class="mstep"><div class="n">1</div><div><h4>Изобилие</h4><p>Работа с мышлением и установками о деньгах.</p></div></div>
+        <div class="mstep"><div class="n">2</div><div><h4>Поток</h4><p>Навыки эффективности, дисциплины и целей.</p></div></div>
+        <div class="mstep"><div class="n">3</div><div><h4>Масштаб</h4><p>Самореализация: проекты, роли и влияние.</p></div></div>
+      </div>
+      <div class="fullshot__actions">
+        <a class="btn btn--solid" href="https://codetimur.com/mentorship.html" target="_blank" rel="noopener"><span>Перейти к наставничеству</span> <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="container foot__inner">
+    <a class="brand" href="#hero">
+      <img class="brand__logo brand__logo--foot" src="assets/codetimur-logo.png" alt="CODE TIMUR" style="height:36px" />
+    </a>
+    <p>Покори Олимп · Экосистема IT-сервисов</p>
+  </div>
+</footer>
+
+<script src="js/ecosystem.js"></script>
+<script src="js/sections.js"></script>
+<script src="js/services.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
