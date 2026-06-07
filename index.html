@@ -1,231 +1,1095 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Покори Олимп — Экосистема IT-сервисов</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/sections.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ускоритель твоего развития</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070707;
+    --bg-2: #0c0c0e;
+    --line: rgba(212,165,116,.18);
+    --line-2: rgba(255,255,255,.06);
+    --gold: #d4a574;
+    --gold-2: #e8c79a;
+    --gold-soft: rgba(212,165,116,.45);
+    --ink: #f4ece2;
+    --muted: #8a8278;
+    --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+    --sans: 'Manrope', -apple-system, system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body { overflow-x: hidden; }
+
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  ::selection { background: rgba(212,165,116,.3); color: #fff; }
+
+  /* ambient grain */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 1;
+    background-image: radial-gradient(rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 3px 3px;
+    mix-blend-mode: overlay;
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 48px; position: relative; }
+  @media (max-width: 720px) { .wrap { padding: 0 22px; } }
+
+  /* ---- NAV ---- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: linear-gradient(to bottom, rgba(7,7,7,.7), rgba(7,7,7,0));
+    border-bottom: 1px solid transparent;
+    transition: border-color .4s ease, background .4s ease;
+  }
+  .nav.scrolled {
+    border-bottom-color: var(--line-2);
+    background: rgba(7,7,7,.85);
+  }
+  .nav-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+  .brand { display: flex; align-items: center; }
+  .brand-logo { height: 38px; width: auto; display: block; opacity: .92; }
+  .nav-links {
+    display: flex; gap: 32px;
+    font-size: 13px; color: var(--muted);
+    letter-spacing: .08em; text-transform: uppercase;
+  }
+  .nav-links a { transition: color .3s; }
+  .nav-links a:hover { color: var(--gold); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+
+  /* ---- SECTION BASE ---- */
+  section {
+    position: relative;
+    padding: 140px 0;
+    border-top: 1px solid var(--line-2);
+  }
+  section:first-of-type { border-top: none; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-size: 11px; letter-spacing: .32em;
+    text-transform: uppercase; color: var(--gold);
+    font-weight: 500;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 36px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; margin: 0; }
+  h1 { font-size: clamp(48px, 7.6vw, 108px); line-height: .95; }
+  h2 { font-size: clamp(38px, 5.2vw, 68px); line-height: 1.05; }
+  h3 { font-size: clamp(22px, 2.4vw, 30px); line-height: 1.2; }
+  p { margin: 0; line-height: 1.65; color: #cdc6bc; }
+
+  .em-gold { color: var(--gold); font-style: italic; }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 0; min-height: 100vh;
+    display: flex; align-items: center;
+    border-top: none;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: url('assets/hero-new.png') center center / cover no-repeat;
+    animation: breathe 9s ease-in-out infinite;
+  }
+
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      linear-gradient(to right,
+        rgba(7,7,7,.92) 0%,
+        rgba(7,7,7,.70) 22%,
+        rgba(7,7,7,.25) 45%,
+        rgba(7,7,7,0)   65%);
+  }
+
+  .hero-left {
+    position: relative; z-index: 2;
+    padding: 180px 0 120px 48px;
+    max-width: 620px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+
+  @media (max-width: 720px) {
+    .hero { flex-direction: column; align-items: stretch; }
+    .hero-bg { background-position: 55% 18%; }
+    .hero-overlay {
+      background:
+        linear-gradient(to bottom,
+          rgba(7,7,7,.78) 0%,
+          rgba(7,7,7,.55) 35%,
+          rgba(7,7,7,.25) 60%,
+          rgba(7,7,7,0)   85%);
+    }
+    .hero-left { padding: 108px 22px 48px; max-width: 100%; position: relative; z-index: 2; }
+    .hero-title { font-size: clamp(42px, 11vw, 62px); }
+  }
+
+  .hero-kicker {
+    font-size: 11px; letter-spacing: .4em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 36px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-kicker::before { content: ""; width: 28px; height: 1px; background: var(--gold); }
+
+  .hero-title {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(48px, 5.8vw, 88px);
+    line-height: .97; letter-spacing: -.015em;
+  }
+  .hero-title .accent { color: var(--gold); font-style: italic; font-weight: 400; }
+
+  .hero-sub {
+    margin-top: 32px; max-width: 420px;
+    font-size: 17px; color: #bdb6ab; line-height: 1.6;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .hero-sub::before {
+    content: ""; position: absolute;
+    left: 0; top: -1px; width: 64px; height: 1px;
+    background: var(--gold); box-shadow: 0 0 12px var(--gold);
+  }
+
+  .hero-meta {
+    margin-top: 48px;
+    display: flex; gap: 40px; align-items: center; flex-wrap: wrap;
+  }
+  .hero-meta .pill { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+  .hero-meta .scroll {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; letter-spacing: .3em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--gold);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: ""; position: absolute; inset: 0;
+    background: #fff;
+    animation: slide 2.4s infinite;
+  }
+
+  @keyframes slide {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.025); }
+  }
+
+  /* particles */
+  .particles {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen; opacity: .7; z-index: 2;
+  }
+  .particles span {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--gold); border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold); opacity: .6;
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); opacity: .3; }
+    50%       { transform: translate(6px, -10px); opacity: .85; }
+  }
+
+  /* ---- SECTION 2 — CODE ---- */
+  .sec-head {
+    display: flex; align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px; margin-bottom: 80px; flex-wrap: wrap;
+  }
+  .sec-head-left { max-width: 560px; }
+  .sec-head h2 { margin-top: 24px; }
+
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 880px) { .cards-3 { grid-template-columns: 1fr; } }
+
+  .card {
+    position: relative; padding: 44px 36px;
+    border: 1px solid var(--line-2); border-radius: 2px;
+    background: linear-gradient(180deg, rgba(255,255,255,.012), rgba(255,255,255,0));
+    transition: transform .6s cubic-bezier(.2,.7,.2,1), border-color .4s, background .4s, box-shadow .4s;
+    overflow: hidden;
+    opacity: 0; transform: translateY(28px);
+  }
+  .card.in { opacity: 1; transform: translateY(0); }
+  .card:hover {
+    border-color: var(--gold-soft); transform: translateY(-4px);
+    background: linear-gradient(180deg, rgba(212,165,116,.04), rgba(212,165,116,0));
+    box-shadow: 0 30px 60px -30px rgba(212,165,116,.25), inset 0 1px 0 rgba(212,165,116,.15);
+  }
+
+  .card .num {
+    font-family: var(--serif); font-style: italic;
+    font-size: 74px; line-height: 1;
+    color: var(--gold); font-weight: 300; letter-spacing: -.02em;
+  }
+  .card .num-dot {
+    display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--gold);
+    box-shadow: 0 0 12px var(--gold);
+    margin-left: 8px; vertical-align: middle; margin-bottom: 6px;
+  }
+  .card h3 { margin-top: 32px; font-family: var(--serif); font-weight: 400; }
+  .card p  { margin-top: 18px; font-size: 15px; color: #b8b1a6; }
+
+  .card-glyph {
+    position: absolute; top: 36px; right: 36px;
+    width: 34px; height: 34px;
+    color: var(--gold); opacity: .55;
+    transition: opacity .4s;
+  }
+  .card:hover .card-glyph { opacity: 1; }
+
+  /* ---- SECTION 3 — TRIANGLE / PHILOSOPHY ---- */
+  .triangle-grid {
+    display: grid; grid-template-columns: 1.05fr .95fr;
+    gap: 80px; align-items: center;
+  }
+  @media (max-width: 880px) { .triangle-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+  .triangle-stage {
+    position: relative; aspect-ratio: 1 / 1;
+    max-width: 540px; margin: 0 auto; width: 100%;
+  }
+  .triangle-stage svg { width: 100%; height: 100%; display: block; }
+
+  .triangle-stage .ring {
+    position: absolute; inset: 8%;
+    border-radius: 50%; pointer-events: none;
+    border: 1px solid var(--line);
+    border-top-color: rgba(212,165,116,.65);
+    border-right-color: rgba(212,165,116,.2);
+    animation: rotCW 55s linear infinite;
+  }
+  .triangle-stage .ring.r2 {
+    inset: 18%; opacity: .8;
+    border-top-color: transparent;
+    border-bottom-color: rgba(212,165,116,.55);
+    border-left-color: rgba(212,165,116,.18);
+    animation: rotCCW 38s linear infinite;
+  }
+  .triangle-stage .ring.r3 { inset: 30%; opacity: .35; animation: rotCW 40s linear infinite; }
+
+  @keyframes rotCW  { to { transform: rotate(360deg);  } }
+  @keyframes rotCCW { to { transform: rotate(-360deg); } }
+
+  .triangle-stage .core {
+    position: absolute; left: 50%; top: 50%;
+    width: 14px; height: 14px; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, var(--gold-2) 0%, var(--gold) 40%, transparent 70%);
+    box-shadow: 0 0 30px var(--gold), 0 0 60px rgba(212,165,116,.4);
+    animation: corePulse 3.6s ease-in-out infinite;
+    pointer-events: none;
+    transition: box-shadow .4s;
+  }
+  .triangle-stage:hover .core {
+    box-shadow: 0 0 40px var(--gold-2), 0 0 80px rgba(212,165,116,.6);
+  }
+  @keyframes corePulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: .9; }
+    50%       { transform: translate(-50%, -50%) scale(1.5); opacity: 1;  }
+  }
+
+  .axiom-list { display: flex; flex-direction: column; gap: 30px; }
+  .axiom {
+    display: grid; grid-template-columns: 52px 1fr;
+    gap: 22px; align-items: start;
+    padding: 22px 22px 22px 0;
+    border-bottom: 1px solid var(--line-2);
+    transition: padding .4s, border-color .4s;
+    cursor: default;
+  }
+  .axiom:hover { padding-left: 14px; border-bottom-color: var(--gold-soft); }
+  .axiom:hover .ax-icon { color: var(--gold-2); transform: scale(1.05); }
+
+  .ax-icon {
+    width: 48px; height: 48px;
+    border: 1px solid var(--line); border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--gold); transition: transform .4s, color .4s;
+  }
+  .ax-icon svg { width: 22px; height: 22px; }
+  .ax-label { font-family: var(--serif); font-size: 22px; color: var(--ink); font-weight: 500; }
+  .ax-text  { margin-top: 6px; font-size: 14px; color: var(--muted); letter-spacing: .05em; }
+
+  .triangle-foot {
+    margin-top: 48px;
+    font-family: var(--serif); font-size: 22px;
+    color: var(--muted); font-style: italic; line-height: 1.4;
+  }
+
+  /* ---- SECTION 4 — SYSTEM ---- */
+  .system-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; border: 1px solid var(--line-2); border-radius: 2px; overflow: hidden;
+  }
+  @media (max-width: 880px) { .system-grid { grid-template-columns: 1fr; } }
+
+  .sys-cell {
+    padding: 48px 40px; position: relative;
+    border-right: 1px solid var(--line-2);
+    transition: background .5s;
+  }
+  .sys-cell:last-child { border-right: none; }
+  @media (max-width: 880px) {
+    .sys-cell { border-right: none; border-bottom: 1px solid var(--line-2); }
+    .sys-cell:last-child { border-bottom: none; }
+  }
+  .sys-cell:hover { background: linear-gradient(180deg, rgba(212,165,116,.045), transparent); }
+  .sys-cell:hover .sys-num { color: var(--gold); }
+
+  .sys-num   { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--muted); transition: color .4s; }
+  .sys-icon  { margin-top: 24px; width: 54px; height: 54px; display: grid; place-items: center; color: var(--gold); }
+  .sys-icon svg { width: 36px; height: 36px; }
+  .sys-title { margin-top: 28px; font-family: var(--serif); font-size: 30px; font-weight: 400; }
+  .sys-em    { color: var(--gold); font-style: italic; }
+  .sys-desc  { margin-top: 14px; color: #b8b1a6; font-size: 15px; max-width: 30ch; }
+  .sys-tag   { margin-top: 32px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .sys-tag b { color: #d8d1c5; font-weight: 500; }
+
+  /* ---- SECTION 5 — VALUES ---- */
+  .values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-2); }
+  @media (max-width: 880px) { .values { grid-template-columns: 1fr; } }
+
+  .value { padding: 64px 40px; background: var(--bg); transition: background .4s; }
+  .value:hover { background: #0a0a0c; }
+
+  .v-icon {
+    width: 64px; height: 64px;
+    border: 1px solid var(--line); border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--gold);
+    transition: box-shadow .5s, border-color .4s;
+  }
+  .value:hover .v-icon { border-color: var(--gold-soft); box-shadow: 0 0 40px rgba(212,165,116,.18); }
+  .v-icon svg { width: 28px; height: 28px; }
+
+  .v-title { margin-top: 32px; font-family: var(--serif); font-size: 30px; font-weight: 400; }
+  .v-em    { color: var(--gold); font-style: italic; font-size: 14px; letter-spacing: .04em; display: block; margin-top: 6px; }
+  .v-text  { margin-top: 14px; color: #b8b1a6; font-size: 15px; max-width: 34ch; }
+
+  /* ---- SECTION 6 — PROJECTS ---- */
+  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 1000px) { .projects { grid-template-columns: 1fr; } }
+
+  .project {
+    position: relative; min-height: 520px;
+    padding: 44px 40px;
+    border: 1px solid var(--line-2); border-radius: 2px;
+    overflow: hidden;
+    display: flex; flex-direction: column; justify-content: space-between;
+    cursor: pointer;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1), border-color .4s, box-shadow .5s;
+    background: #08080a;
+  }
+  .project:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold-soft);
+    box-shadow: 0 40px 80px -40px rgba(212,165,116,.35);
+  }
+  .project::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(120% 70% at 50% 0%, rgba(212,165,116,.08), transparent 55%);
+    opacity: 0; transition: opacity .5s;
+  }
+  .project:hover::before { opacity: 1; }
+
+  .project-art {
+    position: absolute; left: 0; right: 0; top: 0; height: 55%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+    opacity: .55; transition: opacity .6s, transform .6s;
+  }
+  .project:hover .project-art { opacity: .85; transform: scale(1.04); }
+  .project-art svg { width: 100%; height: 100%; display: block; }
+
+  .project-body    { position: relative; margin-top: auto; z-index: 2; }
+  .project-num     { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: .06em; }
+  .project-title   { margin-top: 14px; font-family: var(--serif); font-size: 42px; font-weight: 400; letter-spacing: -.01em; line-height: 1.05; }
+  .project-desc    { margin-top: 18px; color: #b8b1a6; font-size: 15px; max-width: 32ch; }
+  .project-cta {
+    margin-top: 32px;
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 12px; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .project-cta .arrow {
+    display: inline-block; width: 36px; height: 1px;
+    background: var(--gold); position: relative;
+    transition: width .4s;
+  }
+  .project-cta .arrow::after {
+    content: ""; position: absolute; right: 0; top: -3px;
+    width: 7px; height: 7px;
+    border-top: 1px solid var(--gold); border-right: 1px solid var(--gold);
+    transform: rotate(45deg);
+  }
+  .project:hover .project-cta .arrow { width: 60px; }
+
+  /* ---- SECTION 7 — WHO AM I ---- */
+  .who-grid {
+    display: grid; grid-template-columns: 1.15fr .85fr;
+    gap: 64px; align-items: stretch;
+  }
+  @media (max-width: 1000px) { .who-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+  .who-photo {
+    position: relative; width: 100%;
+    margin: 0 auto 0 0;
+    border-radius: 4px; overflow: hidden;
+    order: 2; align-self: stretch; min-height: 200px;
+  }
+  .who-photo::before {
+    content: ""; position: absolute; inset: -1px;
+    border: 1px solid var(--line); border-radius: 4px;
+    pointer-events: none; z-index: 3;
+  }
+  .who-photo::after {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background:
+      radial-gradient(ellipse 120% 120% at 50% 50%, transparent 40%, rgba(7,7,7,.45) 75%, rgba(7,7,7,.85) 100%),
+      linear-gradient(to bottom, rgba(7,7,7,.35) 0%, transparent 25%, transparent 70%, rgba(7,7,7,.55) 100%),
+      linear-gradient(to left,  rgba(7,7,7,.6) 0%, transparent 40%),
+      linear-gradient(to right, rgba(7,7,7,.6) 0%, transparent 35%);
+  }
+  .who-photo .ph-ring {
+    position: absolute; left: -6%; top: -6%; width: 112%; height: 112%;
+    border: 1px solid var(--gold-soft); border-radius: 50%;
+    pointer-events: none; opacity: .4;
+    animation: rotate 60s linear infinite;
+  }
+  @keyframes rotate { to { transform: rotate(360deg); } }
+
+  .who-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: 50% 12%;
+    filter: contrast(1.06) saturate(.9) brightness(.97);
+  }
+
+  .roles { order: 1; display: flex; flex-direction: column; gap: 20px; }
+
+  .role {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 28px; align-items: start;
+    padding: 28px 32px;
+    border: 1px solid var(--line-2); border-radius: 2px;
+    transition: border-color .4s, background .4s, transform .5s;
+    background: linear-gradient(180deg, rgba(255,255,255,.012), transparent);
+  }
+  .role:hover { border-color: var(--gold-soft); transform: translateX(6px); }
+
+  .role-icon {
+    width: 64px; height: 64px;
+    border: 1px solid var(--line); border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--gold);
+    transition: box-shadow .4s, border-color .4s;
+  }
+  .role:hover .role-icon {
+    box-shadow: 0 0 30px rgba(212,165,116,.25);
+    border-color: var(--gold-soft);
+  }
+  .role-icon svg { width: 28px; height: 28px; }
+  .role-title { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--gold); }
+  .role-text  { margin-top: 8px; color: #cdc6bc; font-size: 15px; max-width: 48ch; }
+
+  /* ---- SECTION 8 — MISSION ---- */
+  .mission { position: relative; text-align: center; padding: 160px 0 200px; }
+  .mission .wrap { max-width: 920px; }
+  .mission h2 { font-size: clamp(38px, 5.4vw, 72px); font-weight: 300; line-height: 1.15; }
+  .mission p  { margin-top: 30px; font-size: 18px; color: #cdc6bc; max-width: 60ch; margin-left: auto; margin-right: auto; }
+
+  .orbit {
+    position: absolute; left: 50%; top: 48%;
+    transform: translate(-50%, -50%);
+    width: min(900px, 90vw); aspect-ratio: 1 / 1;
+    pointer-events: none; z-index: 0; opacity: .55;
+  }
+  .orbit svg { width: 100%; height: 100%; animation: rotate 90s linear infinite; }
+  .orbit::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-2) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 60px var(--gold-2);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: .6; transform: translate(-50%, -50%) scale(1);   }
+    50%       { opacity: 1;  transform: translate(-50%, -50%) scale(1.3); }
+  }
+  .mission .wrap > * { position: relative; z-index: 1; }
+
+  /* ---- FOOTER ---- */
+  footer { padding: 60px 0 50px; border-top: 1px solid var(--line-2); }
+  .foot-row {
+    display: flex; justify-content: space-between;
+    align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .tg {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 14px 26px;
+    border: 1px solid var(--line); border-radius: 999px;
+    font-size: 13px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink);
+    transition: border-color .4s, color .4s, background .4s;
+  }
+  .tg:hover { border-color: var(--gold); color: var(--gold); background: rgba(212,165,116,.04); }
+  .tg svg { width: 18px; height: 18px; }
+  .copy { font-size: 12px; color: var(--muted); letter-spacing: .1em; }
+
+  /* ---- REVEAL ANIMATION ---- */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-d-1 { transition-delay: .08s; }
+  .reveal-d-2 { transition-delay: .18s; }
+  .reveal-d-3 { transition-delay: .28s; }
+
+  section[id] { scroll-margin-top: 80px; }
+</style>
 </head>
 <body>
 
-<!-- ===================== Навигация ===================== -->
-<header class="nav" id="nav">
-  <div class="nav__inner">
-    <a class="brand" href="#hero" aria-label="Покори Олимп">
-      <img class="brand__logo" src="assets/codetimur-logo.png" alt="CODE TIMUR" />
-    </a>
-    <nav class="nav__links">
-      <a href="#core">Ядро</a>
-      <a href="#avatar">Аватар</a>
-      <a href="#paths">Пути</a>
-      <a href="#services">Сервисы</a>
-      <a href="#game">Игра</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-
-<!-- ===================== ЭКРАН 1 — Hero ===================== -->
-<section class="screen hero" id="hero" data-screen-label="01 — Hero">
-  <canvas class="hero__canvas" id="ecoCanvas"></canvas>
-  <div class="hero__veil"></div>
-  <div class="container"><div class="hero__inner">
-    <span class="eyebrow" style="font-size: 12px">УСКОРИТЕЛЬ ТВОЕГО РОСТА</span>
-    <h1 style="color: rgb(244, 236, 226)">Игровая <span style="color: #d4a574">экосистема</span> 
-саморазвития</h1>
-    <p class="lede hero__lede">Мотивационная IT-платформа и твой личный навигатор. Пока ты играешь и развиваешься, система изучает твой Аватар, выстраивая кратчайший путь к целям.</p>
-    <div class="hero__actions">
-      <a class="btn btn--solid" href="#core"><span>Исследовать экосистему</span> <span class="arr">→</span></a>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-row">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Code Timur" class="brand-logo" />
     </div>
-  </div></div>
-  <a class="scroll-hint" href="#core" aria-label="Прокрутить вниз">
-    <span class="rail"></span>
-    Вниз
-  </a>
-  <div class="hero__pyramid-label">Покори Олимп</div>
+    <div class="nav-links">
+      <a href="#code">Код</a>
+      <a href="#system">Система</a>
+      <a href="#projects">Проекты</a>
+      <a href="#who">Кто я</a>
+      <a href="#mission">Миссия</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 1 · HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="particles" id="particles"></div>
+  <div class="hero-left">
+    <div class="hero-kicker">01 — Начало</div>
+    <h1 class="hero-title">
+      Ускоритель<br>
+      твоего <span class="accent">развития</span>
+    </h1>
+    <p class="hero-sub">через ясность и системный подход</p>
+    <div class="hero-meta">
+      <span class="pill">Личная работа · Среда · Сервисы</span>
+      <span class="scroll"><span class="scroll-line"></span> прокрути</span>
+    </div>
+  </div>
 </section>
 
-<!-- ===================== ЭКРАН 2 — Ядро системы ===================== -->
-<section class="screen" id="core" data-screen-label="02 — Ядро системы">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Ядро системы</span>
-      <h2>Как работает экосистема</h2>
-      <p class="lede">Самообучающаяся система, которая непрерывно улучшает твой маршрут, делая путь к истинным целям и самореализации максимально эффективным</p>
+<!-- 2 · КОД -->
+<section id="code">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="eyebrow">02 · Что такое <span style="color:var(--muted);margin-left:4px">«код»</span></div>
+        <h2 style="margin-top:24px">Один принцип<br>повторяется <span class="em-gold">везде</span></h2>
+      </div>
+      <p class="reveal" style="max-width:380px;font-size:15px;color:var(--muted)">Я долго наблюдал — и заметил структуру, которая встроена в любую сферу: от тела до мышления, от привычек до миссии.</p>
     </div>
 
-    <div class="core reveal">
-      <div class="core__stage" id="coreStage">
-        <svg class="core__svg" viewBox="0 0 400 400" aria-hidden="true">
-          <circle class="ring" cx="200" cy="200" r="150"/>
-          <circle class="flow spin" cx="200" cy="200" r="150"/>
+    <div class="cards-3">
+      <div class="card reveal">
+        <div class="num">01<span class="num-dot"></span></div>
+        <span class="card-glyph">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M4 12 L16 5 L28 12 L16 19 Z"/>
+            <path d="M4 12 V22 L16 29 L28 22 V12"/>
+            <path d="M16 19 V29"/>
+          </svg>
+        </span>
+        <h3>Чтобы управлять жизнью —<br>нужно понять, как она устроена</h3>
+        <p>Без карты любое движение становится случайностью. Карта начинается со структуры.</p>
+      </div>
+
+      <div class="card reveal reveal-d-1">
+        <div class="num">02<span class="num-dot"></span></div>
+        <span class="card-glyph">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="16" cy="16" r="12"/>
+            <circle cx="16" cy="16" r="7"/>
+            <circle cx="16" cy="16" r="2.5" fill="currentColor"/>
+          </svg>
+        </span>
+        <h3>Разбирая разные сферы,<br>я увидел одну закономерность</h3>
+        <p>Меняются названия, термины и контексты. Но всё сводится к трём элементам.</p>
+      </div>
+
+      <div class="card reveal reveal-d-2">
+        <div class="num">03<span class="num-dot"></span></div>
+        <span class="card-glyph">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M16 4 L28 26 L4 26 Z"/>
+            <circle cx="16" cy="4"  r="1.6" fill="currentColor"/>
+            <circle cx="28" cy="26" r="1.6" fill="currentColor"/>
+            <circle cx="4"  cy="26" r="1.6" fill="currentColor"/>
+          </svg>
+        </span>
+        <h3>Этот принцип повторяется везде.<br>Я называю его <span class="em-gold">кодом</span></h3>
+        <p>Простая, но глубокая структура — ключ к тому, чтобы видеть причины, а не последствия.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · ГДЕ ЭТО УЖЕ ЕСТЬ -->
+<section id="where">
+  <div class="wrap">
+    <div class="eyebrow reveal">03 · Где это уже есть</div>
+    <h2 class="reveal" style="margin-top:24px;max-width:18ch">Этот принцип давно наблюдали в разных областях</h2>
+
+    <div class="triangle-grid" style="margin-top:80px">
+      <div class="triangle-stage reveal" id="triStage">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <radialGradient id="dot" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#e8c79a" stop-opacity="1"/>
+              <stop offset="1" stop-color="#d4a574" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <polygon points="200,70 340,310 60,310" fill="none" stroke="rgba(212,165,116,.45)" stroke-width="1"/>
+          <line x1="200" y1="70"  x2="200" y2="200" stroke="rgba(212,165,116,.18)" stroke-width=".7" stroke-dasharray="2 4"/>
+          <line x1="340" y1="310" x2="200" y2="200" stroke="rgba(212,165,116,.18)" stroke-width=".7" stroke-dasharray="2 4"/>
+          <line x1="60"  y1="310" x2="200" y2="200" stroke="rgba(212,165,116,.18)" stroke-width=".7" stroke-dasharray="2 4"/>
+          <g>
+            <circle cx="200" cy="70"  r="22" fill="url(#dot)"/><circle cx="200" cy="70"  r="5" fill="#f7e2bc"/>
+            <circle cx="340" cy="310" r="22" fill="url(#dot)"/><circle cx="340" cy="310" r="5" fill="#f7e2bc"/>
+            <circle cx="60"  cy="310" r="22" fill="url(#dot)"/><circle cx="60"  cy="310" r="5" fill="#f7e2bc"/>
+          </g>
         </svg>
-        <div class="core__center">
-          <div class="k">∞</div>
-          <div class="s">Самообучение</div>
-        </div>
-        <!-- узлы позиционируются JS -->
+        <div class="core" id="coreDot"></div>
       </div>
 
-      <div class="core__info" id="coreInfo">
-        <p class="ph">Выбери узел цикла, чтобы раскрыть его смысл →</p>
-
-        <div class="core__panel" data-node="test">
-          <h3>Тестирование</h3>
-          <p>Твой профиль уточняется органично в процессе самой игры, дополняясь через лёгкие, интуитивные тесты.</p>
-          <button class="jump" data-jump="#tests"><span>Перейти к тестам</span> <span>→</span></button>
-        </div>
-
-        <div class="core__panel" data-node="avatar">
-          <h3>Аватар</h3>
-          <p>Детальная оцифровка личности: глубокое понимание твоей природы, а не просто база знаний.</p>
-          <button class="jump" data-jump="#avatar"><span>Структура Аватара</span> <span>→</span></button>
-        </div>
-
-        <div class="core__panel" data-node="path">
-          <h3>Путь развития</h3>
-          <p>Умная траектория, которая перестраивается под твой Аватар в реальном времени.</p>
-          <button class="jump" data-jump="#paths"><span>Пути развития</span> <span>→</span></button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== ЭКРАН 3 — Тестирование ===================== -->
-<section class="screen" id="tests" data-screen-label="03 — Тестирование">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Три источника данных</span>
-      <h2>Три теста, что формируют Аватар</h2>
-      <p class="lede">Прошлое, настоящее и будущее. Нажми на карточку, чтобы раскрыть содержание.</p>
-    </div>
-
-    <div class="tests reveal">
-      <div class="flip" tabindex="0">
-        <div class="flip__in">
-          <div class="flip__face flip__front">
-            <div class="tag">БАЗОВЫЙ ТЕСТ</div>
-            <h3>Достижения</h3>
-            <p class="desc">Внешние результаты и факты</p>
-            <div class="hint"><span class="dot"></span> Раскрыть</div>
+      <div>
+        <div class="axiom-list">
+          <div class="axiom">
+            <div class="ax-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M5 21 H19 M6 21 V8 M18 21 V8 M4 8 H20 L18 4 H6 Z M9 21 V11 M12 21 V11 M15 21 V11"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ax-label">Философия</div>
+              <div class="ax-text">быть — делать — иметь</div>
+            </div>
           </div>
-          <div class="flip__face flip__back">
-            <div class="tag">ПРОШЛЫЕ ДЕЙСТВИЯ</div>
-            <p class="lead">Оцифровка твоего фундамента. Как твои прошлые шаги и решения сформировали твою реальность сегодня.</p>
-            <ul>
-              <li><b>Сферы жизни:</b> <span>здоровье, отношения, благосостояние</span></li>
-              <li><b>Способности:</b> <span>привычки, навыки, качества</span></li>
-              <li><b>Реализация:</b> <span>роли, проекты, миссия</span></li>
-            </ul>
+          <div class="axiom">
+            <div class="ax-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="12" cy="6" r="2.5"/>
+                <path d="M8 22 V14 H16 V22 M12 14 V11"/>
+                <path d="M5 22 C5 18 8 16 12 16 C16 16 19 18 19 22"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ax-label">Религии</div>
+              <div class="ax-text">тело — ум — душа</div>
+            </div>
+          </div>
+          <div class="axiom">
+            <div class="ax-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M5 12 A7 7 0 1 1 12 19"/>
+                <path d="M12 19 L9 17 M12 19 L9 21"/>
+                <circle cx="12" cy="5" r="1.4" fill="currentColor"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ax-label">Процессы</div>
+              <div class="ax-text">начало — развитие — результат</div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="flip" tabindex="0">
-        <div class="flip__in">
-          <div class="flip__face flip__front">
-            <div class="tag">ОСНОВНОЙ ТЕСТ</div>
-            <h3>Психотип</h3>
-            <p class="desc">Твоё внутреннее состояние</p>
-            <div class="hint"><span class="dot"></span> Раскрыть</div>
-          </div>
-          <div class="flip__face flip__back">
-            <div class="tag">КАКОЙ Я СЕЙЧАС?</div>
-            <p class="lead">Показатель твоей внутренней энергии и устройства психики в настоящий момент времени.</p>
-            <ul>
-              <li><b>Тело:</b> <span>энергетические центры, каналы, тонкие тела</span></li>
-              <li><b>Ум:</b> <span>эмоции, убеждения, подсознательные установки</span></li>
-              <li><b>Душа:</b> <span>теневые качества, травмы, первопричины</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="flip" tabindex="0">
-        <div class="flip__in">
-          <div class="flip__face flip__front">
-            <div class="tag">ГЛУБИННЫЙ ТЕСТ</div>
-            <h3>Генетика</h3>
-            <p class="desc">Врождённый потенциал</p>
-            <div class="hint"><span class="dot"></span> Раскрыть</div>
-          </div>
-          <div class="flip__face flip__back">
-            <div class="tag">ПЛАН ДУШИ</div>
-            <p class="lead">Твой истинный маршрут. Глубинная распаковка на основе даты рождения и генных ключей.</p>
-            <ul>
-              <li>Теневые стороны и травмы</li>
-              <li>Таланты и способности</li>
-              <li>Миссия и предназанчение</li>
-            </ul>
-          </div>
+        <div class="triangle-foot reveal">
+          Меняются названия —<br>
+          но <span class="em-gold">структура остаётся</span>.
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== ЭКРАН 4 — Структура Аватара ===================== -->
-<section class="screen" id="avatar" data-screen-label="04 — Структура Аватара">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">ФРАКТАЛЬНАЯ ПРИРОДА</span>
-      <h2>Трехуровневая архитектура Аватара</h2>
-      <p class="lede">Твой цифровой профиль формируется на трех взаимосвязанных слоях: внутренняя механика, внешняя реализация и глобальные силы влияния.</p>
+<!-- 4 · КАК УСТРОЕНА СИСТЕМА -->
+<section id="system">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="eyebrow">04 · Как устроена система</div>
+        <h2 style="margin-top:24px">Любая задача —<br>с <span class="em-gold">трёх сторон</span></h2>
+      </div>
+      <p class="reveal" style="max-width:360px;font-size:15px;color:var(--muted)">Три проекции, через которые я разбираю любой запрос: от привычки до жизненной миссии.</p>
     </div>
 
-    <div class="avatar reveal" id="avatarBlock">
-      <div class="avatar__vis">
-        <div class="avatar__frame">
-          <canvas class="avatar__canvas" id="avCanvas"></canvas>
-          <svg class="avatar__svg" id="avatarSvg" viewBox="0 0 400 316">
-            <!-- Большой: внешнее влияние (level 3) -->
-            <polygon class="av-tri" id="avTriL" data-level="3"
-              points="200,12 372,308 28,308" />
-            <!-- Средний: внутренняя энергия (level 2) -->
-            <polygon class="av-tri" id="avTriM" data-level="2"
-              points="200,85 308,268 92,268" />
-            <!-- Малый: внешняя энергия (level 1, default) -->
-            <polygon class="av-tri" id="avTriS" data-level="1"
-              points="200,158 242,224 158,224" />
+    <div class="system-grid">
+      <div class="sys-cell reveal">
+        <div class="sys-num">i. — структура</div>
+        <div class="sys-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6"  y="6"  width="14" height="14"/>
+            <rect x="28" y="6"  width="14" height="14"/>
+            <rect x="17" y="28" width="14" height="14"/>
+            <line x1="13" y1="20" x2="24" y2="28" stroke-dasharray="2 3"/>
+            <line x1="35" y1="20" x2="24" y2="28" stroke-dasharray="2 3"/>
           </svg>
         </div>
-
+        <div class="sys-title">Структура <span class="sys-em">— из чего</span></div>
+        <p class="sys-desc">Из каких элементов состоит запрос — какие части собирают целое.</p>
+        <div class="sys-tag">Сферы жизни:<br><b>здоровье · деньги · отношения</b></div>
       </div>
 
-      <div class="avatar__panel" id="avatarPanel">
-        <div class="avlev-filters">
-          <button class="avlev-btn on" data-avlev="1">Уровень 1</button>
-          <button class="avlev-btn" data-avlev="2">Уровень 2</button>
-          <button class="avlev-btn" data-avlev="3">Уровень 3</button>
+      <div class="sys-cell reveal reveal-d-1">
+        <div class="sys-num">ii. — уровень</div>
+        <div class="sys-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="8"  y="30" width="6"  height="12"/>
+            <rect x="20" y="22" width="6"  height="20"/>
+            <rect x="32" y="12" width="6"  height="30"/>
+            <line x1="6"  y1="42" x2="42" y2="42"/>
+            <line x1="6"  y1="8"  x2="6"  y2="42"/>
+          </svg>
         </div>
-        <div class="avatar__level on" data-level="1">
-          <h3>Как ты проявлен в мире</h3>
-          <div class="avatar__groups">
-            <div class="agroup"><h4>Сферы жизни</h4><p>Здоровье, деньги, отношения</p></div>
-            <div class="agroup"><h4>Способности</h4><p>Привычки, навыки, качества</p></div>
-            <div class="agroup"><h4>Самореализация</h4><p>Роли, проекты, миссия</p></div>
+        <div class="sys-title">Уровень <span class="sys-em">— насколько</span></div>
+        <p class="sys-desc">Насколько раскрыт потенциал — сила, зрелость и энергия.</p>
+        <div class="sys-tag">Способности:<br><b>привычки · навыки · качества</b></div>
+      </div>
+
+      <div class="sys-cell reveal reveal-d-2">
+        <div class="sys-num">iii. — этап</div>
+        <div class="sys-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="24" cy="24" r="16"/>
+            <path d="M24 8 A16 16 0 0 1 40 24" stroke-width="2"/>
+            <circle cx="40" cy="24" r="2.5" fill="currentColor"/>
+            <line x1="24" y1="24" x2="24" y2="14"/>
+            <line x1="24" y1="24" x2="32" y2="28"/>
+          </svg>
+        </div>
+        <div class="sys-title">Этап <span class="sys-em">— где сейчас</span></div>
+        <p class="sys-desc">На каком этапе находится запрос — и куда направлено движение.</p>
+        <div class="sys-tag">Самореализация:<br><b>роли · проекты · миссия</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · ЦЕННОСТЬ -->
+<section id="value">
+  <div class="wrap">
+    <div class="eyebrow reveal">05 · Ценность системы</div>
+    <h2 class="reveal" style="margin-top:24px;max-width:18ch">Почему это <span class="em-gold">работает</span></h2>
+
+    <div class="values" style="margin-top:80px;border:1px solid var(--line-2);border-radius:2px;overflow:hidden">
+      <div class="value reveal">
+        <div class="v-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M16 4 L26 14 L16 28 L6 14 Z"/>
+            <path d="M11 14 H21 M16 4 V28"/>
+          </svg>
+        </div>
+        <div class="v-title">Простота<span class="v-em">— даёт ясность</span></div>
+        <p class="v-text">Убирает шум и хаос: остаётся только то, что действительно влияет на результат.</p>
+      </div>
+
+      <div class="value reveal reveal-d-1">
+        <div class="v-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="16" cy="16" r="12"/>
+            <circle cx="16" cy="16" r="8"/>
+            <circle cx="16" cy="16" r="4"/>
+            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="v-title">Глубина<span class="v-em">— разбирает суть</span></div>
+        <p class="v-text">Позволяет дойти от поверхности до причин и увидеть, как устроен любой процесс.</p>
+      </div>
+
+      <div class="value reveal reveal-d-2">
+        <div class="v-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M9 16 C9 12 12 9 16 9 C20 9 23 12 23 16 C23 20 26 23 28 23 C30 23 31 21 31 19 C31 16 28 14 24 14"/>
+            <path d="M23 16 C23 20 20 23 16 23 C12 23 9 20 9 16 C9 12 6 9 4 9 C2 9 1 11 1 13 C1 16 4 18 8 18"/>
+          </svg>
+        </div>
+        <div class="v-title">Универсальность<span class="v-em">— везде применима</span></div>
+        <p class="v-text">Работает в любой сфере: тело, отношения, деньги, цели, проекты, миссия.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · ПРОЕКТЫ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="eyebrow">06 · Мои проекты</div>
+        <h2 style="margin-top:24px">Три формата<br>одной <span class="em-gold">экосистемы</span></h2>
+      </div>
+      <p class="reveal" style="max-width:360px;font-size:15px;color:var(--muted)">Уровень включённости — твой выбор: от персональной работы до самостоятельных инструментов.</p>
+    </div>
+
+    <div class="projects" style="margin-top:60px">
+      <!-- Наставничество -->
+      <a class="project reveal" href="/mentorship.html">
+        <div class="project-art">
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="gC" cx=".5" cy=".5" r=".52">
+                <stop offset="0" stop-color="#d4a574" stop-opacity=".42"/>
+                <stop offset="1" stop-color="#d4a574" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="gCor" cx=".5" cy=".5" r=".5">
+                <stop offset="0"  stop-color="#fff"     stop-opacity="1"/>
+                <stop offset=".4" stop-color="#e8c79a"  stop-opacity=".9"/>
+                <stop offset="1"  stop-color="#d4a574"  stop-opacity="0"/>
+              </radialGradient>
+              <filter id="fgC" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="5" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect width="400" height="280" fill="#08070a"/>
+            <circle cx="200" cy="140" r="130" fill="url(#gC)"/>
+            <circle cx="200" cy="140" r="112" fill="none" stroke="rgba(212,165,116,.2)"  stroke-width=".8"/>
+            <circle cx="200" cy="140" r="80"  fill="none" stroke="rgba(212,165,116,.16)" stroke-width=".7"/>
+            <circle cx="200" cy="140" r="50"  fill="none" stroke="rgba(212,165,116,.28)" stroke-width=".8"/>
+            <circle cx="200" cy="140" r="22"  fill="none" stroke="rgba(212,165,116,.22)" stroke-width=".7"/>
+            <line x1="200" y1="18"  x2="200" y2="262" stroke="rgba(212,165,116,.28)" stroke-width=".7"/>
+            <line x1="78"  y1="140" x2="322" y2="140" stroke="rgba(212,165,116,.28)" stroke-width=".7"/>
+            <line x1="121" y1="61"  x2="279" y2="219" stroke="rgba(212,165,116,.09)" stroke-width=".6" stroke-dasharray="2 6"/>
+            <line x1="279" y1="61"  x2="121" y2="219" stroke="rgba(212,165,116,.09)" stroke-width=".6" stroke-dasharray="2 6"/>
+            <line x1="200" y1="20"  x2="200" y2="32"  stroke="#e8c79a"               stroke-width="1.6"/>
+            <line x1="200" y1="250" x2="200" y2="260" stroke="rgba(212,165,116,.45)" stroke-width="1"/>
+            <line x1="310" y1="140" x2="320" y2="140" stroke="rgba(212,165,116,.45)" stroke-width="1"/>
+            <line x1="80"  y1="140" x2="90"  y2="140" stroke="rgba(212,165,116,.45)" stroke-width="1"/>
+            <path d="M200 62 L203.8 128 L200 140 L196.2 128 Z" fill="rgba(212,165,116,.18)" stroke="rgba(212,165,116,.35)" stroke-width=".5"/>
+            <path d="M200 62 L202.5 88 L200 96 L197.5 88 Z"    fill="#e8c79a"/>
+            <path d="M200 218 L203.8 152 L200 140 L196.2 152 Z" fill="rgba(212,165,116,.1)" stroke="rgba(212,165,116,.18)" stroke-width=".5"/>
+            <circle cx="200" cy="28"  r="2.2" fill="#e8c79a"  opacity=".75"/>
+            <circle cx="200" cy="60"  r="1.4" fill="#d4a574"  opacity=".5"/>
+            <circle cx="312" cy="140" r="1.8" fill="#d4a574"  opacity=".5"/>
+            <circle cx="88"  cy="140" r="1.8" fill="#d4a574"  opacity=".5"/>
+            <circle cx="200" cy="90"  r="1.5" fill="#d4a574"  opacity=".55"/>
+            <circle cx="250" cy="140" r="1.4" fill="#d4a574"  opacity=".4"/>
+            <circle cx="150" cy="140" r="1.4" fill="#d4a574"  opacity=".4"/>
+            <circle cx="200" cy="140" r="24"  fill="rgba(212,165,116,.1)"/>
+            <circle cx="200" cy="140" r="7"   fill="url(#gCor)" filter="url(#fgC)"/>
+            <circle cx="200" cy="140" r="3.5" fill="#e8c79a"/>
+            <circle cx="200" cy="140" r="1.4" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-num">— 01 / Личное</div>
+          <div class="project-title">Наставничество</div>
+          <p class="project-desc">Личная и групповая работа для точного движения к реализации.</p>
+          <span class="project-cta">Узнать <span class="arrow"></span></span>
+        </div>
+      </a>
+
+      <!-- Движение -->
+      <a class="project reveal reveal-d-1" href="#">
+        <div class="project-art">
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="gPeak" cx=".5" cy=".28" r=".45">
+                <stop offset="0" stop-color="#e8c79a" stop-opacity=".65"/>
+                <stop offset="1" stop-color="#d4a574" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="gBase" cx=".5" cy=".9" r=".6">
+                <stop offset="0" stop-color="#d4a574" stop-opacity=".12"/>
+                <stop offset="1" stop-color="#d4a574" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="fgPeak" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="6" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="fgLine" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.5" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect width="400" height="280" fill="#08070a"/>
+            <rect width="400" height="280" fill="url(#gBase)"/>
+            <circle cx="200" cy="76" r="90" fill="url(#gPeak)"/>
+            <path d="M60 260 L148 130 L200 180 L260 140 L340 260 Z" fill="none" stroke="rgba(212,165,116,.1)"  stroke-width=".8"/>
+            <path d="M20 260 L200 56 L380 260"                       fill="none" stroke="rgba(212,165,116,.38)" stroke-width=".9"/>
+            <path d="M200 56 L96 260"  fill="none" stroke="rgba(212,165,116,.12)" stroke-width=".6" stroke-dasharray="2 5"/>
+            <path d="M200 56 L304 260" fill="none" stroke="rgba(212,165,116,.12)" stroke-width=".6" stroke-dasharray="2 5"/>
+            <path d="M108 196 Q200 180 292 196" fill="none" stroke="rgba(212,165,116,.14)" stroke-width=".7"/>
+            <path d="M140 156 Q200 142 260 156" fill="none" stroke="rgba(212,165,116,.16)" stroke-width=".7"/>
+            <path d="M164 124 Q200 112 236 124" fill="none" stroke="rgba(212,165,116,.2)"  stroke-width=".7"/>
+            <path d="M130 240 L152 200 L168 178 L182 152 L194 118 L200 76" fill="none" stroke="rgba(212,165,116,.55)"  stroke-width="1.1" filter="url(#fgLine)"/>
+            <path d="M130 240 L152 200 L168 178 L182 152 L194 118 L200 76" fill="none" stroke="rgba(232,199,154,.3)"  stroke-width=".7"/>
+            <circle cx="152" cy="200" r="2.5" fill="#d4a574" opacity=".65"/>
+            <circle cx="168" cy="178" r="2.5" fill="#d4a574" opacity=".7"/>
+            <circle cx="182" cy="152" r="2.8" fill="#d4a574" opacity=".8"/>
+            <circle cx="194" cy="118" r="2.5" fill="#e8c79a" opacity=".85"/>
+            <line x1="0" y1="260" x2="400" y2="260" stroke="rgba(212,165,116,.12)" stroke-width=".7"/>
+            <circle cx="200" cy="76" r="18" fill="rgba(212,165,116,.12)" filter="url(#fgPeak)"/>
+            <circle cx="200" cy="76" r="4"  fill="#e8c79a" filter="url(#fgPeak)"/>
+            <circle cx="200" cy="76" r="2"  fill="#fff"    opacity=".9"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-num">— 02 / Среда</div>
+          <div class="project-title">Движение</div>
+          <p class="project-desc">Среда людей, которые растут и усиливают друг друга — кратно ускоряя путь.</p>
+          <span class="project-cta">Войти <span class="arrow"></span></span>
+        </div>
+      </a>
+
+      <!-- Сервисы -->
+      <a class="project reveal reveal-d-2" href="#">
+        <div class="project-art">
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="g3" cx=".5" cy=".5" r=".7">
+                <stop offset="0" stop-color="#d4a574" stop-opacity=".45"/>
+                <stop offset="1" stop-color="#d4a574" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="280" fill="#0a0907"/>
+            <circle cx="200" cy="140" r="120" fill="url(#g3)"/>
+            <g stroke="rgba(212,165,116,.35)" stroke-width=".7" fill="none">
+              <rect x="100" y="60"  width="60" height="60"/>
+              <rect x="170" y="60"  width="60" height="60"/>
+              <rect x="240" y="60"  width="60" height="60"/>
+              <rect x="100" y="130" width="60" height="60"/>
+              <rect x="170" y="130" width="60" height="60" stroke="rgba(212,165,116,.7)"/>
+              <rect x="240" y="130" width="60" height="60"/>
+              <rect x="100" y="200" width="60" height="60"/>
+              <rect x="170" y="200" width="60" height="60"/>
+              <rect x="240" y="200" width="60" height="60"/>
+            </g>
+            <g fill="#e8c79a">
+              <circle cx="200" cy="160" r="3"/>
+              <circle cx="130" cy="90"  r="2"/><circle cx="270" cy="90"  r="2"/>
+              <circle cx="130" cy="230" r="2"/><circle cx="270" cy="230" r="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-num">— 03 / Инструменты</div>
+          <div class="project-title">Сервисы</div>
+          <p class="project-desc">Инструменты для самостоятельного развития — система, которая работает без меня.</p>
+          <span class="project-cta">Открыть <span class="arrow"></span></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · КТО Я -->
+<section id="who">
+  <div class="wrap">
+    <div class="eyebrow reveal">07 · Кто я</div>
+    <h2 class="reveal" style="margin-top:24px;max-width:20ch">Три роли в <span class="em-gold">одной фигуре</span></h2>
+
+    <div class="who-grid" style="margin-top:80px">
+      <div class="who-photo reveal">
+        <div class="ph-ring"></div>
+        <img src="assets/portrait.jpg" alt="Тимур" />
+      </div>
+      <div class="roles">
+        <div class="role reveal">
+          <div class="role-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M16 4 L28 11 L16 18 L4 11 Z"/>
+              <path d="M4 11 V22 L16 29"/>
+              <path d="M28 11 V22 L16 29"/>
+              <path d="M16 18 V29"/>
+            </svg>
+          </div>
+          <div>
+            <div class="role-title">Архитектор</div>
+            <div class="role-text">Создаю систему и собираю продукты в единую экосистему развития.</div>
           </div>
         </div>
-        <div class="avatar__level" data-level="2">
-          <h3>Что движет тобой изнутри</h3>
-          <div class="avatar__groups">
-            <div class="agroup"><h4>Тело</h4><p>Энергетическая архитектура, тонкие тела и центры</p></div>
-            <div class="agroup"><h4>Ум</h4><p>Эмоциональное состояние, убеждения и установки</p></div>
-            <div class="agroup"><h4>Душа</h4><p>Теневые стороны, травмы и первопричины</p></div>
+
+        <div class="role reveal reveal-d-1">
+          <div class="role-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M6 26 L18 14 C24 8 26 6 26 6 C26 6 26 16 22 20 C18 24 12 24 8 24 L6 26 Z"/>
+              <path d="M6 26 L14 18 M14 16 H22 M16 14 H22"/>
+            </svg>
+          </div>
+          <div>
+            <div class="role-title">Творец</div>
+            <div class="role-text">Формирую миры и смыслы через контент, истории и цифровые продукты.</div>
           </div>
         </div>
-        <div class="avatar__level" data-level="3">
-          <h3>Силы, что влияют на тебя</h3>
-          <div class="avatar__groups">
-            <div class="agroup"><h4>Наследие</h4><p>Генетическая память, влияние рода и код предков</p></div>
-            <div class="agroup"><h4>Системы общества</h4><p>Наука, государство, массовые эгрегоры и законы общества</p></div>
-            <div class="agroup"><h4>Духовный план</h4><p>Космические циклы, влияние планет и план души</p></div>
+
+        <div class="role reveal reveal-d-2">
+          <div class="role-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3">
+              <circle cx="16" cy="11" r="4"/>
+              <path d="M7 26 C7 21 11 18 16 18 C21 18 25 21 25 26"/>
+              <path d="M2 28 H30"/>
+              <circle cx="6"  cy="6" r="1" fill="currentColor"/>
+              <circle cx="26" cy="6" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <div class="role-title">Ментор</div>
+            <div class="role-text">Помогаю увидеть свой путь, определить сильные стороны и выстроить точное движение.</div>
           </div>
         </div>
       </div>
@@ -233,173 +1097,132 @@
   </div>
 </section>
 
-<!-- ===================== ЭКРАН 5 — Пути развития ===================== -->
-<section class="screen" id="paths" data-screen-label="05 — Пути развития">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">ВЫБОР МАРШРУТА</span>
-      <h2>Три варианта пути</h2>
-      <p class="lede">Гибкая система подстраивается под твои задачи. Выбирай классическое обучение, фокус на одной сфере или полностью персональный маршрут в реальном времени.</p>
-    </div>
+<!-- 8 · МИССИЯ -->
+<section class="mission" id="mission">
+  <div class="orbit" aria-hidden="true">
+    <svg viewBox="0 0 600 600" fill="none">
+      <defs>
+        <radialGradient id="earth" cx=".5" cy=".5" r=".5">
+          <stop offset="0"  stop-color="#1a1410" stop-opacity="1"/>
+          <stop offset=".7" stop-color="#0a0807" stop-opacity="1"/>
+          <stop offset="1"  stop-color="#0a0807" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="300" cy="300" r="200" fill="url(#earth)" stroke="rgba(212,165,116,.18)" stroke-width=".8"/>
+      <ellipse cx="300" cy="300" rx="280" ry="80"  stroke="rgba(212,165,116,.18)" stroke-width=".6" fill="none"/>
+      <ellipse cx="300" cy="300" rx="240" ry="240" stroke="rgba(212,165,116,.1)"  stroke-width=".6" fill="none" stroke-dasharray="2 6"/>
+      <g fill="#e8c79a">
+        <circle cx="220" cy="260" r="1.6"/><circle cx="260" cy="220" r="1.2"/>
+        <circle cx="320" cy="240" r="1.8"/><circle cx="370" cy="290" r="1.4"/>
+        <circle cx="380" cy="340" r="1.6"/><circle cx="330" cy="380" r="1.2"/>
+        <circle cx="270" cy="370" r="1.8"/><circle cx="220" cy="330" r="1.4"/>
+        <circle cx="200" cy="290" r="1.2"/><circle cx="350" cy="220" r="1.4"/>
+        <circle cx="290" cy="200" r="1.2"/><circle cx="400" cy="320" r="1"/>
+      </g>
+      <g stroke="rgba(212,165,116,.4)" stroke-width=".5" fill="none">
+        <line x1="220" y1="260" x2="320" y2="240"/>
+        <line x1="320" y1="240" x2="380" y2="340"/>
+        <line x1="380" y1="340" x2="270" y2="370"/>
+        <line x1="270" y1="370" x2="220" y2="260"/>
+        <line x1="290" y1="200" x2="370" y2="290"/>
+      </g>
+    </svg>
+  </div>
 
-    <div class="paths reveal" id="pathsBlock">
-      <div class="paths__controls">
-        <button class="pathbtn on" data-path="evo">
-          <span class="pi">→</span>
-          <span class="pt"><span class="k">Путь образования</span><span class="d">Последовательное прохождение всех сфер и уровней системы</span></span>
-        </button>
-        <button class="pathbtn" data-path="master">
-          <span class="pi">↕</span>
-          <span class="pt"><span class="k">Путь мастерства</span><span class="d">Глубокое погружение в одну выбранную сферу</span></span>
-        </button>
-        <button class="pathbtn" data-path="person">
-          <span class="pi">✦</span>
-          <span class="pt"><span class="k">Персональный путь</span><span class="d">Уникальный маршрут, собранный под твой Аватар в реальном времени</span></span>
-        </button>
-      </div>
-
-      <div class="paths__diagram">
-        <div class="pd-corner"></div>
-        <div class="pd-cols">
-          <span data-col="0">Молодость</span>
-          <span data-col="1">Богатство</span>
-          <span data-col="2">Любовь</span>
-        </div>
-        <div class="pd-rows">
-          <span data-row="0">Ясность</span>
-          <span data-row="1">Зрелость</span>
-          <span data-row="2">Влияние</span>
-        </div>
-        <div class="grid3" id="pathGrid" aria-hidden="true">
-          <svg class="pd-lines" id="pathLines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
-          <!-- узлы строит JS -->
-        </div>
-      </div>
-    </div>
+  <div class="wrap">
+    <div class="eyebrow reveal">08 · Миссия</div>
+    <h2 class="reveal" style="margin-top:30px">
+      Объединить людей,<br>готовых <span class="em-gold">развиваться</span><br>и влиять на результат
+    </h2>
+    <p class="reveal reveal-d-1">…и создать среду, усиливающую их движение.</p>
   </div>
 </section>
 
-<!-- ===================== ЭКРАН 6 — Окружение ===================== -->
-<section class="screen" id="env" data-screen-label="06 — Окружение">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">9+ СОЦИАЛЬНЫХ СЕРВИСОВ</span>
-      <h2>Объединение людей</h2>
-      <p class="lede">Комплекс IT-сервисов для поиска своих людей. Умная система анализирует Аватары и подбирает идеальных партнеров для крепкой дружбы, семьи, бизнеса и наставничества.</p>
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-row">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Code Timur" class="brand-logo" />
     </div>
-
-    <div class="env reveal">
-      <div class="env__stage">
-        <svg class="env__svg" id="envSvg" viewBox="0 0 400 400">
-          <circle class="ec" id="ecOuter" cx="200" cy="200" r="180" data-ring="leaders"/>
-          <circle class="ec" id="ecMid" cx="200" cy="200" r="120" data-ring="mentors"/>
-          <circle class="ec" id="ecInner" cx="200" cy="200" r="62" data-ring="peers"/>
-          <circle class="core" cx="200" cy="200" r="6"/>
-          <g id="envParticles"></g>
-        </svg>
-      </div>
-
-      <div class="env__controls">
-        <button class="envbtn on" data-ring="peers">
-          <div class="k"><span class="ring-i"></span> Единомышленники</div>
-          <div class="etag">Для поиска своих людей</div>
-          <div class="d">Умный подбор бади, алгоритмы для создания гармоничных пар и HR-сервис для поиска надежных бизнес-партнеров и сотрудников.</div>
-        </button>
-        <button class="envbtn" data-ring="mentors">
-          <div class="k"><span class="ring-i"></span> Наставники</div>
-          <div class="etag">Для быстрого роста</div>
-          <div class="d">Платформа для продвижения экспертов, обучение профессиям будущего и сеть подбора идеального наставника точно под ваш запрос и Аватар.</div>
-        </button>
-        <button class="envbtn" data-ring="leaders">
-          <div class="k"><span class="ring-i"></span> Лидеры</div>
-          <div class="etag">Для глобального масштаба</div>
-          <div class="d">IT-инструменты для создания собственных клубов, управления стартапами и объединения самых зрелых личностей вокруг единой мировой миссии</div>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== ЭКРАН 7 — Карта проектов ===================== -->
-<section class="screen" id="services" data-screen-label="07 — Карта проектов">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">СОЗВЕЗДИЯ ВОЗМОЖНОСТЕЙ</span>
-      <h2>Карта проектов экосистемы</h2>
-      <p class="lede">30+ уникальных IT-решений, разделенных на базовый, глубинный и социальный уровни. Наводи на звезды, чтобы узнать детали.</p>
-    </div>
-
-    <div class="svc-filters reveal">
-      <button class="sfilt on" data-cat="all">ВСЕ</button>
-      <button class="sfilt" data-cat="base">БАЗОВЫЕ</button>
-      <button class="sfilt" data-cat="deep">ГЛУБИННЫЕ</button>
-      <button class="sfilt" data-cat="social">СОЦИАЛЬНЫЕ</button>
-    </div>
-
-    <div class="services__cloud reveal" id="svcCloud">
-      <canvas id="svcCanvas"></canvas>
-      <div class="svc-tip" id="svcTip"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Разделитель ===================== -->
-<div class="divider-label reveal">
-  <span class="divider-label__line"></span>
-  <span class="divider-label__text">Что доступно уже сегодня</span>
-  <span class="divider-label__line"></span>
-</div>
-
-<!-- ===================== ЭКРАН 8 — Атмосфера игры ===================== -->
-<section class="screen fullshot game" id="game" data-screen-label="08 — Атмосфера игры">
-  <div class="fullshot__media">
-    <img src="assets/pegasus_new.jpg" alt="Пегас — атмосфера игры" />
-  </div>
-  <div class="fullshot__scrim"></div>
-  <div class="container fullshot__overlay">
-    <div class="fullshot__copy reveal">
-      <span class="eyebrow">ТРАНСФОРМАЦИОННАЯ ИГРА</span>
-      <h2>Пробуди свой внутренний огонь</h2>
-      <div class="q">Авторская игра по работе с денежным мышлением</div>
-      <div class="fullshot__actions">
-        <a class="btn" href="https://codetimur.com/mentorship.html" target="_blank" rel="noopener"><span>ПРЕДВАРИТЕЛЬНАЯ ЗАПИСЬ НА ИГРУ</span> <span class="arr">→</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== ЭКРАН 9 — Наставничество ===================== -->
-<section class="screen fullshot mentor" id="mentor" data-screen-label="09 — Наставничество">
-  <div class="fullshot__media">
-    <img src="assets/mentor.png" alt="Автор — наставник" style="object-position: 55% 15%; transform: scale(0.88); transform-origin: 60% 0%;" />
-  </div>
-  <div class="fullshot__scrim"></div>
-  <div class="container fullshot__overlay">
-    <div class="fullshot__copy reveal">
-      <span class="eyebrow">ЛИЧНАЯ РАБОТА</span>
-      <h2>Личное и групповое наставничество</h2>
-      <p class="mentor__intro">Пока IT-платформа находится в разработке, я передаю свой опыт напрямую. Переходи по ссылке, чтобы узнать актуальные темы, форматы работы и условия участия.</p>
-      <div class="fullshot__actions">
-        <a class="btn btn--solid" href="https://codetimur.com/mentorship.html" target="_blank" rel="noopener"><span>УЗНАТЬ ПОДРОБНОСТИ</span> <span class="arr">→</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="foot">
-  <div class="container foot__inner">
-    <a class="brand" href="#hero">
-      <img class="brand__logo brand__logo--foot" src="assets/codetimur-logo.png" alt="CODE TIMUR" style="height:36px" />
+    <a class="tg" href="https://t.me/codetimur" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21.5 4.2 2.9 11.4c-1.3.5-1.3 1.2-.3 1.5l4.7 1.5 1.8 5.5c.2.6.4.8.8.8.4 0 .6-.2.8-.5l2.5-2.4 5.2 3.8c1 .5 1.6.3 1.9-.9l3.4-16c.4-1.5-.5-2.2-1.2-1.5z"/>
+      </svg>
+      <span>Telegram</span>
     </a>
-    <p>Покори Олимп · Экосистема IT-сервисов</p>
+    <span class="copy">© 2026 · CodeTimur</span>
   </div>
 </footer>
 
-<script src="js/ecosystem.js"></script>
-<script src="js/sections.js"></script>
-<script src="js/services.js"></script>
-<script src="js/app.js"></script>
+<script>
+  // nav scroll state
+  const nav = document.getElementById('nav');
+  const updateNav = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  };
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  // scroll-reveal via IntersectionObserver
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    }
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  document.querySelectorAll('.reveal, .card').forEach(el => io.observe(el));
+
+  // triangle core drift (margin-based so it doesn't conflict with CSS pulse transform)
+  (function () {
+    const stage = document.getElementById('triStage');
+    const core  = document.getElementById('coreDot');
+    if (!stage || !core) return;
+
+    let angle = 0, hovering = false;
+    let cx = 0, cy = 0, tx = 0, ty = 0;
+    let raf = null;
+
+    stage.addEventListener('mouseenter', () => { hovering = true;  if (!raf) raf = requestAnimationFrame(tick); });
+    stage.addEventListener('mouseleave', () => { hovering = false; });
+
+    function tick() {
+      if (hovering) { angle += 0.007; tx = Math.cos(angle) * 22; ty = Math.sin(angle) * 14; }
+      else          { tx = 0; ty = 0; }
+      cx += (tx - cx) * 0.055;
+      cy += (ty - cy) * 0.055;
+      core.style.marginLeft = cx.toFixed(2) + 'px';
+      core.style.marginTop  = cy.toFixed(2) + 'px';
+      if (hovering || Math.abs(cx) > 0.05 || Math.abs(cy) > 0.05) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        core.style.marginLeft = '0';
+        core.style.marginTop  = '0';
+        raf = null;
+      }
+    }
+  }());
+
+  // hero gold particles
+  (function () {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    for (let i = 0; i < 36; i++) {
+      const s  = document.createElement('span');
+      const x  = 35 + Math.random() * 60;
+      const y  = Math.random() * 100;
+      const sz = 1 + Math.random() * 2.5;
+      s.style.left             = x + '%';
+      s.style.top              = y + '%';
+      s.style.width            = sz + 'px';
+      s.style.height           = sz + 'px';
+      s.style.opacity          = 0.25 + Math.random() * 0.6;
+      s.style.animationDuration = (4 + Math.random() * 7) + 's';
+      s.style.animationDelay   = (-Math.random() * 6) + 's';
+      container.appendChild(s);
+    }
+  }());
+</script>
 </body>
 </html>
