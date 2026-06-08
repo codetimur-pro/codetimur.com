@@ -2774,11 +2774,7 @@ const Pricing = () => {
   }, PLANS.map(p => /*#__PURE__*/React.createElement(PlanCard, {
     key: p.key,
     plan: p
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "pricing__note reveal"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "pricing__note-icon"
-  }, "\u2726"), "\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u0441\u0435\u0441\u0441\u0438\u0438 \u0437\u0430\u0441\u0447\u0438\u0442\u044B\u0432\u0430\u0435\u0442\u0441\u044F \u0432\xA0\u043E\u043F\u043B\u0430\u0442\u0443 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u044B \u043F\u0440\u0438\xA0\u0441\u0442\u0430\u0440\u0442\u0435 \u0440\u0430\u0431\u043E\u0442\u044B.")), /*#__PURE__*/React.createElement("style", null, `
+  })))), /*#__PURE__*/React.createElement("style", null, `
         .pricing__grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -3157,7 +3153,7 @@ const Session = () => {
         }
         .session__price-new {
           font-family: var(--display);
-          font-size: clamp(40px, 5vw, 62px);
+          font-size: clamp(60px, 7.5vw, 93px);
           color: var(--gold-light);
           font-weight: 300;
           line-height: 1;
@@ -3190,7 +3186,7 @@ const Session = () => {
           box-shadow: 0 0 10px rgba(212,165,116,0.6);
         }
         .session__point-text {
-          color: var(--muted);
+          color: rgba(244,236,226,0.72);
           font-size: 15px;
           line-height: 1.7;
         }
