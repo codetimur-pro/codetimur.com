@@ -709,11 +709,16 @@ section.fullshot { border-top: none; padding: 0 !important; }
 .foot__inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
 .foot p { font-size: 12px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
 
+
+</style>
+
 <style>
+/* == GLOBAL NAV & FOOTER == */
 /* ── GLOBAL NAV ──────────────────────────────── */
 .g-nav{
   position:fixed;top:0;left:0;right:0;z-index:310;
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex!important;align-items:center;justify-content:space-between;
+  flex-wrap:nowrap;
   padding:16px 40px;
   background:linear-gradient(to bottom,rgba(7,7,7,.82),transparent);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -722,10 +727,10 @@ section.fullshot { border-top: none; padding: 0 !important; }
 }
 .g-nav.scrolled{background:rgba(7,7,7,.94);border-bottom-color:rgba(255,255,255,.07)}
 
-.g-logo{display:flex;align-items:center;text-decoration:none}
+.g-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0}
 .g-logo img{height:34px;width:auto;opacity:.92;display:block}
 
-.g-nav-r{display:flex;align-items:center;gap:18px;margin-left:auto}
+.g-nav-r{display:flex;align-items:center;gap:18px;margin-left:auto;flex-shrink:0}
 
 /* badge */
 .g-badge{
@@ -768,15 +773,15 @@ section.fullshot { border-top: none; padding: 0 !important; }
 }
 .g-backdrop.is-open{opacity:1;pointer-events:all}
 
-/* drawer */
+/* drawer — slides in from LEFT */
 .g-drawer{
-  position:fixed;top:0;right:0;bottom:0;z-index:300;
+  position:fixed;top:0;left:0;bottom:0;z-index:300;
   width:280px;max-width:80vw;
   background:#0b0b0d;
-  border-left:1px solid rgba(255,255,255,.07);
+  border-right:1px solid rgba(255,255,255,.07);
   display:flex;flex-direction:column;justify-content:center;
   padding:80px 40px 48px;
-  transform:translateX(100%);
+  transform:translateX(-100%);
   transition:transform .42s cubic-bezier(.4,0,.2,1);
 }
 .g-drawer.is-open{transform:translateX(0)}
@@ -792,7 +797,7 @@ section.fullshot { border-top: none; padding: 0 !important; }
   padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,.06);
   display:block;
-  opacity:0;transform:translateX(18px);
+  opacity:0;transform:translateX(-18px);
   transition:opacity .4s,transform .4s,color .25s;
 }
 .g-drawer-links a:last-child{border-bottom:none}
@@ -816,7 +821,48 @@ section.fullshot { border-top: none; padding: 0 !important; }
   .g-badge-text{display:none}
 }
 
-</style>
+/* ── GLOBAL FOOTER ───────────────────────────── */
+.g-foot{
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:48px 40px 36px;
+}
+.g-foot-top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;margin-bottom:28px;
+}
+.g-foot-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0}
+.g-foot-logo img{height:28px;width:auto;opacity:.75;display:block}
+.g-foot-nav{
+  display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:flex-end;
+}
+.g-foot-nav a{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:#8a8278;text-decoration:none;
+  transition:color .25s;
+}
+.g-foot-nav a:hover{color:#d4a574}
+.g-foot-bot{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-top:24px;border-top:1px solid rgba(255,255,255,.04);
+  flex-wrap:wrap;
+}
+.g-foot-tg{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:#8a8278;text-decoration:none;transition:color .25s;
+}
+.g-foot-tg:hover{color:#d4a574}
+.g-foot-copy{
+  font-size:11px;letter-spacing:.1em;
+  color:rgba(138,130,120,.45);
+}
+@media(max-width:600px){
+  .g-foot{padding:40px 20px 28px}
+  .g-foot-top{flex-direction:column;align-items:flex-start;gap:20px}
+  .g-foot-nav{justify-content:flex-start;gap:20px}
+  .g-foot-bot{flex-direction:column;align-items:flex-start;gap:10px}
+}
+
 </style>
 </head>
 <body>
@@ -1207,12 +1253,22 @@ section.fullshot { border-top: none; padding: 0 !important; }
 
 </main>
 
-<footer class="foot">
-  <div class="container foot__inner">
-    <a class="brand" href="/">
-      <img class="brand__logo brand__logo--foot" src="/assets/codetimur-logo.png" alt="CODE TIMUR" style="height:36px" />
+<!-- GLOBAL FOOTER -->
+<footer class="g-foot">
+  <div class="g-foot-top">
+    <a href="/" class="g-foot-logo"><img src="/assets/logo.png" alt="Code Timur"></a>
+    <nav class="g-foot-nav">
+      <a href="/apps.html">Экосистема</a>
+      <a href="/mentorship.html">Наставничество</a>
+      <a href="/vision/">Видение</a>
+    </nav>
+  </div>
+  <div class="g-foot-bot">
+    <a class="g-foot-tg" href="https://t.me/codetimur" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M21.5 4.2 2.9 11.4c-1.3.5-1.3 1.2-.3 1.5l4.7 1.5 1.8 5.5c.2.6.4.8.8.8.4 0 .6-.2.8-.5l2.5-2.4 5.2 3.8c1 .5 1.6.3 1.9-.9l3.4-16c.4-1.5-.5-2.2-1.2-1.5z"/></svg>
+      @codetimur
     </a>
-    <p>Покори Олимп · Экосистема IT-сервисов</p>
+    <span class="g-foot-copy">© 2026 · CodeTimur</span>
   </div>
 </footer>
 
@@ -2690,6 +2746,41 @@ window.__startTree = function () {
   }, {passive:true});
   nav.classList.toggle('scrolled', window.scrollY > 8);
 })();
+</script>
+<script>
+/* == GLOBAL NAV JS == */
+(function(){
+  var burger   = document.getElementById('g-burger');
+  var drawer   = document.getElementById('g-drawer');
+  var backdrop = document.getElementById('g-backdrop');
+  var nav      = document.getElementById('g-nav');
+  if(!burger || !drawer) return;
+
+  function setOpen(open){
+    burger.classList.toggle('is-open', open);
+    drawer.classList.toggle('is-open', open);
+    if(backdrop) backdrop.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  burger.addEventListener('click', function(){ setOpen(!burger.classList.contains('is-open')); });
+  if(backdrop) backdrop.addEventListener('click', function(){ setOpen(false); });
+
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setOpen(false); });
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') setOpen(false);
+  });
+
+  window.addEventListener('scroll', function(){
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  }, {passive:true});
+  nav.classList.toggle('scrolled', window.scrollY > 8);
+})();
+
 </script>
 </body>
 </html>
