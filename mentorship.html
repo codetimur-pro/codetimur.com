@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Наставничество — Тимур · Ускоритель твоей реализации</title>
+<title>Личное наставничество и стратегическая сессия | Код Тимура</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -278,6 +278,7 @@ section + section { border-top: 1px solid var(--line-soft); }
 <script src="vendor/react-dom.js" defer></script>
 
 
+
 <style>
 /* == GLOBAL NAV & FOOTER == */
 /* ── GLOBAL NAV ──────────────────────────────── */
@@ -339,15 +340,15 @@ section + section { border-top: 1px solid var(--line-soft); }
 }
 .g-backdrop.is-open{opacity:1;pointer-events:all}
 
-/* drawer — slides in from LEFT */
+/* drawer — slides in from RIGHT */
 .g-drawer{
-  position:fixed;top:0;left:0;bottom:0;z-index:300;
+  position:fixed;top:0;right:0;bottom:0;z-index:300;
   width:340px;max-width:85vw;
   background:#0b0b0d;
-  border-right:1px solid rgba(255,255,255,.07);
+  border-left:1px solid rgba(255,255,255,.07);
   display:flex;flex-direction:column;justify-content:center;
   padding:80px 36px 48px;
-  transform:translateX(-100%);
+  transform:translateX(100%);
   transition:transform .42s cubic-bezier(.4,0,.2,1);
 }
 .g-drawer.is-open{transform:translateX(0)}
@@ -363,7 +364,7 @@ section + section { border-top: 1px solid var(--line-soft); }
   padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,.06);
   display:block;white-space:nowrap;
-  opacity:0;transform:translateX(-18px);
+  opacity:0;transform:translateX(18px);
   transition:opacity .4s,transform .4s,color .25s;
 }
 .g-drawer-links a:last-child{border-bottom:none}
@@ -408,7 +409,7 @@ section + section { border-top: 1px solid var(--line-soft); }
 }
 .g-foot-nav a:hover{color:#d4a574}
 .g-foot-right{
-  display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0;
+  display:flex;flex-direction:row;align-items:center;gap:20px;flex-shrink:0;
 }
 .g-foot-tg{
   display:inline-flex;align-items:center;gap:12px;
