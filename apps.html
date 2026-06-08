@@ -496,7 +496,7 @@ section.screen {
 /* ============================================================
    ЭКРАН 7 — Карта проектов (нейро-облако)
    ============================================================ */
-.services__cloud { position: relative; width: 100%; height: clamp(560px, 74vh, 780px); border: 1px solid var(--line-soft); border-radius: 6px; overflow: hidden; background: radial-gradient(120% 90% at 50% 42%, rgba(20,17,13,0.5), var(--black) 75%); }
+.services__cloud { position: relative; width: 100%; height: clamp(640px, 84vh, 900px); border: 1px solid var(--line-soft); border-radius: 6px; overflow: hidden; background: radial-gradient(120% 90% at 50% 42%, rgba(20,17,13,0.5), var(--black) 75%); }
 .services__cloud canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
 .svc-node {
   position: absolute; transform: translate(-50%, -50%); z-index: 2;
@@ -1007,14 +1007,14 @@ section.fullshot { border-top: none; padding: 0 !important; }
     <div class="section-head reveal">
       <span class="eyebrow">СОЗВЕЗДИЯ ВОЗМОЖНОСТЕЙ</span>
       <h2>Карта проектов экосистемы</h2>
-      <p class="lede">30+ уникальных IT-решений, разделенных на базовый, глубинный и социальный уровни. Наводи на звезды, чтобы узнать детали.</p>
+      <p class="lede">30+ уникальных IT-решений, образующих три этапа твоего восхождения. Наводи на звезды, чтобы узнать детали.</p>
     </div>
 
     <div class="svc-filters reveal">
-      <button class="sfilt on" data-cat="all">ВСЕ</button>
-      <button class="sfilt" data-cat="base">БАЗОВЫЕ</button>
-      <button class="sfilt" data-cat="deep">ГЛУБИННЫЕ</button>
-      <button class="sfilt" data-cat="social">СОЦИАЛЬНЫЕ</button>
+      <button class="sfilt on" data-cat="all">ВСЕ ПРОЕКТЫ</button>
+      <button class="sfilt" data-cat="base">ЯСНОСТЬ</button>
+      <button class="sfilt" data-cat="deep">ЗРЕЛОСТЬ</button>
+      <button class="sfilt" data-cat="social">ВЛИЯНИЕ</button>
     </div>
 
     <div class="services__cloud reveal" id="svcCloud">
@@ -1934,41 +1934,70 @@ window.__startTree = function () {
   const GL   = '232,199,154'; // gold-light
   const GOLD = '212,165,116'; // gold
   const SNOW = '255,248,235'; // near-white
+  const COLD = '150,180,225'; // холодная золотисто-синяя кромка гор
 
-  const CAT_LABEL = { base: 'Базовый', deep: 'Глубинный', social: 'Социальный' };
+  const CAT_LABEL = { base: 'Ясность', deep: 'Зрелость', social: 'Влияние' };
 
   /* ---- Проекты ---- */
   const STARS = [
-    { id:'psy',      cat:'deep',   name:'Психосоматика',         desc:'Поиск причин болезней через авторскую систему',                      x:.09, y:.30 },
-    { id:'type',     cat:'deep',   name:'Психотип',              desc:'Анализ архетипа и устройства личности',                               x:.20, y:.13 },
-    { id:'gen',      cat:'deep',   name:'Генетика',              desc:'Чтение Аватара через систему генных ключей',                          x:.50, y:.07 },
-    { id:'emo',      cat:'deep',   name:'Управление эмоциями',   desc:'Выявление и экологичная проработка базовых эмоций',                   x:.68, y:.11 },
-    { id:'mind',     cat:'deep',   name:'Мышление',              desc:'Перепрошивка подсознания в сфере денег, отношений и здоровья',        x:.85, y:.15 },
-    { id:'root',     cat:'deep',   name:'Первопричина',          desc:'Устранение глубинных травм детства, рода и прошлых жизней',           x:.13, y:.20 },
-    { id:'mirror',   cat:'deep',   name:'Зеркала',               desc:'Глубокая проработка личности через отражение в окружении',            x:.36, y:.10 },
-    { id:'medit',    cat:'deep',   name:'Медитации-путешествия', desc:'Терапия под конкретный запрос с погружением в сюжет',                 x:.60, y:.20 },
-    { id:'vip',      cat:'deep',   name:'Випассана',             desc:'Развитие концентрации, чувствительности и жизни в моменте',           x:.93, y:.27 },
-    { id:'chan',     cat:'deep',   name:'Центры и каналы',       desc:'Работа с энергетической архитектурой тела',                           x:.78, y:.30 },
-    { id:'test',     cat:'base',   name:'Тестирование',          desc:'Анализ и формирование твоего персонального пути',                     x:.28, y:.24 },
-    { id:'pick',     cat:'base',   name:'Подбор',                desc:'Индивидуальная настройка привычек, спорта и практик',                 x:.43, y:.16 },
-    { id:'abil',     cat:'base',   name:'Развитие способностей', desc:'Трекинг регулярности и фокус на стратегии',                           x:.16, y:.38 },
-    { id:'vis',      cat:'base',   name:'Видение',               desc:'Формирование карты истинных желаний',                                  x:.55, y:.13 },
-    { id:'foc',      cat:'base',   name:'Фокус',                 desc:'Стратегия достижения целей и внедрения привычек',                     x:.34, y:.33 },
-    { id:'flow',     cat:'base',   name:'Поток',                 desc:'Развитие личной эффективности и дисциплины',                          x:.47, y:.28 },
-    { id:'diary',    cat:'base',   name:'Дневник осознанности',  desc:'Инсайты, отчёты и осознанные наблюдения',                             x:.06, y:.13 },
-    { id:'supp',     cat:'base',   name:'Внутренняя опора',      desc:'Выявление скрытых точек опоры в жизни',                               x:.64, y:.31 },
-    { id:'val',      cat:'base',   name:'Ценности',              desc:'Определение приоритетов и истинных ценностей',                        x:.40, y:.40 },
-    { id:'princ',    cat:'base',   name:'Принципы',              desc:'Создание правил жизни с опорой на ценности',                          x:.72, y:.21 },
-    { id:'badi',     cat:'social', name:'Бади',                  desc:'Подбор партнёров по интересам, спорту и путешествиям',                x:.24, y:.18 },
-    { id:'union',    cat:'social', name:'Союзы',                 desc:'Алгоритмы создания счастливых и крепких отношений',                   x:.30, y:.08 },
-    { id:'hr',       cat:'social', name:'HR-система',            desc:'Поиск идеальных сотрудников и бизнес-партнёров',                      x:.52, y:.38 },
-    { id:'prof',     cat:'social', name:'Профессии будущего',    desc:'Обучение специальностям ментора, трекера и эксперта',                 x:.66, y:.40 },
-    { id:'mnet',     cat:'social', name:'Сеть наставников',      desc:'Подбор проводников с максимальной совместимостью',                    x:.80, y:.41 },
-    { id:'exp',      cat:'social', name:'Платформа экспертов',   desc:'Инструменты для создания контента и продвижения',                     x:.88, y:.36 },
-    { id:'mission',  cat:'social', name:'Единая миссия',         desc:'Объединение целей лидеров в глобальную миссию',                      x:.45, y:.06 },
-    { id:'clubs',    cat:'social', name:'Клубы',                 desc:'Формирование лояльного окружения, команды и последователей',           x:.94, y:.13 },
-    { id:'platform', cat:'social', name:'Платформа',             desc:'IT-инфраструктура для управления стартапами и корпорациями',           x:.10, y:.42 },
+    { id:'psy',      cat:'deep',   name:'Психосоматика',         desc:'Поиск причин болезней через авторскую систему',                      x:.425, y:.405 },
+    { id:'type',     cat:'deep',   name:'Психотип',              desc:'Анализ архетипа и устройства личности',                               x:.405, y:.145 },
+    { id:'gen',      cat:'deep',   name:'Генетика',              desc:'Чтение Аватара через систему генных ключей',                          x:.485, y:.075 },
+    { id:'emo',      cat:'deep',   name:'Управление эмоциями',   desc:'Выявление и экологичная проработка базовых эмоций',                   x:.565, y:.135 },
+    { id:'mind',     cat:'deep',   name:'Мышление',              desc:'Перепрошивка подсознания в сфере денег, отношений и здоровья',        x:.575, y:.415 },
+    { id:'root',     cat:'deep',   name:'Первопричина',          desc:'Устранение глубинных травм детства, рода и прошлых жизней',           x:.455, y:.255 },
+    { id:'mirror',   cat:'deep',   name:'Зеркала',               desc:'Глубокая проработка личности через отражение в окружении',            x:.49, y:.265 },
+    { id:'medit',    cat:'deep',   name:'Медитации-путешествия', desc:'Терапия под конкретный запрос с погружением в сюжет',                 x:.525, y:.275 },
+    { id:'vip',      cat:'deep',   name:'Випассана',             desc:'Развитие концентрации, чувствительности и жизни в моменте',           x:.475, y:.335 },
+    { id:'chan',     cat:'deep',   name:'Центры и каналы',       desc:'Работа с энергетической архитектурой тела',                           x:.498, y:.37 },
+    { id:'test',     cat:'base',   name:'Тестирование',          desc:'Анализ и формирование твоего персонального пути',                     x:.055, y:.2 },
+    { id:'pick',     cat:'base',   name:'Подбор',                desc:'Индивидуальная настройка привычек, спорта и практик',                 x:.065, y:.335 },
+    { id:'abil',     cat:'base',   name:'Развитие способностей', desc:'Трекинг регулярности и фокус на стратегии',                           x:.175, y:.36 },
+    { id:'vis',      cat:'base',   name:'Видение',               desc:'Формирование карты истинных желаний',                                  x:.16, y:.235 },
+    { id:'foc',      cat:'base',   name:'Фокус',                 desc:'Стратегия достижения целей и внедрения привычек',                     x:.225, y:.18 },
+    { id:'flow',     cat:'base',   name:'Поток',                 desc:'Развитие личной эффективности и дисциплины',                          x:.275, y:.135 },
+    { id:'diary',    cat:'base',   name:'Дневник осознанности',  desc:'Инсайты, отчёты и осознанные наблюдения',                             x:.315, y:.105 },
+    { id:'supp',     cat:'base',   name:'Внутренняя опора',      desc:'Выявление скрытых точек опоры в жизни',                               x:.255, y:.11 },
+    { id:'val',      cat:'base',   name:'Ценности',              desc:'Определение приоритетов и истинных ценностей',                        x:.1, y:.43 },
+    { id:'princ',    cat:'base',   name:'Принципы',              desc:'Создание правил жизни с опорой на ценности',                          x:.205, y:.425 },
+    { id:'badi',     cat:'social', name:'Бади',                  desc:'Подбор партнёров по интересам, спорту и путешествиям',                x:.965, y:.05 },
+    { id:'union',    cat:'social', name:'Союзы',                 desc:'Алгоритмы создания счастливых и крепких отношений',                   x:.635, y:.06 },
+    { id:'hr',       cat:'social', name:'HR-система',            desc:'Поиск идеальных сотрудников и бизнес-партнёров',                      x:.74, y:.44 },
+    { id:'prof',     cat:'social', name:'Профессии будущего',    desc:'Обучение специальностям ментора, трекера и эксперта',                 x:.665, y:.105 },
+    { id:'mnet',     cat:'social', name:'Сеть наставников',      desc:'Подбор проводников с максимальной совместимостью',                    x:.89, y:.335 },
+    { id:'exp',      cat:'social', name:'Платформа экспертов',   desc:'Инструменты для создания контента и продвижения',                     x:.71, y:.185 },
+    { id:'mission',  cat:'social', name:'Единая миссия',         desc:'Объединение целей лидеров в глобальную миссию',                      x:.88, y:.16 },
+    { id:'clubs',    cat:'social', name:'Клубы',                 desc:'Формирование лояльного окружения, команды и последователей',           x:.93, y:.1 },
+    { id:'platform', cat:'social', name:'Платформа',             desc:'IT-инфраструктура для управления стартапами и корпорациями',           x:.72, y:.34 },
   ];
+
+  const byId = {};
+  STARS.forEach(s => { byId[s.id] = s; });
+
+  /* ---- Рёбра созвездий (рисунок появляется при выборе таба) ---- */
+  const LINES = {
+    /* ЯСНОСТЬ — Большая Медведица (ковш + ручка) */
+    base: [
+      ['test','vis'], ['vis','abil'], ['abil','pick'], ['pick','test'], /* ковш */
+      ['vis','foc'], ['foc','flow'], ['flow','diary'],                  /* ручка */
+      ['flow','supp'], ['pick','val'], ['abil','princ'],                /* спутник + лапы */
+    ],
+    /* ЗРЕЛОСТЬ — Орион (плечи, пояс из 3 звёзд, стопы, меч) */
+    deep: [
+      ['gen','type'], ['gen','emo'], ['type','emo'],                    /* голова + плечи */
+      ['type','root'], ['emo','medit'],                                 /* плечи → пояс */
+      ['root','mirror'], ['mirror','medit'],                            /* пояс */
+      ['root','psy'], ['medit','mind'],                                 /* пояс → стопы */
+      ['mirror','vip'], ['vip','chan'],                                 /* меч */
+    ],
+    /* ВЛИЯНИЕ — Пегас (Большой Квадрат + шея/нос + цепь) */
+    social: [
+      ['exp','mission'], ['mission','mnet'], ['mnet','platform'], ['platform','exp'], /* квадрат */
+      ['exp','prof'], ['prof','union'],                                 /* шея + голова */
+      ['platform','hr'],                                                /* нога */
+      ['mission','clubs'], ['clubs','badi'],                            /* цепь Андромеды */
+    ],
+  };
 
   /* ---- Декоративные фоновые звёзды ---- */
   let bgStars = [];
@@ -1979,6 +2008,7 @@ window.__startTree = function () {
 
   let W = 0, H = 0;
   let activeFilter = 'all';
+  let filterT      = 1;   /* прогресс анимации появления линий созвездия 0→1 */
   let hovered      = null;
   let pinnedStar   = null;
   let time         = 0;
@@ -2055,82 +2085,98 @@ window.__startTree = function () {
       ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
     }
 
-    /* Дальний хребет */
+    /* Дальний хребет (опущен ниже — больше воздуха над горами) */
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(0, H);
-    ctx.lineTo(0,         H * 0.76);
-    ctx.lineTo(W * 0.10,  H * 0.66);
-    ctx.lineTo(W * 0.22,  H * 0.58);
-    ctx.lineTo(W * 0.36,  H * 0.66);
-    ctx.lineTo(W * 0.50,  H * 0.56);
-    ctx.lineTo(W * 0.63,  H * 0.62);
-    ctx.lineTo(W * 0.76,  H * 0.54);
-    ctx.lineTo(W * 0.88,  H * 0.62);
-    ctx.lineTo(W,         H * 0.70);
+    ctx.lineTo(0,         H * 0.82);
+    ctx.lineTo(W * 0.10,  H * 0.72);
+    ctx.lineTo(W * 0.22,  H * 0.64);
+    ctx.lineTo(W * 0.36,  H * 0.72);
+    ctx.lineTo(W * 0.50,  H * 0.62);
+    ctx.lineTo(W * 0.63,  H * 0.68);
+    ctx.lineTo(W * 0.76,  H * 0.60);
+    ctx.lineTo(W * 0.88,  H * 0.68);
+    ctx.lineTo(W,         H * 0.76);
     ctx.lineTo(W, H);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(12,11,18,0.88)';
+    const farGrad = ctx.createLinearGradient(0, H * 0.60, 0, H);
+    farGrad.addColorStop(0, 'rgba(28,28,42,0.92)'); /* ярче — не сливается в чёрный */
+    farGrad.addColorStop(1, 'rgba(17,17,27,0.92)');
+    ctx.fillStyle = farGrad;
     ctx.fill();
     ctx.restore();
 
-    /* Контур дальнего хребта — лёгкие очертания */
+    /* Холодная кромка дальнего хребта (золотисто-синяя подсветка) */
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(0,         H * 0.76);
-    ctx.lineTo(W * 0.10,  H * 0.66);
-    ctx.lineTo(W * 0.22,  H * 0.58);
-    ctx.lineTo(W * 0.36,  H * 0.66);
-    ctx.lineTo(W * 0.50,  H * 0.56);
-    ctx.lineTo(W * 0.63,  H * 0.62);
-    ctx.lineTo(W * 0.76,  H * 0.54);
-    ctx.lineTo(W * 0.88,  H * 0.62);
-    ctx.lineTo(W,         H * 0.70);
-    ctx.strokeStyle = 'rgba(' + GL + ',0.11)';
-    ctx.lineWidth   = 1.2;
-    ctx.shadowColor = 'rgba(' + GL + ',0.08)';
-    ctx.shadowBlur  = 6;
+    ctx.moveTo(0,         H * 0.82);
+    ctx.lineTo(W * 0.10,  H * 0.72);
+    ctx.lineTo(W * 0.22,  H * 0.64);
+    ctx.lineTo(W * 0.36,  H * 0.72);
+    ctx.lineTo(W * 0.50,  H * 0.62);
+    ctx.lineTo(W * 0.63,  H * 0.68);
+    ctx.lineTo(W * 0.76,  H * 0.60);
+    ctx.lineTo(W * 0.88,  H * 0.68);
+    ctx.lineTo(W,         H * 0.76);
+    ctx.strokeStyle = 'rgba(' + COLD + ',0.18)';
+    ctx.lineWidth   = 1.1;
+    ctx.shadowColor = 'rgba(' + COLD + ',0.16)';
+    ctx.shadowBlur  = 7;
     ctx.stroke();
     ctx.restore();
 
-    /* Главная гора — плавные безье-кривые */
+    /* Главная гора — плавные безье-кривые (опущена ниже) */
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(0, H);
-    ctx.lineTo(W * 0.08, H * 0.84);
-    ctx.quadraticCurveTo(W * 0.20, H * 0.70, W * 0.36, H * 0.58);
-    ctx.lineTo(W * 0.52, H * 0.40); /* острая вершина */
-    ctx.lineTo(W * 0.68, H * 0.58);
-    ctx.quadraticCurveTo(W * 0.82, H * 0.73, W * 0.93, H * 0.84);
-    ctx.lineTo(W, H * 0.88);
+    ctx.lineTo(W * 0.08, H * 0.88);
+    ctx.quadraticCurveTo(W * 0.20, H * 0.76, W * 0.36, H * 0.63);
+    ctx.lineTo(W * 0.52, H * 0.46); /* острая вершина */
+    ctx.lineTo(W * 0.68, H * 0.63);
+    ctx.quadraticCurveTo(W * 0.82, H * 0.78, W * 0.93, H * 0.88);
+    ctx.lineTo(W, H * 0.92);
     ctx.lineTo(W, H);
     ctx.closePath();
-    const mGrad = ctx.createLinearGradient(W * 0.52, H * 0.45, W * 0.52, H);
-    mGrad.addColorStop(0,    '#1a1723');
-    mGrad.addColorStop(0.28, '#13111a');
-    mGrad.addColorStop(0.68, '#0f0e15');
-    mGrad.addColorStop(1,    '#0c0b10');
+    const mGrad = ctx.createLinearGradient(W * 0.52, H * 0.50, W * 0.52, H);
+    mGrad.addColorStop(0,    '#272231'); /* +контраст, виден объём на ярких экранах */
+    mGrad.addColorStop(0.28, '#1c1926');
+    mGrad.addColorStop(0.68, '#15131c');
+    mGrad.addColorStop(1,    '#100f15');
     ctx.fillStyle = mGrad;
     ctx.fill();
     ctx.restore();
 
-    /* Контур гребня со свечением */
+    /* Тёплый контур гребня со свечением */
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(W * 0.08,  H * 0.84);
-    ctx.quadraticCurveTo(W * 0.20, H * 0.70, W * 0.36, H * 0.58);
-    ctx.lineTo(W * 0.52, H * 0.40);
-    ctx.lineTo(W * 0.68, H * 0.58);
-    ctx.quadraticCurveTo(W * 0.82, H * 0.73, W * 0.93, H * 0.84);
-    ctx.strokeStyle = 'rgba(' + GL + ',0.11)';
-    ctx.lineWidth   = 1.5;
-    ctx.shadowColor = 'rgba(' + GL + ',0.16)';
-    ctx.shadowBlur  = 10;
+    ctx.moveTo(W * 0.08,  H * 0.88);
+    ctx.quadraticCurveTo(W * 0.20, H * 0.76, W * 0.36, H * 0.63);
+    ctx.lineTo(W * 0.52, H * 0.46);
+    ctx.lineTo(W * 0.68, H * 0.63);
+    ctx.quadraticCurveTo(W * 0.82, H * 0.78, W * 0.93, H * 0.88);
+    ctx.strokeStyle = 'rgba(' + GL + ',0.16)';
+    ctx.lineWidth   = 1.6;
+    ctx.shadowColor = 'rgba(' + GL + ',0.18)';
+    ctx.shadowBlur  = 11;
+    ctx.stroke();
+    ctx.restore();
+
+    /* Холодная подсветка вершинных склонов — добавляет объём */
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(W * 0.36, H * 0.63);
+    ctx.lineTo(W * 0.52, H * 0.46);
+    ctx.lineTo(W * 0.68, H * 0.63);
+    ctx.strokeStyle = 'rgba(' + COLD + ',0.22)';
+    ctx.lineWidth   = 1.2;
+    ctx.shadowColor = 'rgba(' + COLD + ',0.16)';
+    ctx.shadowBlur  = 8;
     ctx.stroke();
     ctx.restore();
 
     /* Блик на пике */
-    const pkX = W * 0.52, pkY = H * 0.40;
+    const pkX = W * 0.52, pkY = H * 0.46;
     const pkGr = ctx.createRadialGradient(pkX, pkY, 0, pkX, pkY, H * 0.11);
     pkGr.addColorStop(0,   'rgba(' + SNOW + ',0.16)');
     pkGr.addColorStop(0.2, 'rgba(' + GL   + ',0.06)');
@@ -2195,29 +2241,29 @@ window.__startTree = function () {
      ================================================================ */
   function drawConnections() {
     if (activeFilter === 'all') return;
-    const active = STARS.filter(s => s.cat === activeFilter);
-    const drawn  = new Set();
-    active.forEach(a => {
-      active
-        .filter(b => b !== a)
-        .map(b  => ({ b, d: Math.hypot(sx(b) - sx(a), sy(b) - sy(a)) }))
-        .sort((x, y) => x.d - y.d)
-        .slice(0, 2)
-        .forEach(({ b, d }) => {
-          const key = [a.id, b.id].sort().join('|');
-          if (drawn.has(key)) return;
-          drawn.add(key);
-          const maxD = Math.min(W, H) * 0.34;
-          if (d > maxD) return;
-          ctx.save();
-          ctx.setLineDash([3, 8]);
-          ctx.strokeStyle = 'rgba(' + GL + ',' + ((1 - d / maxD) * 0.35) + ')';
-          ctx.lineWidth   = 0.9;
-          ctx.beginPath(); ctx.moveTo(sx(a), sy(a)); ctx.lineTo(sx(b), sy(b)); ctx.stroke();
-          ctx.setLineDash([]);
-          ctx.restore();
-        });
+    const edges = LINES[activeFilter];
+    if (!edges) return;
+    /* easeOutCubic — линия «прорисовывается» от первой звезды ко второй */
+    const e    = filterT >= 1 ? 1 : 1 - Math.pow(1 - filterT, 3);
+    const fade = Math.min(1, filterT * 1.6);
+    ctx.save();
+    ctx.lineCap = 'round';
+    edges.forEach(pair => {
+      const a = byId[pair[0]], b = byId[pair[1]];
+      if (!a || !b) return;
+      const ax = sx(a), ay = sy(a), bx = sx(b), by = sy(b);
+      const ex = ax + (bx - ax) * e, ey = ay + (by - ay) * e;
+      const grad = ctx.createLinearGradient(ax, ay, bx, by);
+      grad.addColorStop(0,   'rgba(' + GL   + ',' + (0.55 * fade) + ')');
+      grad.addColorStop(0.5, 'rgba(' + SNOW + ',' + (0.42 * fade) + ')');
+      grad.addColorStop(1,   'rgba(' + GL   + ',' + (0.55 * fade) + ')');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = 1.1;
+      ctx.shadowColor = 'rgba(' + GL + ',' + (0.5 * fade) + ')';
+      ctx.shadowBlur  = 8;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(ex, ey); ctx.stroke();
     });
+    ctx.restore();
   }
 
   /* ================================================================
@@ -2289,6 +2335,7 @@ window.__startTree = function () {
   let rafId = null;
   function frame() {
     if (!reduce) time++;
+    if (filterT < 1) filterT = Math.min(1, filterT + 0.025);
     ctx.clearRect(0, 0, W, H);
     drawBg();
     drawConnections();
@@ -2409,6 +2456,7 @@ window.__startTree = function () {
       document.querySelectorAll('.sfilt').forEach(x => x.classList.remove('on'));
       b.classList.add('on');
       activeFilter = b.dataset.cat;
+      filterT      = (activeFilter === 'all') ? 1 : 0; /* запускаем прорисовку линий */
       pinnedStar   = null;
       hovered      = null;
       tip.classList.remove('on');
