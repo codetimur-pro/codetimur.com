@@ -34,7 +34,78 @@ const Hero = () => {
     className: "hero__bg-vignette"
   }), /*#__PURE__*/React.createElement("div", {
     className: "hero__pulse"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("svg", {
+    className: "hero__energy",
+    viewBox: "0 0 1672 941",
+    preserveAspectRatio: "xMaxYMid meet",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("filter", {
+    id: "energyGlow",
+    x: "-80%",
+    y: "-80%",
+    width: "260%",
+    height: "260%"
+  }, /*#__PURE__*/React.createElement("feGaussianBlur", {
+    stdDeviation: "8"
+  })), /*#__PURE__*/React.createElement("radialGradient", {
+    id: "energyDot"
+  }, /*#__PURE__*/React.createElement("stop", {
+    offset: "0%",
+    stopColor: "#fff6e8",
+    stopOpacity: "1"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "35%",
+    stopColor: "#e8c79a",
+    stopOpacity: "0.95"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "100%",
+    stopColor: "#d4a574",
+    stopOpacity: "0"
+  }))), /*#__PURE__*/React.createElement("g", {
+    filter: "url(#energyGlow)",
+    style: {
+      mixBlendMode: 'screen'
+    }
+  }, /*#__PURE__*/React.createElement("circle", {
+    r: "17",
+    fill: "url(#energyDot)"
+  }, /*#__PURE__*/React.createElement("animateMotion", {
+    dur: "5s",
+    repeatCount: "indefinite",
+    rotate: "auto",
+    keyPoints: "0;1;1",
+    keyTimes: "0;0.4;1",
+    calcMode: "spline",
+    keySplines: "0.45 0 0.2 1;0 0 1 1",
+    path: "M 1430 765 C 1370 630 1300 560 1285 470 C 1260 360 1150 360 1185 265 C 1225 150 1410 145 1500 60"
+  }), /*#__PURE__*/React.createElement("animate", {
+    attributeName: "opacity",
+    dur: "5s",
+    repeatCount: "indefinite",
+    values: "0;1;1;0;0",
+    keyTimes: "0;0.06;0.34;0.42;1"
+  })), /*#__PURE__*/React.createElement("circle", {
+    r: "10",
+    fill: "url(#energyDot)",
+    opacity: "0"
+  }, /*#__PURE__*/React.createElement("animateMotion", {
+    dur: "5s",
+    repeatCount: "indefinite",
+    begin: "0.2s",
+    rotate: "auto",
+    keyPoints: "0;1;1",
+    keyTimes: "0;0.4;1",
+    calcMode: "spline",
+    keySplines: "0.45 0 0.2 1;0 0 1 1",
+    path: "M 1430 765 C 1370 630 1300 560 1285 470 C 1260 360 1150 360 1185 265 C 1225 150 1410 145 1500 60"
+  }), /*#__PURE__*/React.createElement("animate", {
+    attributeName: "opacity",
+    dur: "5s",
+    repeatCount: "indefinite",
+    begin: "0.2s",
+    values: "0;0.7;0.7;0;0",
+    keyTimes: "0;0.06;0.34;0.42;1"
+  })))), /*#__PURE__*/React.createElement("div", {
     className: "hero__particles",
     "aria-hidden": "true"
   }, particles.map(p => /*#__PURE__*/React.createElement("span", {
@@ -62,16 +133,20 @@ const Hero = () => {
     className: "hero__title reveal"
   }, "\u0423\u0441\u043A\u043E\u0440\u0438\u0442\u0435\u043B\u044C", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     className: "hero__title-em"
-  }, "\u0442\u0432\u043E\u0435\u0439 \u0440\u0435\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u0438", /*#__PURE__*/React.createElement("span", {
-    className: "hero__period"
-  }, "."))), /*#__PURE__*/React.createElement("p", {
+  }, "\u0442\u0432\u043E\u0435\u0439 \u0440\u0435\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u0438")), /*#__PURE__*/React.createElement("p", {
     className: "hero__sub lede reveal"
   }, "\u041F\u0435\u0440\u0435\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u043C \u0442\u0432\u043E\u0439 \u043A\u043E\u0434 \u0434\u043B\u044F \u0432\u044B\u0445\u043E\u0434\u0430 \u0432\xA0\u043D\u043E\u0432\u044B\u0439 \u043C\u0430\u0441\u0448\u0442\u0430\u0431: \u043C\u044B\u0448\u043B\u0435\u043D\u0438\u0435 \u0438\u0437\u043E\u0431\u0438\u043B\u0438\u044F, \u044F\u0441\u043D\u044B\u0439 \u0431\u0438\u0437\u043D\u0435\u0441-\u0444\u043E\u043A\u0443\u0441 \u0438\xA0\u0430\u043A\u0442\u0438\u0432\u0430\u0446\u0438\u044F \u0441\u043A\u0440\u044B\u0442\u043E\u0439 \u0441\u0432\u0435\u0440\u0445\u0441\u0438\u043B\u044B."), /*#__PURE__*/React.createElement("div", {
     className: "hero__actions reveal"
   }, /*#__PURE__*/React.createElement("a", {
     href: "#session",
-    className: "btn btn--solid"
-  }, /*#__PURE__*/React.createElement("span", null, "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u0441\u0435\u0441\u0441\u0438\u044F"), /*#__PURE__*/React.createElement("span", {
+    className: "btn btn--solid hero__cta"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero__cta-stack"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero__cta-top"
+  }, "\u0417\u0430\u043F\u0438\u0441\u044C \u043D\u0430"), /*#__PURE__*/React.createElement("span", {
+    className: "hero__cta-main"
+  }, "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043A\u0443\u044E \u0441\u0435\u0441\u0441\u0438\u044E")), /*#__PURE__*/React.createElement("span", {
     className: "arrow"
   })), /*#__PURE__*/React.createElement("a", {
     href: "#diagnosis",
@@ -161,6 +236,23 @@ const Hero = () => {
             object-fit: cover;
           }
         }
+
+        /* Energy overlay — mirrors the image box exactly (same anchor + caps),
+           so SVG viewBox coords line up with the baked-in arrow. */
+        .hero__energy {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 100%;
+          width: auto;
+          max-width: 97%;
+          pointer-events: none;
+          z-index: 1;
+        }
+        @media (max-width: 1400px) { .hero__energy { max-width: 100%; } }
+        @media (max-width: 1100px) { .hero__energy { max-width: 88%; opacity: 0.95; } }
+        @media (max-width: 880px)  { .hero__energy { display: none; } }
+        @media (prefers-reduced-motion: reduce) { .hero__energy { display: none; } }
 
         /* Gradient sweep keeps the LEFT side dark for the copy.
            Crucially: by ~50% horizontally, it's fully transparent so the face stays sharp. */
@@ -262,11 +354,23 @@ const Hero = () => {
         }
         @media (max-width: 880px) { .hero__streak { display: none; } }
 
-        /* Photo is fully static — any breath/scale showed face pixels.
-           Only the gold-side ambient effects (pulse, particles, streak) animate. */
-        .hero__bg-img { animation: none; }
+        /* Subtle, slow "breath" — scales UP only, anchored to the right edge,
+           so the image always covers (no gaps) and the arrow + energy overlay
+           move in perfect lockstep. */
+        .hero__bg-img,
+        .hero__energy {
+          transform-origin: right center;
+          animation: heroBreath 18s ease-in-out infinite;
+          will-change: transform;
+        }
+        @keyframes heroBreath {
+          0%, 100% { transform: scale(1); }
+          50%      { transform: scale(1.04); }
+        }
+        @media (max-width: 880px) { .hero__bg-img { animation: none; } }
         @media (prefers-reduced-motion: reduce) {
-          .hero__pulse, .hero__particle, .hero__streak, .hero__bg-img { animation: none !important; }
+          .hero__pulse, .hero__particle, .hero__streak,
+          .hero__bg-img, .hero__energy { animation: none !important; }
         }
 
         .hero__inner {
@@ -275,7 +379,7 @@ const Hero = () => {
           width: 100%;
           padding-top: 110px;
           padding-bottom: 120px;
-          padding-left: 48px;
+          padding-left: clamp(48px, 7vw, 120px);
           padding-right: 48px;
           min-height: 100vh;
           display: flex;
@@ -305,6 +409,26 @@ const Hero = () => {
           display: flex; align-items: center; gap: 32px;
           flex-wrap: wrap;
           margin-top: 8px;
+        }
+
+        /* Booking CTA — two-line hierarchy: small label + larger action */
+        .hero__cta { align-items: center; padding-top: 13px; padding-bottom: 13px; }
+        .hero__cta-stack {
+          display: inline-flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+          line-height: 1;
+          text-align: left;
+        }
+        .hero__cta-top {
+          font-size: 10px;
+          letter-spacing: 0.3em;
+          opacity: 0.72;
+        }
+        .hero__cta-main {
+          font-size: 14px;
+          letter-spacing: 0.14em;
         }
         .hero__sub-link {
           font-family: var(--body);
@@ -526,7 +650,7 @@ const DiagCard = ({
     }
   }, card.n), /*#__PURE__*/React.createElement("span", {
     className: "diag-card__tag diag-card__tag--gold"
-  }, "\u0414\u0438\u0430\u0433\u043D\u043E\u0437")), /*#__PURE__*/React.createElement("div", {
+  }, "\u041F\u0440\u0438\u0447\u0438\u043D\u0430")), /*#__PURE__*/React.createElement("div", {
     className: "diag-card__body"
   }, /*#__PURE__*/React.createElement("p", {
     className: "diag-card__diagnosis"
