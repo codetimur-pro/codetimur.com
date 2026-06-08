@@ -34,78 +34,7 @@ const Hero = () => {
     className: "hero__bg-vignette"
   }), /*#__PURE__*/React.createElement("div", {
     className: "hero__pulse"
-  }), /*#__PURE__*/React.createElement("svg", {
-    className: "hero__energy",
-    viewBox: "0 0 1672 941",
-    preserveAspectRatio: "xMaxYMid meet",
-    "aria-hidden": "true"
-  }, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("filter", {
-    id: "energyGlow",
-    x: "-80%",
-    y: "-80%",
-    width: "260%",
-    height: "260%"
-  }, /*#__PURE__*/React.createElement("feGaussianBlur", {
-    stdDeviation: "8"
-  })), /*#__PURE__*/React.createElement("radialGradient", {
-    id: "energyDot"
-  }, /*#__PURE__*/React.createElement("stop", {
-    offset: "0%",
-    stopColor: "#fff6e8",
-    stopOpacity: "1"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "35%",
-    stopColor: "#e8c79a",
-    stopOpacity: "0.95"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "100%",
-    stopColor: "#d4a574",
-    stopOpacity: "0"
-  }))), /*#__PURE__*/React.createElement("g", {
-    filter: "url(#energyGlow)",
-    style: {
-      mixBlendMode: 'screen'
-    }
-  }, /*#__PURE__*/React.createElement("circle", {
-    r: "17",
-    fill: "url(#energyDot)"
-  }, /*#__PURE__*/React.createElement("animateMotion", {
-    dur: "5s",
-    repeatCount: "indefinite",
-    rotate: "auto",
-    keyPoints: "0;1;1",
-    keyTimes: "0;0.4;1",
-    calcMode: "spline",
-    keySplines: "0.45 0 0.2 1;0 0 1 1",
-    path: "M 1430 765 C 1370 630 1300 560 1285 470 C 1260 360 1150 360 1185 265 C 1225 150 1410 145 1500 60"
-  }), /*#__PURE__*/React.createElement("animate", {
-    attributeName: "opacity",
-    dur: "5s",
-    repeatCount: "indefinite",
-    values: "0;1;1;0;0",
-    keyTimes: "0;0.06;0.34;0.42;1"
-  })), /*#__PURE__*/React.createElement("circle", {
-    r: "10",
-    fill: "url(#energyDot)",
-    opacity: "0"
-  }, /*#__PURE__*/React.createElement("animateMotion", {
-    dur: "5s",
-    repeatCount: "indefinite",
-    begin: "0.2s",
-    rotate: "auto",
-    keyPoints: "0;1;1",
-    keyTimes: "0;0.4;1",
-    calcMode: "spline",
-    keySplines: "0.45 0 0.2 1;0 0 1 1",
-    path: "M 1430 765 C 1370 630 1300 560 1285 470 C 1260 360 1150 360 1185 265 C 1225 150 1410 145 1500 60"
-  }), /*#__PURE__*/React.createElement("animate", {
-    attributeName: "opacity",
-    dur: "5s",
-    repeatCount: "indefinite",
-    begin: "0.2s",
-    values: "0;0.7;0.7;0;0",
-    keyTimes: "0;0.06;0.34;0.42;1"
-  })))), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("div", {
     className: "hero__particles",
     "aria-hidden": "true"
   }, particles.map(p => /*#__PURE__*/React.createElement("span", {
@@ -214,9 +143,6 @@ const Hero = () => {
           max-width: 97%;
           object-fit: contain;
           object-position: right center;
-          image-rendering: -webkit-optimize-contrast;
-          image-rendering: crisp-edges;
-          transform: translateZ(0);
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
         }
@@ -237,22 +163,6 @@ const Hero = () => {
           }
         }
 
-        /* Energy overlay — mirrors the image box exactly (same anchor + caps),
-           so SVG viewBox coords line up with the baked-in arrow. */
-        .hero__energy {
-          position: absolute;
-          top: 0;
-          right: 0;
-          height: 100%;
-          width: auto;
-          max-width: 97%;
-          pointer-events: none;
-          z-index: 1;
-        }
-        @media (max-width: 1400px) { .hero__energy { max-width: 100%; } }
-        @media (max-width: 1100px) { .hero__energy { max-width: 88%; opacity: 0.95; } }
-        @media (max-width: 880px)  { .hero__energy { display: none; } }
-        @media (prefers-reduced-motion: reduce) { .hero__energy { display: none; } }
 
         /* Gradient sweep keeps the LEFT side dark for the copy.
            Crucially: by ~50% horizontally, it's fully transparent so the face stays sharp. */
@@ -354,23 +264,22 @@ const Hero = () => {
         }
         @media (max-width: 880px) { .hero__streak { display: none; } }
 
-        /* Subtle, slow "breath" — scales UP only, anchored to the right edge,
-           so the image always covers (no gaps) and the arrow + energy overlay
-           move in perfect lockstep. */
-        .hero__bg-img,
-        .hero__energy {
+        /* Slow, organic "breath" — same feel as the main page hero:
+           gentle 2.5% scale-up over 9s, smooth (no crisp-edges shimmer),
+           anchored to the right edge so the image always covers (no gaps). */
+        .hero__bg-img {
           transform-origin: right center;
-          animation: heroBreath 18s ease-in-out infinite;
+          animation: heroBreath 9s ease-in-out infinite;
           will-change: transform;
         }
         @keyframes heroBreath {
           0%, 100% { transform: scale(1); }
-          50%      { transform: scale(1.04); }
+          50%      { transform: scale(1.025); }
         }
         @media (max-width: 880px) { .hero__bg-img { animation: none; } }
         @media (prefers-reduced-motion: reduce) {
           .hero__pulse, .hero__particle, .hero__streak,
-          .hero__bg-img, .hero__energy { animation: none !important; }
+          .hero__bg-img { animation: none !important; }
         }
 
         .hero__inner {
@@ -507,7 +416,7 @@ const Hero = () => {
 
         .hero__scroll {
           position: absolute;
-          left: 48px; bottom: 32px;
+          left: clamp(48px, 7vw, 120px); bottom: 32px;
           display: inline-flex;
           align-items: center;
           gap: 14px;
@@ -852,9 +761,59 @@ const CENTER = {
 const Avatar = () => {
   const [active, setActive] = React.useState("center");
   const detail = active === "center" ? CENTER : SPHERES.find(s => s.key === active);
+
+  // Auto-cycle through the spheres once the section is in view.
+  // First switch after 2s, then every 3s. Any manual touch stops it for good.
+  const sectionRef = React.useRef(null);
+  const auto = React.useRef({
+    stopped: false,
+    timer: null,
+    idx: 3
+  }); // start at "center"
+  const ORDER = ["mission", "projects", "roles", "center"];
+  const stopAuto = () => {
+    auto.current.stopped = true;
+    if (auto.current.timer) {
+      clearTimeout(auto.current.timer);
+      auto.current.timer = null;
+    }
+  };
+  const pick = key => {
+    stopAuto();
+    setActive(key);
+  };
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let started = false;
+    const step = delay => {
+      auto.current.timer = setTimeout(() => {
+        if (auto.current.stopped) return;
+        auto.current.idx = (auto.current.idx + 1) % ORDER.length;
+        setActive(ORDER[auto.current.idx]);
+        step(3000);
+      }, delay);
+    };
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !started && !auto.current.stopped) {
+          started = true;
+          step(2000);
+        }
+      });
+    }, {
+      threshold: 0.4
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (auto.current.timer) clearTimeout(auto.current.timer);
+    };
+  }, []);
   return /*#__PURE__*/React.createElement("section", {
     className: "avatar",
-    id: "avatar"
+    id: "avatar",
+    ref: sectionRef
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -929,8 +888,8 @@ const Avatar = () => {
     return /*#__PURE__*/React.createElement("g", {
       key: s.key,
       className: `avatar__circle ${isActive ? 'is-active' : ''}`,
-      onMouseEnter: () => setActive(s.key),
-      onClick: () => setActive(s.key)
+      onMouseEnter: () => pick(s.key),
+      onClick: () => pick(s.key)
     }, /*#__PURE__*/React.createElement("circle", {
       cx: cx,
       cy: cy,
@@ -957,8 +916,8 @@ const Avatar = () => {
     }, s.n));
   }), /*#__PURE__*/React.createElement("g", {
     className: `avatar__core ${active === 'center' ? 'is-active' : ''}`,
-    onMouseEnter: () => setActive('center'),
-    onClick: () => setActive('center')
+    onMouseEnter: () => pick('center'),
+    onClick: () => pick('center')
   }, /*#__PURE__*/React.createElement("circle", {
     cx: "300",
     cy: "255",
@@ -1008,8 +967,8 @@ const Avatar = () => {
   }, SPHERES.map(s => /*#__PURE__*/React.createElement("button", {
     key: s.key,
     className: `avatar__legend-item ${active === s.key ? 'is-active' : ''}`,
-    onMouseEnter: () => setActive(s.key),
-    onClick: () => setActive(s.key),
+    onMouseEnter: () => pick(s.key),
+    onClick: () => pick(s.key),
     style: {
       '--c': `rgb(${s.color})`
     }
@@ -1021,8 +980,8 @@ const Avatar = () => {
     className: "avatar__legend-name"
   }, s.fullTitle))), /*#__PURE__*/React.createElement("button", {
     className: `avatar__legend-item avatar__legend-item--core ${active === 'center' ? 'is-active' : ''}`,
-    onMouseEnter: () => setActive('center'),
-    onClick: () => setActive('center')
+    onMouseEnter: () => pick('center'),
+    onClick: () => pick('center')
   }, /*#__PURE__*/React.createElement("span", {
     className: "avatar__legend-dot avatar__legend-dot--core"
   }), /*#__PURE__*/React.createElement("span", {
@@ -1039,13 +998,28 @@ const Avatar = () => {
           align-items: center;
         }
         @media (max-width: 980px) {
-          .avatar__stage { grid-template-columns: 1fr; gap: 32px; }
+          .avatar__stage { grid-template-columns: 1fr; gap: 8px; }
         }
 
         .avatar__diagram {
           position: relative;
           aspect-ratio: 1.1/1;
           width: 100%;
+        }
+        /* On mobile bring the circle cluster closer to the text and trim its
+           empty vertical space so the link to the description below reads. */
+        @media (max-width: 980px) {
+          .avatar__diagram { max-width: 480px; margin: 0 auto; aspect-ratio: 1.2/1; }
+        }
+        /* No active "bloom" glow and no tap-flash on touch — same as the ecosystem page. */
+        .avatar__circle, .avatar__core, .avatar__legend-item {
+          -webkit-tap-highlight-color: transparent;
+        }
+        @media (max-width: 980px) {
+          .avatar__circle.is-active { filter: none; }
+          .avatar__core.is-active { filter: none; }
+          .avatar__legend-item.is-active .avatar__legend-dot,
+          .avatar__legend-item.is-active .avatar__legend-dot--core { box-shadow: none; }
         }
         .avatar__svg { width: 100%; height: 100%; }
 
@@ -1243,7 +1217,13 @@ const Slider = ({
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "hslider__thumb-inner"
-  }))));
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "hslider__reveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hslider__reveal-eyebrow"
+  }, "\u0410\u043A\u0442\u0438\u0432\u0430\u0446\u0438\u044F \u2014 ", vec.tag), /*#__PURE__*/React.createElement("p", {
+    className: "hslider__reveal-text"
+  }, vec.text)));
 };
 const Vectors = () => {
   const [values, setValues] = React.useState([0, 0, 0]);
@@ -1577,16 +1557,63 @@ const Vectors = () => {
           .vec__panel-text, .vec__panel-placeholder { margin-left: 0; }
           .vec__panel-placeholder { left: 0; }
         }
+
+        /* Per-slider inline reveal — mobile only */
+        .hslider__reveal { display: none; }
+        @media (max-width: 880px) {
+          /* The shared right-hand panel is redundant on mobile — hide it */
+          .vec__panel { display: none; }
+
+          .hslider__reveal {
+            display: grid;
+            gap: 8px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height .55s cubic-bezier(.2,.7,.2,1), opacity .5s ease, margin-top .5s ease;
+          }
+          .hslider.is-complete .hslider__reveal {
+            max-height: 240px;
+            opacity: 1;
+            margin-top: 6px;
+          }
+          .hslider__reveal-eyebrow {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+          }
+          .hslider__reveal-eyebrow::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+          }
+          .hslider__reveal-text {
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.7;
+          }
+        }
       `));
 };
 const vecRoot = ReactDOM.createRoot(document.getElementById('vectors-root'));
 vecRoot.render(/*#__PURE__*/React.createElement(Vectors, null));
 setTimeout(() => window.__attachReveal && window.__attachReveal(), 50);
 
+// Tap targets for the three stages — taps animate progress to these points.
+const STAGE_P = [0.0, 0.42, 0.9];
 const Shadow = () => {
   const sectionRef = React.useRef(null);
-  const [progress, setProgress] = React.useState(0); // 0..1
-
+  const [scrollP, setScrollP] = React.useState(0);
+  const [tapP, setTapP] = React.useState(0);
+  const tapPRef = React.useRef(0);
+  const tapStage = React.useRef(0);
+  const rafTween = React.useRef(null);
   React.useEffect(() => {
     let rafId = null;
     let lastProgress = -1;
@@ -1601,7 +1628,7 @@ const Shadow = () => {
       let p = Math.max(0, Math.min(1, passed / total));
       if (Math.abs(p - lastProgress) > 0.002) {
         lastProgress = p;
-        setProgress(p);
+        setScrollP(p);
       }
     };
     const onScroll = () => {
@@ -1622,6 +1649,34 @@ const Shadow = () => {
       window.removeEventListener('resize', calc);
     };
   }, []);
+
+  // Tap to advance through the three stages — smoothly tweened, works alongside scroll.
+  const animateTapTo = to => {
+    const from = tapPRef.current;
+    const start = performance.now();
+    const dur = 850;
+    const ease = x => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+    const tick = now => {
+      const k = Math.min(1, (now - start) / dur);
+      const val = from + (to - from) * ease(k);
+      tapPRef.current = val;
+      setTapP(val);
+      if (k < 1) rafTween.current = requestAnimationFrame(tick);
+    };
+    if (rafTween.current) cancelAnimationFrame(rafTween.current);
+    rafTween.current = requestAnimationFrame(tick);
+  };
+  const advance = () => {
+    if (tapStage.current >= STAGE_P.length - 1) return;
+    tapStage.current += 1;
+    animateTapTo(STAGE_P[tapStage.current]);
+  };
+  React.useEffect(() => () => {
+    if (rafTween.current) cancelAnimationFrame(rafTween.current);
+  }, []);
+
+  // Effective progress drives every visual — whichever is further: scroll or taps.
+  const progress = Math.max(scrollP, tapP);
 
   // Stages:
   // 0.00 – 0.22  text 1 visible: "Твоё главное испытание"
@@ -1646,7 +1701,8 @@ const Shadow = () => {
     id: "shadow",
     ref: sectionRef
   }, /*#__PURE__*/React.createElement("div", {
-    className: "shadow__pin"
+    className: "shadow__pin",
+    onClick: advance
   }, /*#__PURE__*/React.createElement("div", {
     className: "container shadow__stage"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1738,9 +1794,11 @@ const Shadow = () => {
   })), /*#__PURE__*/React.createElement("div", {
     className: "shadow__hint",
     style: {
-      opacity: Math.max(0, 1 - progress * 6)
+      opacity: Math.max(0, 1 - progress * 3.2)
     }
-  }, /*#__PURE__*/React.createElement("span", null, "\u041F\u0440\u043E\u043A\u0440\u0443\u0442\u0438, \u0447\u0442\u043E\u0431\u044B \u0432\u043E\u0439\u0442\u0438"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "shadow__hint-text"
+  }, "\u041B\u0438\u0441\u0442\u0430\u0439 \u0438\u043B\u0438 \u043A\u043E\u0441\u043D\u0438\u0441\u044C,", /*#__PURE__*/React.createElement("br", null), "\u0447\u0442\u043E\u0431\u044B \u043E\u0442\u043A\u0440\u044B\u0442\u044C"), /*#__PURE__*/React.createElement("span", {
     className: "shadow__hint-line"
   }))), /*#__PURE__*/React.createElement("style", null, `
         .shadow {
@@ -1758,6 +1816,9 @@ const Shadow = () => {
           display: grid;
           grid-template-rows: 1fr auto 1fr;
           align-items: stretch;
+          cursor: pointer;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
         }
 
         /* Background washes */
@@ -1939,20 +2000,47 @@ const Shadow = () => {
 
         .shadow__hint {
           position: absolute;
-          left: 50%; bottom: 28px;
+          left: 50%; bottom: 40px;
           transform: translateX(-50%);
           display: inline-flex; flex-direction: column;
-          align-items: center; gap: 12px;
-          font-size: 10px;
-          letter-spacing: 0.32em;
-          text-transform: uppercase;
-          color: var(--muted);
+          align-items: center; gap: 16px;
           z-index: 3;
           transition: opacity .25s linear;
+          text-align: center;
+          pointer-events: none;
+        }
+        .shadow__hint-text {
+          font-size: 14px;
+          line-height: 1.5;
+          letter-spacing: 0.26em;
+          text-transform: uppercase;
+          color: var(--gold-light);
+          animation: shadowHintPulse 2.4s ease-in-out infinite;
+        }
+        @keyframes shadowHintPulse {
+          0%, 100% { opacity: 0.6; }
+          50%      { opacity: 1; }
         }
         .shadow__hint-line {
-          width: 1px; height: 36px;
-          background: linear-gradient(180deg, var(--muted), transparent);
+          width: 1px; height: 54px;
+          background: linear-gradient(180deg, var(--gold-light), transparent);
+          position: relative;
+          overflow: hidden;
+        }
+        .shadow__hint-line::after {
+          content: "";
+          position: absolute;
+          top: -50%; left: 0;
+          width: 100%; height: 50%;
+          background: linear-gradient(180deg, transparent, var(--gold));
+          animation: shadowHintRun 2.4s ease-in-out infinite;
+        }
+        @keyframes shadowHintRun {
+          0% { top: -50%; }
+          100% { top: 100%; }
+        }
+        @media (max-width: 720px) {
+          .shadow__hint-text { font-size: 12px; letter-spacing: 0.2em; }
         }
 
         @media (max-width: 720px) {
@@ -1987,9 +2075,58 @@ const ROLES = [{
 }];
 const Roles = () => {
   const [active, setActive] = React.useState(0);
+
+  // Auto-advance the roles once in view: first after 2s, then every 3s.
+  // Stops permanently on any manual selection.
+  const sectionRef = React.useRef(null);
+  const auto = React.useRef({
+    stopped: false,
+    timer: null,
+    idx: 0
+  });
+  const stopAuto = () => {
+    auto.current.stopped = true;
+    if (auto.current.timer) {
+      clearTimeout(auto.current.timer);
+      auto.current.timer = null;
+    }
+  };
+  const pick = i => {
+    stopAuto();
+    setActive(i);
+  };
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let started = false;
+    const step = delay => {
+      auto.current.timer = setTimeout(() => {
+        if (auto.current.stopped) return;
+        auto.current.idx = (auto.current.idx + 1) % ROLES.length;
+        setActive(auto.current.idx);
+        step(3000);
+      }, delay);
+    };
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !started && !auto.current.stopped) {
+          started = true;
+          step(2000);
+        }
+      });
+    }, {
+      threshold: 0.4
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (auto.current.timer) clearTimeout(auto.current.timer);
+    };
+  }, []);
   return /*#__PURE__*/React.createElement("section", {
     className: "roles",
-    id: "roles"
+    id: "roles",
+    ref: sectionRef
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -2009,7 +2146,11 @@ const Roles = () => {
   }, /*#__PURE__*/React.createElement("img", {
     src: "assets/about-portrait.jpg",
     alt: "\u0422\u0438\u043C\u0443\u0440",
-    className: "roles__portrait"
+    className: "roles__portrait",
+    width: "782",
+    height: "914",
+    loading: "eager",
+    decoding: "async"
   }), /*#__PURE__*/React.createElement("div", {
     className: "roles__portrait-shade"
   }), /*#__PURE__*/React.createElement("div", {
@@ -2029,8 +2170,8 @@ const Roles = () => {
     return /*#__PURE__*/React.createElement("button", {
       key: r.n,
       className: `role ${isActive ? 'is-active' : ''}`,
-      onMouseEnter: () => setActive(i),
-      onClick: () => setActive(i)
+      onMouseEnter: () => pick(i),
+      onClick: () => pick(i)
     }, /*#__PURE__*/React.createElement("div", {
       className: "role__head"
     }, /*#__PURE__*/React.createElement("span", {
