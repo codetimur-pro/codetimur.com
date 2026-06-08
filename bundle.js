@@ -759,17 +759,17 @@ const CENTER = {
   body: "Состояние абсолютной синхронизации, где роли, проекты и миссия работают как единый механизм."
 };
 const Avatar = () => {
-  const [active, setActive] = React.useState("center");
+  const [active, setActive] = React.useState("mission");
   const detail = active === "center" ? CENTER : SPHERES.find(s => s.key === active);
 
-  // Auto-cycle through the spheres once the section is in view.
-  // First switch after 2s, then every 3s. Any manual touch stops it for good.
+  // Auto-cycle once in view: start on the first sphere, switch after 2s, then every 3s.
+  // Order: mission → projects → roles → center → (loop). Any manual touch stops it for good.
   const sectionRef = React.useRef(null);
   const auto = React.useRef({
     stopped: false,
     timer: null,
-    idx: 3
-  }); // start at "center"
+    idx: 0
+  }); // start at "mission"
   const ORDER = ["mission", "projects", "roles", "center"];
   const stopAuto = () => {
     auto.current.stopped = true;
@@ -782,6 +782,36 @@ const Avatar = () => {
     stopAuto();
     setActive(key);
   };
+
+  // Legend is rendered twice: inside the detail card on desktop, and directly
+  // under the circles on mobile (so it's obvious which sphere is switching).
+  const renderLegend = variant => /*#__PURE__*/React.createElement("div", {
+    className: `avatar__legend avatar__legend--${variant}`
+  }, SPHERES.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s.key,
+    className: `avatar__legend-item ${active === s.key ? 'is-active' : ''}`,
+    onMouseEnter: () => pick(s.key),
+    onClick: () => pick(s.key),
+    style: {
+      '--c': `rgb(${s.color})`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "avatar__legend-dot"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "avatar__legend-n"
+  }, s.n), /*#__PURE__*/React.createElement("span", {
+    className: "avatar__legend-name"
+  }, s.fullTitle))), /*#__PURE__*/React.createElement("button", {
+    className: `avatar__legend-item avatar__legend-item--core ${active === 'center' ? 'is-active' : ''}`,
+    onMouseEnter: () => pick('center'),
+    onClick: () => pick('center')
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "avatar__legend-dot avatar__legend-dot--core"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "avatar__legend-n"
+  }, "\u2726"), /*#__PURE__*/React.createElement("span", {
+    className: "avatar__legend-name"
+  }, "\u0418\u0441\u0442\u0438\u043D\u043D\u044B\u0439 \u0410\u0432\u0430\u0442\u0430\u0440")));
   React.useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -881,6 +911,19 @@ const Avatar = () => {
   }), /*#__PURE__*/React.createElement("stop", {
     offset: "100%",
     stopColor: "rgba(212,165,116,0)"
+  })), /*#__PURE__*/React.createElement("radialGradient", {
+    id: "rg-active",
+    cx: "0.5",
+    cy: "0.5"
+  }, /*#__PURE__*/React.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgba(232,199,154,0.55)"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "45%",
+    stopColor: "rgba(232,199,154,0.20)"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgba(232,199,154,0)"
   }))), SPHERES.map((s, i) => {
     const cx = s.pos.x / 100 * 600;
     const cy = s.pos.y / 100 * 540;
@@ -895,18 +938,22 @@ const Avatar = () => {
       cy: cy,
       r: "150",
       fill: `url(#rg-${s.key})`
+    }), isActive && /*#__PURE__*/React.createElement("circle", {
+      cx: cx,
+      cy: cy,
+      r: "150",
+      fill: "url(#rg-active)"
     }), /*#__PURE__*/React.createElement("circle", {
       cx: cx,
       cy: cy,
       r: "150",
       fill: "none",
-      stroke: `rgba(${s.color}, ${isActive ? 0.85 : 0.35})`,
-      strokeWidth: isActive ? 1.4 : 1,
-      strokeDasharray: isActive ? "0" : "0"
+      stroke: isActive ? "rgba(232,199,154,0.95)" : `rgba(${s.color}, 0.35)`,
+      strokeWidth: isActive ? 1.6 : 1
     }), /*#__PURE__*/React.createElement("text", {
       x: cx + (s.pos.x < 50 ? -80 : s.pos.x > 50 && s.pos.y < 50 ? 80 : 0),
       y: cy + (s.pos.y > 50 ? 85 : -85),
-      fill: `rgba(${s.color}, ${isActive ? 1 : 0.7})`,
+      fill: isActive ? "rgba(232,199,154,1)" : `rgba(${s.color}, 0.7)`,
       fontFamily: "var(--display)",
       fontSize: "20",
       fontWeight: "300",
@@ -952,7 +999,7 @@ const Avatar = () => {
     stroke: "rgba(244,236,226,0.04)",
     strokeWidth: "0.5",
     strokeDasharray: "2 6"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), renderLegend('mobile'), /*#__PURE__*/React.createElement("div", {
     className: "avatar__detail"
   }, /*#__PURE__*/React.createElement("div", {
     className: "avatar__detail-tag"
@@ -962,33 +1009,7 @@ const Avatar = () => {
     className: "avatar__detail-sub"
   }, detail.sub), /*#__PURE__*/React.createElement("p", {
     className: "avatar__detail-body"
-  }, detail.body), /*#__PURE__*/React.createElement("div", {
-    className: "avatar__legend"
-  }, SPHERES.map(s => /*#__PURE__*/React.createElement("button", {
-    key: s.key,
-    className: `avatar__legend-item ${active === s.key ? 'is-active' : ''}`,
-    onMouseEnter: () => pick(s.key),
-    onClick: () => pick(s.key),
-    style: {
-      '--c': `rgb(${s.color})`
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "avatar__legend-dot"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "avatar__legend-n"
-  }, s.n), /*#__PURE__*/React.createElement("span", {
-    className: "avatar__legend-name"
-  }, s.fullTitle))), /*#__PURE__*/React.createElement("button", {
-    className: `avatar__legend-item avatar__legend-item--core ${active === 'center' ? 'is-active' : ''}`,
-    onMouseEnter: () => pick('center'),
-    onClick: () => pick('center')
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "avatar__legend-dot avatar__legend-dot--core"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "avatar__legend-n"
-  }, "\u2726"), /*#__PURE__*/React.createElement("span", {
-    className: "avatar__legend-name"
-  }, "\u0418\u0441\u0442\u0438\u043D\u043D\u044B\u0439 \u0410\u0432\u0430\u0442\u0430\u0440")))))), /*#__PURE__*/React.createElement("style", null, `
+  }, detail.body), renderLegend('desktop')))), /*#__PURE__*/React.createElement("style", null, `
         .avatar { background: linear-gradient(180deg, var(--black) 0%, #050505 100%); }
 
         .avatar__stage {
@@ -1011,15 +1032,9 @@ const Avatar = () => {
         @media (max-width: 980px) {
           .avatar__diagram { max-width: 480px; margin: 0 auto; aspect-ratio: 1.2/1; }
         }
-        /* No active "bloom" glow and no tap-flash on touch — same as the ecosystem page. */
+        /* Kill only the browser's grey tap-flash; the gold active glow stays. */
         .avatar__circle, .avatar__core, .avatar__legend-item {
           -webkit-tap-highlight-color: transparent;
-        }
-        @media (max-width: 980px) {
-          .avatar__circle.is-active { filter: none; }
-          .avatar__core.is-active { filter: none; }
-          .avatar__legend-item.is-active .avatar__legend-dot,
-          .avatar__legend-item.is-active .avatar__legend-dot--core { box-shadow: none; }
         }
         .avatar__svg { width: 100%; height: 100%; }
 
@@ -1028,7 +1043,7 @@ const Avatar = () => {
           transition: filter .6s ease;
         }
         .avatar__circle.is-active {
-          filter: drop-shadow(0 0 24px rgba(212,165,116,0.35));
+          filter: drop-shadow(0 0 28px rgba(232,199,154,0.55));
         }
         .avatar__core { cursor: pointer; transition: filter .6s ease; }
         .avatar__core.is-active { filter: drop-shadow(0 0 30px rgba(244,236,226,0.5)); }
@@ -1075,6 +1090,17 @@ const Avatar = () => {
           margin-top: 12px;
           padding-top: 24px;
           border-top: 1px solid var(--line-soft);
+        }
+        /* Show the desktop legend in the card; the mobile copy under the circles. */
+        .avatar__legend--mobile { display: none; }
+        @media (max-width: 980px) {
+          .avatar__legend--desktop { display: none; }
+          .avatar__legend--mobile {
+            display: flex;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 0;
+          }
         }
         .avatar__legend-item {
           background: transparent;
@@ -1146,6 +1172,7 @@ const Slider = ({
 }) => {
   const trackRef = React.useRef(null);
   const isDragging = React.useRef(false);
+  const [dragging, setDragging] = React.useState(false);
   const updateFromPointer = clientX => {
     const track = trackRef.current;
     if (!track) return;
@@ -1158,6 +1185,7 @@ const Slider = ({
   };
   const onDown = e => {
     isDragging.current = true;
+    setDragging(true);
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     updateFromPointer(x);
     const move = ev => {
@@ -1167,6 +1195,7 @@ const Slider = ({
     };
     const up = () => {
       isDragging.current = false;
+      setDragging(false);
       window.removeEventListener('mousemove', move);
       window.removeEventListener('mouseup', up);
       window.removeEventListener('touchmove', move);
@@ -1179,8 +1208,9 @@ const Slider = ({
     });
     window.addEventListener('touchend', up);
   };
+  const untouched = value === 0 && !completed;
   return /*#__PURE__*/React.createElement("div", {
-    className: `hslider ${completed ? 'is-complete' : ''}`
+    className: `hslider ${completed ? 'is-complete' : ''} ${dragging ? 'is-dragging' : ''} ${untouched ? 'is-hint' : ''}`
   }, /*#__PURE__*/React.createElement("div", {
     className: "hslider__head"
   }, /*#__PURE__*/React.createElement("span", {
@@ -1204,6 +1234,9 @@ const Slider = ({
     key: i,
     className: `hslider__tick ${i % 5 === 0 ? 'is-major' : ''}`
   }))), /*#__PURE__*/React.createElement("div", {
+    className: "hslider__sheen",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
     className: "hslider__fill",
     style: {
       width: `${value}%`
@@ -1420,6 +1453,9 @@ const Vectors = () => {
           background: linear-gradient(90deg, var(--gold-deep), var(--gold) 40%, var(--gold-light));
           transition: width .15s ease-out;
         }
+        /* While actively dragging, track the finger 1:1 — no easing lag/jitter */
+        .hslider.is-dragging .hslider__fill,
+        .hslider.is-dragging .hslider__thumb { transition: none; }
         .hslider__fill-glow {
           position: absolute;
           top: -2px; bottom: -2px; right: -8px;
@@ -1454,6 +1490,33 @@ const Vectors = () => {
           left: 3px; right: 3px;
           background: var(--black);
           opacity: 0.5;
+        }
+
+        /* ── Draggable affordance: sweeping sheen + pulsing thumb while untouched ── */
+        .hslider__sheen {
+          position: absolute;
+          top: 0; bottom: 0; left: 0;
+          width: 36%;
+          background: linear-gradient(90deg, transparent, rgba(232,199,154,0.22), transparent);
+          transform: translateX(-130%);
+          pointer-events: none;
+          opacity: 0;
+        }
+        .hslider.is-hint .hslider__sheen {
+          opacity: 1;
+          animation: hsliderSheen 2.8s ease-in-out infinite;
+        }
+        @keyframes hsliderSheen {
+          0%   { transform: translateX(-130%); }
+          55%  { transform: translateX(320%); }
+          100% { transform: translateX(320%); }
+        }
+        .hslider.is-hint .hslider__thumb {
+          animation: hsliderThumbPulse 2.8s ease-in-out infinite;
+        }
+        @keyframes hsliderThumbPulse {
+          0%, 100% { box-shadow: 0 0 10px rgba(232,199,154,0.45); }
+          50%      { box-shadow: 0 0 22px rgba(232,199,154,0.95); }
         }
 
         /* Right panel — text reveals only at 100% */
@@ -1667,7 +1730,15 @@ const Shadow = () => {
     rafTween.current = requestAnimationFrame(tick);
   };
   const advance = () => {
-    if (tapStage.current >= STAGE_P.length - 1) return;
+    if (tapStage.current >= STAGE_P.length - 1) {
+      // Final stage already revealed — one more tap glides on to the next screen.
+      const next = document.getElementById('roles');
+      if (next) next.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+      return;
+    }
     tapStage.current += 1;
     animateTapTo(STAGE_P[tapStage.current]);
   };
