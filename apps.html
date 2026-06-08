@@ -652,6 +652,26 @@ section.fullshot { border-top: none; padding: 0 !important; }
   .mentor .fullshot__media img { object-position: 28% 20%; }
 }
 
+/* ---- Плавный переход game → mentor (только десктоп) ---- */
+@media (min-width: 761px) {
+  .game::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 35%;
+    background: linear-gradient(to bottom, transparent, #070707);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .mentor::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 38%;
+    background: linear-gradient(to bottom, #070707, transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+
 /* ---- Мобильный Hero ---- */
 @media (max-width: 700px) {
   .hero { align-items: flex-start; }
