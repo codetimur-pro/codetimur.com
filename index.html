@@ -598,6 +598,7 @@
 
 
 
+
 <style>
 /* == GLOBAL NAV & FOOTER == */
 /* ── GLOBAL NAV ──────────────────────────────── */
@@ -691,6 +692,7 @@
 .g-drawer.is-open .g-drawer-links a:nth-child(2){opacity:1;transform:none;transition-delay:.17s}
 .g-drawer.is-open .g-drawer-links a:nth-child(3){opacity:1;transform:none;transition-delay:.24s}
 .g-drawer-links a:hover{color:#d4a574}
+.g-drawer-links a.is-active{color:#d4a574;border-bottom-color:rgba(212,165,116,.2)}
 
 .g-drawer-tg{
   margin-top:40px;
@@ -1430,6 +1432,16 @@
     nav.classList.toggle('scrolled', window.scrollY > 8);
   }, {passive:true});
   nav.classList.toggle('scrolled', window.scrollY > 8);
+
+  // highlight active page in drawer
+  var path = window.location.pathname;
+  drawer.querySelectorAll('.g-drawer-links a').forEach(function(a){
+    var h = a.getAttribute('href');
+    var base = h.replace(/\.html$/, '').replace(/\/$/, '');
+    if(path === h || (base.length > 1 && path.replace(/\.html$/, '').startsWith(base))){
+      a.classList.add('is-active');
+    }
+  });
 })();
 
 </script>
