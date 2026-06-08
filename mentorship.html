@@ -271,6 +271,94 @@ section + section { border-top: 1px solid var(--line-soft); }
 @media (max-width: 720px) {
   section { padding: 80px 0; }
 }
+<style>
+/* ── GLOBAL NAV ──────────────────────────────── */
+.g-nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 48px;
+  background:linear-gradient(to bottom,rgba(7,7,7,.78),transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:background .4s,border-color .4s;
+}
+.g-nav.scrolled{background:rgba(7,7,7,.92);border-bottom-color:rgba(255,255,255,.07)}
+.g-logo img{height:36px;width:auto;opacity:.92;display:block;transition:opacity .3s}
+.g-logo:hover img{opacity:1}
+.g-nav-r{display:flex;align-items:center;gap:16px}
+
+/* badge (mentorship only) */
+.g-badge{
+  display:flex;align-items:center;gap:9px;
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+  color:#d4a574;text-decoration:none;white-space:nowrap;
+}
+.g-dot{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  background:#d4a574;box-shadow:0 0 10px #d4a574;
+  animation:g-blink 2.2s ease-in-out infinite;
+}
+@keyframes g-blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* burger */
+.g-burger{
+  width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;
+  background:none;border:none;cursor:pointer;padding:7px;
+  color:#f4ece2;transition:color .3s;
+  -webkit-tap-highlight-color:transparent;
+}
+.g-burger:hover{color:#d4a574}
+.g-burger svg path{
+  transition:d .42s cubic-bezier(.4,0,.2,1);
+  vector-effect:non-scaling-stroke;
+}
+/* 3 lines → triangle ▲ */
+.g-burger.is-open .gb1{d:path('M2,19 L12,2')}
+.g-burger.is-open .gb2{d:path('M2,19 L22,19')}
+.g-burger.is-open .gb3{d:path('M12,2 L22,19')}
+
+/* overlay */
+.g-ov{
+  position:fixed;inset:0;z-index:190;
+  background:rgba(7,7,7,.97);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s cubic-bezier(.4,0,.2,1);
+}
+.g-ov.is-open{opacity:1;pointer-events:all}
+
+.g-ov-links{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.g-ov-links a{
+  font-family:'Cormorant Garamond','Times New Roman',serif;
+  font-size:clamp(44px,7vw,84px);
+  font-weight:300;letter-spacing:-.01em;
+  color:#f4ece2;text-decoration:none;
+  opacity:0;transform:translateY(22px);
+  transition:opacity .5s,transform .5s,color .3s;
+}
+.g-ov-links a:hover{color:#d4a574}
+.g-ov.is-open .g-ov-links a:nth-child(1){opacity:1;transform:none;transition-delay:.08s}
+.g-ov.is-open .g-ov-links a:nth-child(2){opacity:1;transform:none;transition-delay:.16s}
+.g-ov.is-open .g-ov-links a:nth-child(3){opacity:1;transform:none;transition-delay:.24s}
+
+.g-ov-tg{
+  position:absolute;bottom:40px;
+  display:flex;align-items:center;gap:10px;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:#8a8278;text-decoration:none;
+  opacity:0;transition:opacity .5s .32s,color .3s;
+}
+.g-ov.is-open .g-ov-tg{opacity:1}
+.g-ov-tg:hover{color:#d4a574}
+
+@media(max-width:600px){
+  .g-nav{padding:16px 22px}
+  .g-badge-text{display:none}
+}
+
+</style>
 </style>
 
 <script src="vendor/react.js" defer></script>
@@ -278,20 +366,33 @@ section + section { border-top: 1px solid var(--line-soft); }
 </head>
 <body>
 
-<nav class="nav" id="nav">
-  <div class="container nav__inner">
-    <a class="brand" href="/">
-      <img src="assets/logo.png" alt="Code Timur" class="brand-logo" />
+<!-- GLOBAL NAV -->
+<nav class="g-nav" id="g-nav">
+  <a href="/" class="g-logo"><img src="/assets/logo.png" alt="Code Timur"></a>
+  <div class="g-nav-r">
+    <a class="g-badge" href="#session">
+      <span class="g-dot"></span><span class="g-badge-text">Запись открыта</span>
     </a>
-    <div class="nav__links">
-      <a href="#diagnosis">Диагностика</a>
-      <a href="#avatar">Формула</a>
-      <a href="#program">Программа</a>
-      <a href="#pricing">Форматы</a>
-    </div>
-    <a class="nav__cta" href="#session"><span class="dot"></span>Запись открыта</a>
+    <button class="g-burger" id="g-burger" aria-label="Меню" aria-expanded="false">
+      <svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" width="24" height="22">
+        <path class="gb1" d="M2,4 L22,4"/>
+        <path class="gb2" d="M2,11 L22,11"/>
+        <path class="gb3" d="M2,18 L22,18"/>
+      </svg>
+    </button>
   </div>
 </nav>
+<div class="g-ov" id="g-ov" aria-hidden="true">
+  <nav class="g-ov-links">
+    <a href="/apps.html">Экосистема</a>
+    <a href="/mentorship.html">Наставничество</a>
+    <a href="/vision/">Видение</a>
+  </nav>
+  <a class="g-ov-tg" href="https://t.me/codetimur" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M21.5 4.2 2.9 11.4c-1.3.5-1.3 1.2-.3 1.5l4.7 1.5 1.8 5.5c.2.6.4.8.8.8.4 0 .6-.2.8-.5l2.5-2.4 5.2 3.8c1 .5 1.6.3 1.9-.9l3.4-16c.4-1.5-.5-2.2-1.2-1.5z"/></svg>
+    @codetimur
+  </a>
+</div>
 
 <main id="top">
   <div id="hero-root"></div>
@@ -362,5 +463,35 @@ section + section { border-top: 1px solid var(--line-soft); }
 </script>
 
 <script src="bundle.js" defer></script>
+<script>(function(){
+  var burger = document.getElementById('g-burger');
+  var ov     = document.getElementById('g-ov');
+  var nav    = document.getElementById('g-nav');
+  if(!burger || !ov) return;
+
+  function setOpen(open){
+    burger.classList.toggle('is-open', open);
+    ov.classList.toggle('is-open', open);
+    ov.setAttribute('aria-hidden', !open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  burger.addEventListener('click', function(){ setOpen(!burger.classList.contains('is-open')); });
+
+  ov.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setOpen(false); });
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') setOpen(false);
+  });
+
+  window.addEventListener('scroll', function(){
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  }, {passive:true});
+  nav.classList.toggle('scrolled', window.scrollY > 8);
+})();
+</script>
 </body>
 </html>
