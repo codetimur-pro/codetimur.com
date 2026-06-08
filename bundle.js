@@ -768,7 +768,8 @@ const Avatar = () => {
   const auto = React.useRef({
     stopped: false,
     timer: null,
-    idx: 0
+    idx: 0,
+    inView: false
   }); // start at "mission"
   const ORDER = ["mission", "projects", "roles", "center"];
   const stopAuto = () => {
@@ -819,13 +820,18 @@ const Avatar = () => {
     const step = delay => {
       auto.current.timer = setTimeout(() => {
         if (auto.current.stopped) return;
-        auto.current.idx = (auto.current.idx + 1) % ORDER.length;
-        setActive(ORDER[auto.current.idx]);
+        // Only advance while the section is on screen — never mutate an
+        // off-screen layout (that shifts the whole page). Re-check shortly.
+        if (auto.current.inView) {
+          auto.current.idx = (auto.current.idx + 1) % ORDER.length;
+          setActive(ORDER[auto.current.idx]);
+        }
         step(3000);
       }, delay);
     };
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
+        auto.current.inView = e.isIntersecting;
         if (e.isIntersecting && !started && !auto.current.stopped) {
           started = true;
           step(2000);
@@ -1016,7 +1022,9 @@ const Avatar = () => {
           display: grid;
           grid-template-columns: 1.1fr 1fr;
           gap: 64px;
-          align-items: center;
+          /* start (not center): switching spheres changes the text height, and
+             centering would re-center the whole row → the diagram visibly jumps. */
+          align-items: start;
         }
         @media (max-width: 980px) {
           .avatar__stage { grid-template-columns: 1fr; gap: 8px; }
@@ -1234,9 +1242,11 @@ const Slider = ({
     key: i,
     className: `hslider__tick ${i % 5 === 0 ? 'is-major' : ''}`
   }))), /*#__PURE__*/React.createElement("div", {
-    className: "hslider__sheen",
+    className: "hslider__sheen-clip",
     "aria-hidden": "true"
-  }), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hslider__sheen"
+  })), /*#__PURE__*/React.createElement("div", {
     className: "hslider__fill",
     style: {
       width: `${value}%`
@@ -1253,10 +1263,16 @@ const Slider = ({
   }))), /*#__PURE__*/React.createElement("div", {
     className: "hslider__reveal"
   }, /*#__PURE__*/React.createElement("div", {
+    className: "hslider__reveal-content"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "hslider__reveal-eyebrow"
   }, "\u0410\u043A\u0442\u0438\u0432\u0430\u0446\u0438\u044F \u2014 ", vec.tag), /*#__PURE__*/React.createElement("p", {
     className: "hslider__reveal-text"
-  }, vec.text)));
+  }, vec.text)), /*#__PURE__*/React.createElement("div", {
+    className: "hslider__reveal-placeholder"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hslider__reveal-pdot"
+  }), "\u041F\u043E\u0434\u043D\u0438\u043C\u0438 \u0434\u043E 100%, \u0447\u0442\u043E\u0431\u044B \u0430\u043A\u0442\u0438\u0432\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u043D\u0430\u0432\u044B\u043A")));
 };
 const Vectors = () => {
   const [values, setValues] = React.useState([0, 0, 0]);
@@ -1493,13 +1509,18 @@ const Vectors = () => {
         }
 
         /* ── Draggable affordance: sweeping sheen + pulsing thumb while untouched ── */
+        .hslider__sheen-clip {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;       /* keep the sheen strictly inside the track */
+          pointer-events: none;
+        }
         .hslider__sheen {
           position: absolute;
           top: 0; bottom: 0; left: 0;
           width: 36%;
           background: linear-gradient(90deg, transparent, rgba(232,199,154,0.22), transparent);
-          transform: translateX(-130%);
-          pointer-events: none;
+          transform: translateX(-120%);
           opacity: 0;
         }
         .hslider.is-hint .hslider__sheen {
@@ -1507,9 +1528,9 @@ const Vectors = () => {
           animation: hsliderSheen 2.8s ease-in-out infinite;
         }
         @keyframes hsliderSheen {
-          0%   { transform: translateX(-130%); }
-          55%  { transform: translateX(320%); }
-          100% { transform: translateX(320%); }
+          0%   { transform: translateX(-120%); }
+          55%  { transform: translateX(300%); }
+          100% { transform: translateX(300%); }
         }
         .hslider.is-hint .hslider__thumb {
           animation: hsliderThumbPulse 2.8s ease-in-out infinite;
@@ -1621,25 +1642,49 @@ const Vectors = () => {
           .vec__panel-placeholder { left: 0; }
         }
 
-        /* Per-slider inline reveal — mobile only */
+        /* Per-slider inline reveal — mobile only.
+           The text is always laid out (reserving its space, like the desktop
+           panel), so completing a slider just crossfades placeholder → text.
+           No height animation → nothing janks. */
         .hslider__reveal { display: none; }
         @media (max-width: 880px) {
           /* The shared right-hand panel is redundant on mobile — hide it */
           .vec__panel { display: none; }
 
           .hslider__reveal {
+            display: block;
+            position: relative;
+            margin-top: 12px;
+          }
+          .hslider__reveal-content {
             display: grid;
             gap: 8px;
-            max-height: 0;
             opacity: 0;
-            overflow: hidden;
-            transition: max-height .55s cubic-bezier(.2,.7,.2,1), opacity .5s ease, margin-top .5s ease;
+            transition: opacity .6s ease;
           }
-          .hslider.is-complete .hslider__reveal {
-            max-height: 240px;
-            opacity: 1;
-            margin-top: 6px;
+          .hslider.is-complete .hslider__reveal-content { opacity: 1; }
+
+          .hslider__reveal-placeholder {
+            position: absolute;
+            left: 0; top: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--muted);
+            opacity: 0.55;
+            transition: opacity .4s ease;
+            pointer-events: none;
           }
+          .hslider.is-complete .hslider__reveal-placeholder { opacity: 0; }
+          .hslider__reveal-pdot {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--muted);
+          }
+
           .hslider__reveal-eyebrow {
             font-size: 10px;
             letter-spacing: 0.3em;
@@ -2153,7 +2198,8 @@ const Roles = () => {
   const auto = React.useRef({
     stopped: false,
     timer: null,
-    idx: 0
+    idx: 0,
+    inView: false
   });
   const stopAuto = () => {
     auto.current.stopped = true;
@@ -2173,13 +2219,19 @@ const Roles = () => {
     const step = delay => {
       auto.current.timer = setTimeout(() => {
         if (auto.current.stopped) return;
-        auto.current.idx = (auto.current.idx + 1) % ROLES.length;
-        setActive(auto.current.idx);
+        // Only switch role while the section is visible. Expanding an accordion
+        // row off-screen changes document height and yanks the whole page
+        // (and the fixed nav) up and down. Re-check on the next tick.
+        if (auto.current.inView) {
+          auto.current.idx = (auto.current.idx + 1) % ROLES.length;
+          setActive(auto.current.idx);
+        }
         step(3000);
       }, delay);
     };
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
+        auto.current.inView = e.isIntersecting;
         if (e.isIntersecting && !started && !auto.current.stopped) {
           started = true;
           step(2000);
@@ -2913,31 +2965,31 @@ const Session = () => {
     className: "numeral"
   }, "07", /*#__PURE__*/React.createElement("em", null, " / 07 \u2014 \u0424\u0438\u043D\u0430\u043B\u044C\u043D\u044B\u0439 \u0448\u0430\u0433"))), /*#__PURE__*/React.createElement("h2", {
     className: "session__title reveal"
-  }, "\u0417\u0430\u044F\u0432\u043A\u0430", /*#__PURE__*/React.createElement("br", null), "\u043D\u0430 ", /*#__PURE__*/React.createElement("em", null, "\u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043A\u0443\u044E \u0441\u0435\u0441\u0441\u0438\u044E"), "."), /*#__PURE__*/React.createElement("div", {
+  }, "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043A\u0430\u044F", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("em", null, "\u0441\u0435\u0441\u0441\u0438\u044F")), /*#__PURE__*/React.createElement("div", {
     className: "session__price reveal"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
     className: "session__price-old"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "session__price-old-num"
   }, "25 000 \u20BD"), /*#__PURE__*/React.createElement("span", {
-    className: "session__price-old-line"
-  })), /*#__PURE__*/React.createElement("div", {
     className: "session__price-new"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "session__price-new-num"
-  }, "7 777 \u20BD"), /*#__PURE__*/React.createElement("span", {
-    className: "session__price-new-tag"
-  }, "\u0434\u043B\u044F \u043F\u0435\u0440\u0432\u044B\u0445 \u0437\u0430\u044F\u0432\u043E\u043A"))), /*#__PURE__*/React.createElement("p", {
+  }, "7 777 \u20BD")), /*#__PURE__*/React.createElement("p", {
     className: "session__lede reveal"
-  }, "\u0415\u0441\u043B\u0438 \u043F\u043E\xA0\u0438\u0442\u043E\u0433\u0430\u043C \u0441\u0435\u0441\u0441\u0438\u0438 \u043C\u044B\xA0\u043F\u043E\u043D\u0438\u043C\u0430\u0435\u043C, \u0447\u0442\u043E\xA0\u0442\u044B\xA0\u0438\u0434\u0435\u0430\u043B\u044C\u043D\u043E \u043F\u043E\u0434\u0445\u043E\u0434\u0438\u0448\u044C \u0434\u043B\u044F\xA0\u043D\u0430\u0441\u0442\u0430\u0432\u043D\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u2014 \u044D\u0442\u0430 \u0441\u0443\u043C\u043C\u0430 \u043F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\u044E \u0438\u0434\u0451\u0442 \u0432\xA0\u0437\u0430\u0447\u0451\u0442 \u043E\u043F\u043B\u0430\u0442\u044B \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u044B. \u0410\u0443\u0434\u0438\u0442 \u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u0441\u044F \u0434\u043B\u044F\xA0\u0442\u0435\u0431\u044F \u0431\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u044B\u043C."), /*#__PURE__*/React.createElement("ul", {
+  }, "\u042D\u0442\u043E \u043D\u0435\xA0\u043F\u0440\u043E\u0434\u0430\u044E\u0449\u0430\u044F \u0432\u0441\u0442\u0440\u0435\u0447\u0430, \u0430\xA0\u043F\u043E\u043B\u043D\u043E\u0446\u0435\u043D\u043D\u044B\u0439 \u0430\u0443\u0434\u0438\u0442 \u0442\u0432\u043E\u0435\u0433\u043E \u0442\u0435\u043A\u0443\u0449\u0435\u0433\u043E \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u044F. \u041C\u044B\xA0\u043F\u0440\u043E\u0432\u0435\u0434\u0451\u043C \u0433\u043B\u0443\u0431\u043E\u043A\u0438\u0439 \u0440\u0430\u0437\u0431\u043E\u0440 \u0442\u0432\u043E\u0438\u0445 \u0441\u043B\u0435\u043F\u044B\u0445 \u0437\u043E\u043D \u0438\xA0\u043D\u0430\u0439\u0434\u0451\u043C \u0442\u043E, \u0447\u0442\u043E\xA0\u0442\u043E\u0440\u043C\u043E\u0437\u0438\u0442 \u0442\u0432\u043E\u0439 \u0440\u043E\u0441\u0442 \u043F\u0440\u044F\u043C\u043E\xA0\u0441\u0435\u0439\u0447\u0430\u0441."), /*#__PURE__*/React.createElement("ul", {
     className: "session__points reveal"
   }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
     className: "session__point-dot"
-  }), "90 \u043C\u0438\u043D\u0443\u0442 \u043E\u0434\u0438\u043D \u043D\u0430 \u043E\u0434\u0438\u043D"), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "session__point-text"
+  }, /*#__PURE__*/React.createElement("strong", null, "\u0413\u043B\u0443\u0431\u043E\u043A\u0438\u0439 \u0440\u0430\u0437\u0431\u043E\u0440."), " \u0417\u0430\xA090\xA0\u043C\u0438\u043D\u0443\u0442 \u043B\u0438\u0447\u043D\u043E\u0439 \u0440\u0430\u0431\u043E\u0442\u044B \u043C\u044B\xA0\u0434\u043E\u043A\u043E\u043F\u0430\u0435\u043C\u0441\u044F \u0434\u043E\xA0\u0441\u0443\u0442\u0438 \u0442\u0432\u043E\u0435\u0439 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438, \u0440\u0430\u0437\u0431\u0435\u0440\u0451\u043C \u0438\u0441\u0442\u0438\u043D\u043D\u044B\u0435 \u0437\u0430\u043F\u0440\u043E\u0441\u044B \u0438\xA0\u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0438\u043C \u0441\u043A\u0440\u044B\u0442\u044B\u0435 \u0431\u0430\u0440\u044C\u0435\u0440\u044B.")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
     className: "session__point-dot"
-  }), "\u041A\u0430\u0440\u0442\u0430 \u0442\u0432\u043E\u0438\u0445 \u0441\u0444\u0435\u0440 \u0438\xA0\u0442\u043E\u0447\u0435\u043A \u0431\u043B\u043E\u043A\u0430"), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "session__point-text"
+  }, /*#__PURE__*/React.createElement("strong", null, "\u0414\u0432\u0430 \u0432\u0435\u043A\u0442\u043E\u0440\u0430 \u0440\u0435\u0448\u0435\u043D\u0438\u044F."), " \u041C\u044B\xA0\u0432\u044B\u044F\u0432\u0438\u043C, \u043D\u0430\u0434\xA0\u0447\u0435\u043C \u043A\u043E\u043D\u043A\u0440\u0435\u0442\u043D\u043E \u043D\u0443\u0436\u043D\u043E \u0440\u0430\u0431\u043E\u0442\u0430\u0442\u044C \u0432\u043D\u0443\u0442\u0440\u0438 (\u0442\u0432\u043E\u0451 \u043C\u044B\u0448\u043B\u0435\u043D\u0438\u0435 \u0438\xA0\u0442\u0435\u043D\u0435\u0432\u044B\u0435 \u0441\u0442\u043E\u0440\u043E\u043D\u044B) \u0438\xA0\u043A\u0430\u043A\u043E\u0435 \u043E\u0434\u043D\u043E \u0442\u043E\u0447\u043D\u043E\u0435 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043A\u043E\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u043D\u0443\u0436\u043D\u043E \u0441\u043E\u0432\u0435\u0440\u0448\u0438\u0442\u044C \u0432\u043E\xA0\u0432\u043D\u0435\u0448\u043D\u0435\u043C \u043C\u0438\u0440\u0435.")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
     className: "session__point-dot"
-  }), "\u0420\u0435\u0448\u0435\u043D\u0438\u0435, \u043F\u043E\xA0\u043A\u0430\u043A\u043E\u043C\u0443 \u043F\u0443\u0442\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u044C\u0441\u044F \u0434\u0430\u043B\u044C\u0448\u0435"))), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "session__point-text"
+  }, /*#__PURE__*/React.createElement("strong", null, "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0439 \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442."), " \u0422\u044B\xA0\u043D\u0435\xA0\u043F\u0440\u043E\u0441\u0442\u043E \u0443\u0439\u0434\u0451\u0448\u044C \u0441\xA0\u043F\u043B\u0430\u043D\u043E\u043C. \u042F\xA0\u043F\u043E\u0434\u0431\u0435\u0440\u0443 \u0434\u043B\u044F\xA0\u0442\u0435\u0431\u044F \u043E\u0434\u043D\u0443 \u0440\u0435\u0433\u0443\u043B\u044F\u0440\u043D\u0443\u044E \u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0443, \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E \u044D\u0444\u0444\u0435\u043A\u0442\u0438\u0432\u043D\u0443\u044E \u0438\u043C\u0435\u043D\u043D\u043E \u0434\u043B\u044F\xA0\u0442\u0432\u043E\u0435\u0439 \u0442\u0435\u043A\u0443\u0449\u0435\u0439 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438."))), /*#__PURE__*/React.createElement("p", {
+    className: "session__footnote reveal"
+  }, "\u0415\u0441\u043B\u0438 \u043F\u043E\xA0\u0438\u0442\u043E\u0433\u0430\u043C \u0430\u0443\u0434\u0438\u0442\u0430 \u043C\u044B\xA0\u043E\u0431\u0430 \u043F\u043E\u0439\u043C\u0451\u043C, \u0447\u0442\u043E\xA0\u0433\u043E\u0442\u043E\u0432\u044B \u043A\xA0\u0434\u043E\u043B\u0433\u043E\u0441\u0440\u043E\u0447\u043D\u043E\u0439 \u0440\u0430\u0431\u043E\u0442\u0435 \u0432\xA0\u043D\u0430\u0441\u0442\u0430\u0432\u043D\u0438\u0447\u0435\u0441\u0442\u0432\u0435\xA0\u2014 \u0441\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u044D\u0442\u043E\u0439 \u0441\u0435\u0441\u0441\u0438\u0438 \u0431\u0443\u0434\u0435\u0442 \u043F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\u044E \u0432\u044B\u0447\u0442\u0435\u043D\u0430 \u0438\u0437\xA0\u043E\u0441\u043D\u043E\u0432\u043D\u043E\u0439 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u044B.")), /*#__PURE__*/React.createElement("div", {
     className: "session__form-wrap reveal"
   }, /*#__PURE__*/React.createElement("div", {
     className: "session__form-card"
@@ -3070,87 +3122,92 @@ const Session = () => {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 64px;
-          align-items: start;
+          /* Centre the text block vertically against the form card on the right */
+          align-items: center;
         }
         @media (max-width: 980px) {
-          .session__inner { grid-template-columns: 1fr; gap: 40px; }
+          .session__inner { grid-template-columns: 1fr; gap: 40px; align-items: start; }
         }
 
-        .session__copy { display: grid; gap: 24px; }
+        .session__copy { display: grid; gap: 26px; max-width: 540px; }
         .session__title {
           font-family: var(--display);
-          font-size: clamp(40px, 5.4vw, 76px);
+          font-size: clamp(34px, 3.6vw, 54px);
           font-weight: 300;
-          line-height: 1.04;
+          line-height: 1.05;
           color: var(--text);
+          letter-spacing: -0.005em;
         }
         .session__title em {
           font-style: italic;
           color: var(--gold-light);
         }
 
+        /* Compact discount block right under the title */
         .session__price {
-          display: flex; align-items: flex-end; gap: 28px;
-          padding: 28px 0;
-          border-top: 1px solid var(--line-soft);
-          border-bottom: 1px solid var(--line-soft);
+          display: flex; align-items: baseline; gap: 18px;
         }
-        .session__price-old { position: relative; }
-        .session__price-old-num {
+        .session__price-old {
           font-family: var(--display);
-          font-size: clamp(22px, 1.8vw, 28px);
+          font-size: clamp(18px, 1.6vw, 22px);
           color: var(--muted);
           font-weight: 300;
+          text-decoration: line-through;
+          text-decoration-color: rgba(138,130,120,0.75);
         }
-        .session__price-old-line {
-          position: absolute;
-          left: -4px; right: -4px;
-          top: 50%;
-          height: 1px;
-          background: var(--gold);
-          transform: rotate(-8deg);
-        }
-        .session__price-new { display: grid; gap: 6px; }
-        .session__price-new-num {
+        .session__price-new {
           font-family: var(--display);
-          font-size: clamp(48px, 6vw, 84px);
+          font-size: clamp(40px, 5vw, 62px);
           color: var(--gold-light);
           font-weight: 300;
           line-height: 1;
           letter-spacing: -0.01em;
           text-shadow: 0 0 40px rgba(232,199,154,0.3);
         }
-        .session__price-new-tag {
-          font-size: 11px;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-          color: var(--gold);
-        }
 
         .session__lede {
           color: var(--text);
           font-size: 16px;
           line-height: 1.75;
-          max-width: 54ch;
+          max-width: 52ch;
         }
 
         .session__points {
           list-style: none;
           padding: 0; margin: 0;
           display: flex; flex-direction: column;
-          gap: 12px;
+          gap: 18px;
         }
         .session__points li {
-          display: flex; align-items: center; gap: 14px;
-          color: var(--text);
-          font-size: 14px;
-          letter-spacing: 0.04em;
+          display: flex; align-items: flex-start; gap: 14px;
         }
         .session__point-dot {
-          width: 5px; height: 5px;
+          width: 6px; height: 6px;
           background: var(--gold);
           border-radius: 50%;
           flex-shrink: 0;
+          margin-top: 9px;
+          box-shadow: 0 0 10px rgba(212,165,116,0.6);
+        }
+        .session__point-text {
+          color: var(--muted);
+          font-size: 15px;
+          line-height: 1.7;
+        }
+        .session__point-text strong {
+          color: var(--text);
+          font-weight: 600;
+        }
+
+        .session__footnote {
+          font-family: var(--body);
+          font-style: italic;
+          font-size: 13px;
+          line-height: 1.65;
+          color: var(--muted);
+          max-width: 52ch;
+          padding-top: 6px;
+          border-top: 1px solid var(--line-soft);
         }
 
         .session__form-card {
