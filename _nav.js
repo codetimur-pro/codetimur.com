@@ -1,20 +1,22 @@
 (function(){
-  var burger = document.getElementById('g-burger');
-  var ov     = document.getElementById('g-ov');
-  var nav    = document.getElementById('g-nav');
-  if(!burger || !ov) return;
+  var burger   = document.getElementById('g-burger');
+  var drawer   = document.getElementById('g-drawer');
+  var backdrop = document.getElementById('g-backdrop');
+  var nav      = document.getElementById('g-nav');
+  if(!burger || !drawer) return;
 
   function setOpen(open){
     burger.classList.toggle('is-open', open);
-    ov.classList.toggle('is-open', open);
-    ov.setAttribute('aria-hidden', !open);
+    drawer.classList.toggle('is-open', open);
+    if(backdrop) backdrop.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', open);
     document.body.style.overflow = open ? 'hidden' : '';
   }
 
   burger.addEventListener('click', function(){ setOpen(!burger.classList.contains('is-open')); });
+  if(backdrop) backdrop.addEventListener('click', function(){ setOpen(false); });
 
-  ov.querySelectorAll('a').forEach(function(a){
+  drawer.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', function(){ setOpen(false); });
   });
 
