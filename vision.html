@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Презентация Покори Олимп — Экосистема и Видение будущего</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #05060e;
+      color: #ECEAE3;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      height: 46px;
+      background: #08090f;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      flex-shrink: 0;
+      z-index: 200;
+      gap: 12px;
+    }
+
+    .tb-btn {
+      height: 32px;
+      padding: 0 14px;
+      background: rgba(207,169,107,.1);
+      border: 1px solid rgba(207,169,107,.25);
+      border-radius: 5px;
+      color: #CFA96B;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .tb-btn:hover { background: rgba(207,169,107,.2); }
+    .tb-btn.active {
+      background: rgba(207,169,107,.18);
+      border-color: rgba(207,169,107,.4);
+    }
+
+    .tb-icon { font-size: 14px; line-height: 1; }
+
+    .topbar-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .topbar-title {
+      font-size: 12px;
+      color: rgba(230,193,115,.4);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .topbar-slide {
+      font-size: 12px;
+      color: rgba(255,255,255,.25);
+    }
+
+    /* ── Content area ── */
+    .content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ── Deck (iframe) ── */
+    .deck-side {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    #deck-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #05060e;
+    }
+
+    /* ── Notes panel ── */
+    .notes-side {
+      width: 400px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: #09091a;
+      border-left: 1px solid rgba(255,255,255,.07);
+      overflow: hidden;
+      transition: width 0.3s cubic-bezier(.4,0,.2,1),
+                  opacity 0.25s ease;
+    }
+
+    .notes-side.hidden {
+      width: 0;
+      opacity: 0;
+      border-left: none;
+    }
+
+    .notes-inner {
+      width: 400px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .notes-heading {
+      padding: 14px 20px 12px;
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(230,193,115,.5);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      flex-shrink: 0;
+    }
+
+    .notes-body {
+      flex: 1;
+      padding: 22px 20px;
+      overflow-y: auto;
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: #8a909e;
+      transition: opacity 0.18s ease;
+    }
+
+    .notes-body.fading { opacity: 0; }
+
+    .notes-footer {
+      padding: 11px 20px;
+      font-size: 11px;
+      color: rgba(255,255,255,.2);
+      border-top: 1px solid rgba(255,255,255,.04);
+      flex-shrink: 0;
+    }
+
+    .notes-footer span {
+      color: rgba(207,169,107,.45);
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="tb-btn" id="btn-rail" title="Скрыть/показать панель слайдов">
+    <span class="tb-icon">⊟</span>
+    <span id="rail-label">Скрыть панель слайдов</span>
+  </button>
+
+  <div class="topbar-center">
+    <span class="topbar-title">Покори Олимп · Режим спикера</span>
+    <span class="topbar-slide">Слайд <strong id="slide-num">1</strong></span>
+  </div>
+
+  <button class="tb-btn" id="btn-notes" title="Показать/скрыть заметки">
+    <span id="notes-label">Показать заметки</span>
+    <span class="tb-icon">⊞</span>
+  </button>
+</div>
+
+<div class="content">
+  <div class="deck-side">
+    <iframe id="deck-frame" src="deck.html"></iframe>
+  </div>
+
+  <div class="notes-side hidden" id="notes-side">
+    <div class="notes-inner">
+      <div class="notes-heading">Заметки спикера</div>
+      <div class="notes-body" id="notes-body">—</div>
+      <div class="notes-footer">
+        <span id="slide-label-text"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var NOTES = [];
+var currentIndex = -1;
+
+function loadNotesFromIframe(iframeDoc) {
+  try {
+    var tag = iframeDoc.getElementById('speaker-notes');
+    if (!tag) return;
+    var parsed = JSON.parse(tag.textContent || '[]');
+    if (Array.isArray(parsed) && parsed.length) {
+      NOTES = parsed;
+    }
+  } catch (e) { }
+}
+
+function setNotes(index, label) {
+  if (index === currentIndex) return;
+  currentIndex = index;
+
+  var body  = document.getElementById('notes-body');
+  var numEl = document.getElementById('slide-num');
+  var lblEl = document.getElementById('slide-label-text');
+
+  body.classList.add('fading');
+
+  setTimeout(function() {
+    var text = NOTES[index];
+    body.textContent = (text && text.trim()) ? text : '—';
+    if (numEl) numEl.textContent = index + 1;
+    if (lblEl) lblEl.textContent = label || '';
+    body.classList.remove('fading');
+  }, 170);
+}
+
+var iframe = document.getElementById('deck-frame');
+
+function getLabelFromIframe(index) {
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    if (!doc || !doc.body) return '';
+    var sections = doc.querySelectorAll('deck-stage > section');
+    var sec = sections[index];
+    return sec ? (sec.getAttribute('data-label') || '') : '';
+  } catch (e) { return ''; }
+}
+
+function attachIframeListener(iframeWin) {
+  iframeWin.addEventListener('message', function(e) {
+    if (!e.data || typeof e.data.slideIndexChanged !== 'number') return;
+    var idx = e.data.slideIndexChanged;
+    setNotes(idx, getLabelFromIframe(idx));
+  });
+}
+
+iframe.addEventListener('load', function() {
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    loadNotesFromIframe(doc);
+    attachIframeListener(iframe.contentWindow);
+  } catch (e) { }
+  startFallbackPolling();
+});
+
+var pollStarted = false;
+function startFallbackPolling() {
+  if (pollStarted) return;
+  pollStarted = true;
+  var pollTimer = setInterval(function() {
+    try {
+      var doc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!doc || !doc.body) return;
+      var sections = doc.querySelectorAll('deck-stage > section');
+      if (!sections.length) return;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].hasAttribute('data-deck-active')) {
+          setNotes(i, sections[i].getAttribute('data-label') || '');
+          clearInterval(pollTimer);
+          break;
+        }
+      }
+    } catch (e) { }
+  }, 250);
+}
+
+startFallbackPolling();
+
+var railHidden = false;
+
+document.getElementById('btn-rail').addEventListener('click', function() {
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    var stage = doc.querySelector('deck-stage');
+    if (!stage) return;
+
+    railHidden = !railHidden;
+
+    if (railHidden) {
+      stage.setAttribute('no-rail', '');
+      document.getElementById('rail-label').textContent = 'Показать панель слайдов';
+      document.getElementById('btn-rail').classList.add('active');
+    } else {
+      stage.removeAttribute('no-rail');
+      document.getElementById('rail-label').textContent = 'Скрыть панель слайдов';
+      document.getElementById('btn-rail').classList.remove('active');
+    }
+  } catch (e) { console.warn('Rail toggle error:', e); }
+});
+
+var notesSide = document.getElementById('notes-side');
+var notesVisible = false;
+
+document.getElementById('btn-notes').addEventListener('click', function() {
+  notesVisible = !notesVisible;
+
+  if (notesVisible) {
+    notesSide.classList.remove('hidden');
+    document.getElementById('notes-label').textContent = 'Скрыть заметки';
+    document.getElementById('btn-notes').classList.add('active');
+  } else {
+    notesSide.classList.add('hidden');
+    document.getElementById('notes-label').textContent = 'Показать заметки';
+    document.getElementById('btn-notes').classList.remove('active');
+  }
+});
+</script>
+
+</body>
+</html>
