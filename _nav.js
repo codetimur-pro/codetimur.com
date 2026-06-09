@@ -28,4 +28,14 @@
     nav.classList.toggle('scrolled', window.scrollY > 8);
   }, {passive:true});
   nav.classList.toggle('scrolled', window.scrollY > 8);
+
+  // highlight active page in drawer
+  var path = window.location.pathname;
+  drawer.querySelectorAll('.g-drawer-links a').forEach(function(a){
+    var h = a.getAttribute('href');
+    var base = h.replace(/\.html$/, '').replace(/\/$/, '');
+    if(path === h || (base.length > 1 && path.replace(/\.html$/, '').startsWith(base))){
+      a.classList.add('is-active');
+    }
+  });
 })();
