@@ -65,7 +65,7 @@ function MorphFX({ active }) {
           sy: cy0 + Math.sin(ang) * rad,
           tx: Math.random() * w,
           ty: Math.random() * h * 0.50,
-          r: U.rand(0.5, 1.8),
+          r: U.rand(0.4, 1.0),
           ph: Math.random() * 6.28,
           sp: U.rand(0.5, 1.3),
           delay: Math.random() * 0.9,
@@ -86,9 +86,9 @@ function MorphFX({ active }) {
         [cx0 - pR * 0.5, cy0 + pR * 0.866],
       ];
       const mV = [
-        [w * 0.514, h * 0.253],
-        [w * 0.861, h + 4],
-        [w * 0.167, h + 4],
+        [w * 0.514, h * 0.355],
+        [w * 0.965, h + 4],
+        [w * 0.035, h + 4],
       ];
       const v = pV.map((p, i) => [U.lerp(p[0], mV[i][0], mp), U.lerp(p[1], mV[i][1], mp)]);
 
@@ -97,9 +97,10 @@ function MorphFX({ active }) {
 
       ctx.save();
       const bg = ctx.createLinearGradient(v[0][0], v[0][1], (v[1][0] + v[2][0]) * 0.5, h);
-      bg.addColorStop(0, 'rgba(30,28,42,1.0)');
-      bg.addColorStop(0.45, 'rgba(20,18,30,1.0)');
-      bg.addColorStop(1, 'rgba(10,9,15,1.0)');
+      bg.addColorStop(0,    '#272231');
+      bg.addColorStop(0.28, '#1c1926');
+      bg.addColorStop(0.68, '#15131c');
+      bg.addColorStop(1,    '#100f15');
       ctx.beginPath();
       ctx.moveTo(v[0][0], v[0][1]);
       ctx.lineTo(v[1][0], v[1][1]);
@@ -119,12 +120,31 @@ function MorphFX({ active }) {
       }
       const ra = U.clamp((mp - 0.25) / 0.75, 0, 1);
       if (ra > 0.01) {
+        // Warm ridge glow along both slopes (apps/ GL edge)
+        ctx.shadowColor = 'rgba(232,199,154,0.18)'; ctx.shadowBlur = 11 * ra;
+        ctx.strokeStyle = `rgba(232,199,154,${0.16 * ra})`;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(v[2][0], v[2][1]); ctx.lineTo(v[0][0], v[0][1]); ctx.lineTo(v[1][0], v[1][1]);
+        ctx.stroke();
+        // Cold highlight on the upper slopes near the peak (apps/ COLD edge)
+        ctx.shadowColor = 'rgba(150,180,225,0.16)'; ctx.shadowBlur = 8 * ra;
+        ctx.strokeStyle = `rgba(150,180,225,${0.22 * ra})`;
+        ctx.lineWidth = 1.2;
+        const km = 0.34;
+        ctx.beginPath();
+        ctx.moveTo(U.lerp(v[0][0], v[2][0], km), U.lerp(v[0][1], v[2][1], km));
+        ctx.lineTo(v[0][0], v[0][1]);
+        ctx.lineTo(U.lerp(v[0][0], v[1][0], km), U.lerp(v[0][1], v[1][1], km));
+        ctx.stroke();
         ctx.shadowBlur = 0;
-        ctx.lineWidth = 0.8;
-        ctx.strokeStyle = `rgba(195,190,182,${0.15 * ra})`;
-        ctx.beginPath(); ctx.moveTo(v[0][0], v[0][1]); ctx.lineTo(v[1][0], v[1][1]); ctx.stroke();
-        ctx.strokeStyle = `rgba(195,190,182,${0.12 * ra})`;
-        ctx.beginPath(); ctx.moveTo(v[0][0], v[0][1]); ctx.lineTo(v[2][0], v[2][1]); ctx.stroke();
+        // Peak highlight bloom
+        const pg = ctx.createRadialGradient(v[0][0], v[0][1], 0, v[0][0], v[0][1], h * 0.11);
+        pg.addColorStop(0,   `rgba(255,248,235,${0.16 * ra})`);
+        pg.addColorStop(0.2, `rgba(232,199,154,${0.06 * ra})`);
+        pg.addColorStop(1,   'rgba(232,199,154,0)');
+        ctx.fillStyle = pg;
+        ctx.beginPath(); ctx.arc(v[0][0], v[0][1], h * 0.11, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
 
@@ -147,13 +167,19 @@ function MorphFX({ active }) {
         const tw = 0.55 + 0.45 * Math.sin(t * s.sp + s.ph);
         const a = sp * tw;
         if (a < 0.01) continue;
-        const gr = ctx.createRadialGradient(x, y, 0, x, y, s.r * 5);
-        gr.addColorStop(0, `rgba(255,247,230,${0.75 * a})`);
-        gr.addColorStop(1, 'rgba(221,189,125,0)');
-        ctx.fillStyle = gr;
-        ctx.beginPath(); ctx.arc(x, y, s.r * 5, 0, Math.PI * 2); ctx.fill();
+        // Halo glows during the morph, then fades out as the star settles,
+        // so each one ends up as a small clean dot (not a big glowy ball).
+        const haloR = s.r * 5 * (1 - sp);
+        if (haloR > 0.5) {
+          const gr = ctx.createRadialGradient(x, y, 0, x, y, haloR);
+          gr.addColorStop(0, `rgba(255,247,230,${0.6 * a * (1 - sp)})`);
+          gr.addColorStop(1, 'rgba(221,189,125,0)');
+          ctx.fillStyle = gr;
+          ctx.beginPath(); ctx.arc(x, y, haloR, 0, Math.PI * 2); ctx.fill();
+        }
+        // Small solid dot core (apps/ bg-star look)
         ctx.beginPath(); ctx.arc(x, y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,250,238,${a})`; ctx.fill();
+        ctx.fillStyle = `rgba(255,248,235,${a})`; ctx.fill();
       }
     },
     deps: [active],
@@ -217,7 +243,7 @@ function ConstellSky({ active, constel, setConstel }) {
       meteor: null,
       next: 2 + Math.random() * 3,
       tw: CONST_IDS.reduce((m, id) => {
-        m[id] = CONSTELLATIONS[id].stars.map(() => ({ ph: Math.random() * 6.28, sp: U.rand(0.5, 1.3) }));
+        m[id] = CONSTELLATIONS[id].stars.map(() => ({ ph: Math.random() * 6.28, sp: U.rand(1.8, 2.8) }));
         return m;
       }, {}),
     }),
@@ -252,7 +278,7 @@ function ConstellSky({ active, constel, setConstel }) {
 
         for (let i = 0; i < px.length; i++) {
           const tws = st.tw[id][i];
-          const tw = 0.62 + 0.38 * Math.sin(t * tws.sp + tws.ph);
+          const tw = 0.55 + 0.45 * Math.sin(t * tws.sp + tws.ph);
           const r = 3.0 + 1.4 * p;
           glowDot(ctx, px[i][0], px[i][1], r, r * (3.2 + 2.0 * p), tw * (0.62 + 0.38 * p));
           if (i === C.key && p < 0.4) {

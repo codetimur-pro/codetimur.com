@@ -245,6 +245,13 @@ html, body {
   to   { transform: scale(1); }
 }
 
+/* Scene 4 — deep-blue night sky copied from the apps/ ecosystem page */
+.scene.s4 {
+  background:
+    radial-gradient(120% 55% at 50% 86%, rgba(212,165,116,0.05), transparent 62%),
+    linear-gradient(180deg, #020109 0%, #060513 38%, #08070e 70%, #0d0c10 100%);
+}
+
 /* shared content column */
 .scene-inner {
   position: relative;
