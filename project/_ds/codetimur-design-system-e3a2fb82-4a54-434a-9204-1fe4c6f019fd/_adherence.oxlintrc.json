@@ -1,0 +1,256 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/buttons/**",
+              "components/feedback/**",
+              "components/surfaces/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Cormorant Garamond|Manrope))/i]",
+        "message": "Font not provided by the design system. Available: Cormorant Garamond, Manrope."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|size|className|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: children, variant, size, className."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:default|accent|muted)$/]",
+        "message": "<Badge> variant must be one of 'default' | 'accent' | 'muted'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md)$/]",
+        "message": "<Badge> size must be one of 'sm' | 'md'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|size|disabled|icon|showArrow|onClick|type|className|fullWidth|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: children, variant, size, disabled, icon, showArrow, onClick, type, className, fullWidth."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:outline|solid|ghost)$/]",
+        "message": "<Button> variant must be one of 'outline' | 'solid' | 'ghost'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md|lg)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md' | 'lg'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='type'] > Literal[value!=/^(?:button|submit|reset)$/]",
+        "message": "<Button> type must be one of 'button' | 'submit' | 'reset'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|glow|hoverEffect|className|style|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: children, variant, glow, hoverEffect, className, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:default|elevated|outlined)$/]",
+        "message": "<Card> variant must be one of 'default' | 'elevated' | 'outlined'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Dot'] > JSXAttribute > JSXIdentifier[name!=/^(?:animated|size|className|key|ref|className|style|children)$/]",
+        "message": "<Dot> doesn't accept that prop. Declared props: animated, size, className."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Badge": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "Dot": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent-deep",
+      "--accent-light",
+      "--accent-primary",
+      "--bg-primary",
+      "--bg-secondary",
+      "--bg-tertiary",
+      "--black",
+      "--black-2",
+      "--black-3",
+      "--body-size",
+      "--border-accent",
+      "--border-default",
+      "--caption-size",
+      "--container-max",
+      "--container-padding-lg",
+      "--container-padding-md",
+      "--container-padding-sm",
+      "--duration-fast",
+      "--duration-normal",
+      "--duration-slow",
+      "--duration-slower",
+      "--ease-button",
+      "--ease-smooth",
+      "--eyebrow-size",
+      "--font-body",
+      "--font-display",
+      "--gap-2xl",
+      "--gap-3xl",
+      "--gap-4xl",
+      "--gap-5xl",
+      "--gap-6xl",
+      "--gap-lg",
+      "--gap-md",
+      "--gap-sm",
+      "--gap-xl",
+      "--gap-xs",
+      "--gold",
+      "--gold-deep",
+      "--gold-light",
+      "--gold-soft",
+      "--h1-size",
+      "--h2-size",
+      "--h3-size",
+      "--label-size",
+      "--lede-size",
+      "--lh-body",
+      "--lh-heading",
+      "--lh-lede",
+      "--lh-subheading",
+      "--lh-tight",
+      "--line",
+      "--line-darker",
+      "--line-soft",
+      "--ls-caption",
+      "--ls-eyebrow",
+      "--ls-label",
+      "--ls-normal",
+      "--ls-tight",
+      "--ls-wide",
+      "--radius-full",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-sharp",
+      "--radius-sm",
+      "--section-padding-v",
+      "--text",
+      "--text-muted",
+      "--text-primary",
+      "--text-secondary"
+    ],
+    "tokenKinds": {
+      "--black": "color",
+      "--black-2": "color",
+      "--black-3": "color",
+      "--gold": "color",
+      "--gold-light": "color",
+      "--gold-deep": "color",
+      "--gold-soft": "color",
+      "--text": "font",
+      "--text-muted": "font",
+      "--line": "color",
+      "--line-soft": "color",
+      "--line-darker": "color",
+      "--bg-primary": "color",
+      "--bg-secondary": "color",
+      "--bg-tertiary": "color",
+      "--text-primary": "font",
+      "--text-secondary": "font",
+      "--accent-primary": "color",
+      "--accent-light": "color",
+      "--accent-deep": "color",
+      "--border-default": "color",
+      "--border-accent": "color",
+      "--font-display": "font",
+      "--font-body": "font",
+      "--h1-size": "spacing",
+      "--h2-size": "spacing",
+      "--h3-size": "spacing",
+      "--lede-size": "spacing",
+      "--body-size": "spacing",
+      "--eyebrow-size": "spacing",
+      "--label-size": "spacing",
+      "--caption-size": "spacing",
+      "--ls-tight": "spacing",
+      "--ls-normal": "spacing",
+      "--ls-wide": "spacing",
+      "--ls-eyebrow": "spacing",
+      "--ls-label": "spacing",
+      "--ls-caption": "spacing",
+      "--lh-tight": "spacing",
+      "--lh-heading": "spacing",
+      "--lh-subheading": "spacing",
+      "--lh-body": "spacing",
+      "--lh-lede": "spacing",
+      "--container-max": "spacing",
+      "--container-padding-lg": "spacing",
+      "--container-padding-md": "spacing",
+      "--container-padding-sm": "spacing",
+      "--section-padding-v": "spacing",
+      "--gap-xs": "spacing",
+      "--gap-sm": "spacing",
+      "--gap-md": "spacing",
+      "--gap-lg": "spacing",
+      "--gap-xl": "spacing",
+      "--gap-2xl": "spacing",
+      "--gap-3xl": "spacing",
+      "--gap-4xl": "spacing",
+      "--gap-5xl": "spacing",
+      "--gap-6xl": "spacing",
+      "--radius-sharp": "radius",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-full": "radius",
+      "--ease-smooth": "other",
+      "--ease-button": "other",
+      "--duration-fast": "other",
+      "--duration-normal": "other",
+      "--duration-slow": "other",
+      "--duration-slower": "other"
+    },
+    "fontFamilies": [
+      "Cormorant Garamond",
+      "Manrope"
+    ]
+  }
+}

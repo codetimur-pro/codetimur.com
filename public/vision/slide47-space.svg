@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <radialGradient id="orb" cx="54%" cy="50%" r="46%">
+      <stop offset="0%"   stop-color="#d98830" stop-opacity=".82"/>
+      <stop offset="30%"  stop-color="#a05e1a" stop-opacity=".55"/>
+      <stop offset="62%"  stop-color="#3d1e06" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orb-ring" cx="54%" cy="50%" r="46%">
+      <stop offset="76%"  stop-color="#c8821e" stop-opacity="0"/>
+      <stop offset="90%"  stop-color="#c8821e" stop-opacity=".18"/>
+      <stop offset="100%" stop-color="#c8821e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#f5d880" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#f5d880" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5"/>
+    </filter>
+  </defs>
+
+  <!-- Deep space background -->
+  <rect width="1080" height="1080" fill="#07050d"/>
+
+  <!-- Stars -->
+  <g fill="#e8dcc8" opacity=".25">
+    <circle cx="112" cy="88"  r="1.2"/><circle cx="298" cy="42"  r=".9"/>
+    <circle cx="520" cy="72"  r="1.3"/><circle cx="780" cy="55"  r="1.0"/>
+    <circle cx="940" cy="130" r="1.2"/><circle cx="68"  cy="250" r=".8"/>
+    <circle cx="180" cy="340" r="1.0"/><circle cx="62"  cy="480" r="1.1"/>
+    <circle cx="95"  cy="640" r=".9"/><circle cx="155" cy="760" r="1.2"/>
+    <circle cx="230" cy="900" r=".8"/><circle cx="400" cy="970" r="1.1"/>
+    <circle cx="650" cy="990" r="1.0"/><circle cx="870" cy="960" r="1.3"/>
+    <circle cx="1010" cy="880" r=".9"/><circle cx="1050" cy="640" r="1.1"/>
+    <circle cx="1025" cy="380" r="1.0"/><circle cx="995" cy="200" r="1.2"/>
+    <circle cx="820" cy="155" r=".8"/><circle cx="688" cy="36"  r="1.1"/>
+    <circle cx="124" cy="920" r="1.0"/><circle cx="44"  cy="750" r=".8"/>
+    <circle cx="32"  cy="155" r="1.1"/><circle cx="860" cy="800" r=".9"/>
+    <circle cx="920" cy="450" r="1.2"/><circle cx="740" cy="900" r=".7"/>
+  </g>
+
+  <!-- Main orb glow -->
+  <ellipse cx="582" cy="520" rx="498" ry="468" fill="url(#orb)"/>
+  <!-- Subtle ring at edge -->
+  <ellipse cx="582" cy="520" rx="498" ry="468" fill="url(#orb-ring)"/>
+
+  <!-- Grid cells — 3×3 -->
+  <g fill="none" stroke="#d4962e" stroke-width="1.2" opacity=".55">
+    <!-- Row 0 -->
+    <rect x="291" y="266" width="188" height="162"/>
+    <rect x="488" y="266" width="188" height="162"/>
+    <rect x="685" y="266" width="188" height="162"/>
+    <!-- Row 1 -->
+    <rect x="291" y="437" width="188" height="162"/>
+    <rect x="488" y="437" width="188" height="162"/>
+    <rect x="685" y="437" width="188" height="162"/>
+    <!-- Row 2 -->
+    <rect x="291" y="608" width="188" height="162"/>
+    <rect x="488" y="608" width="188" height="162"/>
+    <rect x="685" y="608" width="188" height="162"/>
+  </g>
+
+  <!-- Diagonal cell highlights -->
+  <g opacity=".14">
+    <rect x="291" y="266" width="188" height="162" fill="#d4962e"/>
+    <rect x="488" y="437" width="188" height="162" fill="#d4962e"/>
+    <rect x="685" y="608" width="188" height="162" fill="#d4962e"/>
+  </g>
+
+  <!-- Connector lines -->
+  <g stroke="#d4962e" stroke-width="1" opacity=".32" stroke-dasharray="7 5">
+    <line x1="376" y1="340" x2="582" y2="518"/>
+    <line x1="772" y1="340" x2="582" y2="518"/>
+    <line x1="376" y1="692" x2="582" y2="518"/>
+    <line x1="772" y1="692" x2="582" y2="518"/>
+    <line x1="376" y1="340" x2="772" y2="340"/>
+    <line x1="376" y1="692" x2="772" y2="692"/>
+  </g>
+
+  <!-- Node dots -->
+  <!-- (0,0) -->
+  <circle cx="376" cy="340" r="22" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="376" cy="340" r="4.5" fill="#f8e8b0"/>
+
+  <!-- (0,2) -->
+  <circle cx="772" cy="340" r="22" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="772" cy="340" r="4.5" fill="#f8e8b0"/>
+
+  <!-- (1,1) center — slightly larger -->
+  <circle cx="582" cy="518" r="28" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="582" cy="518" r="5.5" fill="#fff5cc"/>
+
+  <!-- (2,0) -->
+  <circle cx="376" cy="692" r="22" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="376" cy="692" r="4.5" fill="#f8e8b0"/>
+
+  <!-- (2,2) -->
+  <circle cx="772" cy="692" r="22" fill="url(#dot-glow)" filter="url(#soft)"/>
+  <circle cx="772" cy="692" r="4.5" fill="#f8e8b0"/>
+</svg>
