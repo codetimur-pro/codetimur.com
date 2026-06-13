@@ -5,18 +5,17 @@ import * as U from '../lib/utils';
 
 const e = React.createElement;
 
+// Copied from apps/index.html drawStars(): GL/GOLD halo + SOLID core circle.
+// The solid (non-gradient) core is what gives the clean, hard-edged look.
 function glowDot(ctx, x, y, r, glowR, alpha) {
   const g = ctx.createRadialGradient(x, y, 0, x, y, glowR);
-  g.addColorStop(0,    `rgba(245,220,165,${0.52 * alpha})`);
-  g.addColorStop(0.30, `rgba(220,185,110,${0.28 * alpha})`);
-  g.addColorStop(1,    'rgba(200,160,80,0)');
+  g.addColorStop(0,   `rgba(232,199,154,${0.40 * alpha})`);
+  g.addColorStop(0.4, `rgba(212,165,116,${0.12 * alpha})`);
+  g.addColorStop(1,   'rgba(212,165,116,0)');
   ctx.fillStyle = g;
   ctx.beginPath(); ctx.arc(x, y, glowR, 0, Math.PI * 2); ctx.fill();
-  const cr = ctx.createRadialGradient(x, y, 0, x, y, r);
-  cr.addColorStop(0,    `rgba(252,232,185,${alpha * 0.90})`);
-  cr.addColorStop(0.55, `rgba(238,205,145,${alpha * 0.65})`);
-  cr.addColorStop(1,    `rgba(215,175,100,${alpha * 0.10})`);
-  ctx.fillStyle = cr;
+  // Solid core — clean round circle (rgba 255,248,235 = apps SNOW)
+  ctx.fillStyle = `rgba(255,248,235,${alpha})`;
   ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
 }
 
