@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useFxCanvas } from './useFxCanvas';
 import { rand, clamp, easeOutCubic } from './utils';
 
-// Exact glowDot from Scene4 — bright core + soft outer halo
+// Exact glowDot from Scene4
 function glowDot(ctx, x, y, r, glowR, alpha) {
   const g = ctx.createRadialGradient(x, y, 0, x, y, glowR);
   g.addColorStop(0,    `rgba(245,220,165,${0.52 * alpha})`);
@@ -35,37 +35,23 @@ export function StarField({
   const ref = useFxCanvas({
     active: true,
     init: (ctx, w, h) => {
-      const count = Math.round((w * h) / 9000 * density);
-      const dissolveCount = Math.floor(count * dissolveRatio);
-      const dissolveSet = new Set();
-      if (dissolveCount > 0) {
-        while (dissolveSet.size < dissolveCount) dissolveSet.add(Math.floor(Math.random() * count));
-      }
-
-      const stars = [];
-      for (let i = 0; i < count; i++) {
-        const dis = dissolveSet.has(i);
-        // 20% are constellation node balls (glowDot style)
-        const isNode = Math.random() < 0.20;
-        stars.push({
-          x: Math.random() * w,
-          y: Math.random() * h * yMax,
-          // nodes: 1.4–2.2px core; tiny: 0.4–0.9px
-          r: isNode
-            ? rand(1.4, 2.2) * radiusScale
-            : rand(0.4, 0.9) * radiusScale,
-          base: isNode ? rand(0.50, 0.82) : rand(0.10, 0.38),
+      // Fixed count of constellation nodes: ~24 spread across viewport
+      // Matches Scene4's 25-star look
+      const nodeCount = Math.round(24 * Math.min(density, 1.5));
+      const nodes = [];
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          x: rand(0.04, 0.96) * w,
+          y: rand(0.03, yMax * 0.92) * h,
+          r: rand(2.2, 3.2) * radiusScale,
           ph: Math.random() * Math.PI * 2,
-          sp: rand(0.30, 1.0),
-          isNode,
-          dissolves: dis,
-          dissolveDelay: dis ? Math.random() * 2.0 : 0,
+          sp: rand(0.35, 0.85),
+          base: rand(0.55, 0.82),
         });
       }
 
-      // Constellation lines: pick node pairs that are close enough
-      const nodes = stars.filter(s => s.isNode);
-      const maxD = Math.min(w * 0.13, 95);
+      // Constellation lines: connect nearby node pairs (like Scene4)
+      const maxD = Math.min(w * 0.13, 110);
       const lines = [];
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
@@ -74,7 +60,28 @@ export function StarField({
         }
       }
 
-      return { stars, nodes, lines, dissolveStart: null, wasActive: false };
+      // Tiny ambient background dots (very small, barely visible)
+      const bgCount = Math.round((w * h) / 12000 * density);
+      const dissolveCount = Math.floor(bgCount * dissolveRatio);
+      const dissolveSet = new Set();
+      if (dissolveCount > 0) {
+        while (dissolveSet.size < dissolveCount) dissolveSet.add(Math.floor(Math.random() * bgCount));
+      }
+      const bg = [];
+      for (let i = 0; i < bgCount; i++) {
+        bg.push({
+          x: Math.random() * w,
+          y: Math.random() * h * yMax,
+          r: rand(0.3, 0.75) * radiusScale,
+          base: rand(0.07, 0.26),
+          ph: Math.random() * Math.PI * 2,
+          sp: rand(0.3, 1.1),
+          dissolves: dissolveSet.has(i),
+          dissolveDelay: dissolveSet.has(i) ? Math.random() * 2.0 : 0,
+        });
+      }
+
+      return { nodes, lines, bg, dissolveStart: null, wasActive: false };
     },
 
     frame: (ctx, w, h, t, st) => {
@@ -85,18 +92,25 @@ export function StarField({
 
       ctx.clearRect(0, 0, w, h);
 
-      // Draw constellation lines
-      ctx.lineWidth = 0.5;
+      // Constellation lines (subtle, like Scene4 at rest)
+      ctx.lineWidth = 1;
       for (const [a, b, ratio] of st.lines) {
-        ctx.strokeStyle = `rgba(212,165,116,${(1 - ratio) * 0.09})`;
+        ctx.strokeStyle = `rgba(228,196,134,${(1 - ratio) * 0.12})`;
+        ctx.shadowBlur = 0;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.stroke();
       }
 
-      // Draw stars
-      for (const s of st.stars) {
+      // Constellation node stars — exact Scene4 glowDot
+      for (const s of st.nodes) {
+        const tw = twinkle ? (0.62 + 0.38 * Math.sin(t * s.sp + s.ph)) : 1;
+        glowDot(ctx, s.x, s.y, s.r, s.r * 3.2, tw * s.base);
+      }
+
+      // Tiny ambient background dots
+      for (const s of st.bg) {
         let am = 1;
         if (s.dissolves && st.dissolveStart !== null) {
           const el = t - st.dissolveStart - s.dissolveDelay;
@@ -105,20 +119,11 @@ export function StarField({
             if (am < 0.01) continue;
           }
         }
-
         const tw = twinkle ? (0.5 + 0.5 * Math.sin(t * s.sp + s.ph)) : 1;
-        const a  = s.base * tw * am;
-
-        if (s.isNode) {
-          // Exact Scene4 glowDot: bright core + golden halo
-          glowDot(ctx, s.x, s.y, s.r, s.r * 3.8, a);
-        } else {
-          // Tiny flat dot — no gradient, clean pixel-like appearance
-          ctx.fillStyle = `rgba(232,199,154,${a})`;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        ctx.fillStyle = `rgba(232,199,154,${s.base * tw * am})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
       }
     },
   });
