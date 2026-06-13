@@ -1,6 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { useFxCanvas } from './useFxCanvas';
-import { rand, clamp, easeOutCubic } from './utils';
+import { clamp, easeOutCubic } from './utils';
+
+// Exact constants from apps/index.html
+const GL   = '232,199,154'; // gold-light (halo)
+const SNOW = '255,248,235'; // near-white (star core)
 
 export function StarField({
   active: sceneActive = true,
@@ -18,26 +22,29 @@ export function StarField({
   const ref = useFxCanvas({
     active: true,
     init: (ctx, w, h) => {
-      const count = Math.round((w * h) / 5500 * density);
-      const dissolveCount = Math.floor(count * dissolveRatio);
+      // Exact formula from apps/index.html buildBgStars(), scaled by density
+      const n = Math.max(28, Math.round(w * h / 5500 * density));
+      const dissolveCount = Math.floor(n * dissolveRatio);
       const dissolveSet = new Set();
       if (dissolveCount > 0) {
-        while (dissolveSet.size < dissolveCount) dissolveSet.add(Math.floor(Math.random() * count));
+        while (dissolveSet.size < dissolveCount) dissolveSet.add(Math.floor(Math.random() * n));
       }
+
       const stars = [];
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < n; i++) {
         const bright = Math.random();
-        const isBig = bright < 0.06;
-        const dis = dissolveSet.has(i);
+        const isBig  = bright < 0.06;
+        const dis    = dissolveSet.has(i);
         stars.push({
-          x: Math.random() * w,
-          y: Math.random() * h * yMax,
-          r: (isBig ? rand(1.1, 1.6) : rand(0.3, 0.75)) * radiusScale,
+          x:     Math.random() * w,
+          y:     Math.random() * h * yMax,
+          // exact r formula from apps page, scaled by radiusScale
+          r:     (isBig ? 1.1 + Math.random() * 0.5 : 0.3 + Math.random() * 0.45) * radiusScale,
+          phase: Math.random() * Math.PI * 2,
+          freq:  0.012 + Math.random() * 0.022, // per-frame rate (same as apps page)
+          peak:  0.22 + Math.random() * 0.52,
           isBig,
-          peak: rand(0.22, 0.74),
-          ph: Math.random() * Math.PI * 2,
-          sp: rand(0.012, 0.034),
-          dissolves: dis,
+          dissolves:    dis,
           dissolveDelay: dis ? Math.random() * 2.0 : 0,
         });
       }
@@ -62,20 +69,26 @@ export function StarField({
           }
         }
 
-        // Convert time in seconds to match apps/ page freq (which uses frame count)
-        const tw = twinkle ? (0.38 + 0.62 * Math.sin(t * s.sp * 60 + s.ph)) : 1;
-        const alpha = s.peak * tw * am;
+        // Exact formula from apps page: time is frame count, freq is per-frame
+        // t is in seconds → multiply by 60 to convert to frame count equivalent
+        const tw = twinkle
+          ? s.peak * (0.38 + 0.62 * Math.sin(t * 60 * s.freq + s.phase))
+          : s.peak;
+
+        const alpha = tw * am;
         if (alpha < 0.005) continue;
 
         if (s.isBig) {
+          // Exact halo from apps page
           const gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 7);
-          gr.addColorStop(0, `rgba(221,189,125,${alpha * 0.28})`);
-          gr.addColorStop(1, 'rgba(221,189,125,0)');
+          gr.addColorStop(0, `rgba(${GL},${alpha * 0.28})`);
+          gr.addColorStop(1, `rgba(${GL},0)`);
           ctx.fillStyle = gr;
           ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 7, 0, Math.PI * 2); ctx.fill();
         }
 
-        ctx.fillStyle = `rgba(242,230,200,${alpha})`;
+        // Exact core from apps page
+        ctx.fillStyle = `rgba(${SNOW},${alpha})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
       }
     },
