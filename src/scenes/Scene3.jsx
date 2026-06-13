@@ -50,7 +50,7 @@ function TriuneFX({ active, sub }) {
     },
     frame: (ctx, w, h, t, st) => {
       const cx = w > 900 ? w * 0.68 : w * 0.5;
-      const cy = w < 720 ? h * 0.36 : h / 2;
+      const cy = w < 720 ? h * 0.29 : h / 2;
       ctx.clearRect(0, 0, w, h);
       const R = Math.min(w, h) * (w < 720 ? 0.22 : 0.26);
       const launching = subRef.current >= 1;
