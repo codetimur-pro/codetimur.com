@@ -552,7 +552,7 @@ html, body {
 /* Mobile: push Scene 1 text up + drop the scroll hint so they don't crowd */
 @media (max-width: 720px) {
   .s1 .scene-inner { padding-bottom: clamp(118px, 18vh, 180px); }
-  .s1 .s1-scroll-hint { bottom: 14px; }
+  .s1 .s1-scroll-hint { bottom: 6px; }
 }
 
 /* Globe drag hint */
@@ -579,7 +579,7 @@ html, body {
 .globe-spin-hint.has-message {
   opacity: 0.80 !important;
   white-space: normal;
-  max-width: 240px;
+  max-width: 330px;
   line-height: 1.7;
   transition: opacity 0.45s ease !important;
 }
@@ -740,7 +740,7 @@ html, body {
     align-items: flex-start;
     justify-content: flex-end;
     padding-top: 0;
-    padding-bottom: clamp(44px, 7vh, 80px);
+    padding-bottom: clamp(100px, 16vh, 150px);
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -1030,7 +1030,7 @@ html, body {
   }
   .s7 .scene-inner {
     align-items: flex-end;
-    padding-bottom: clamp(80px, 13vh, 112px);
+    padding-bottom: clamp(44px, 7vh, 80px);
     pointer-events: none;
   }
   .s7 .scene-inner .btn { pointer-events: auto; }

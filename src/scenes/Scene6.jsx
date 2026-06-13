@@ -36,8 +36,8 @@ function S6MtnFX({ active }) {
 
       const sp = U.easeInOutCubic(U.clamp(el / 1.6, 0, 1));
       const isMob = typeof window !== 'undefined' && window.innerWidth < 720;
-      const s  = U.lerp(1.0, isMob ? 0.72 : 0.44, sp);
-      const cx = isMob ? w * 0.74 : w * 0.50;
+      const s  = U.lerp(1.0, isMob ? 0.56 : 0.44, sp);
+      const cx = isMob ? w * 0.72 : w * 0.50;
       function sc(fx, fy) { return [cx+(fx*w-cx)*s, h+(fy*h-h)*s]; }
 
       const apex=sc(0.680,0.190), bL=sc(0.208,1.0), bR=sc(1.042,1.0);
@@ -52,10 +52,10 @@ function S6MtnFX({ active }) {
       ctx.strokeStyle='rgba(212,180,140,0.24)'; ctx.beginPath(); ctx.moveTo(apex[0],apex[1]); ctx.lineTo(bR[0],bR[1]); ctx.stroke();
       ctx.restore();
 
-      const gr=h*0.13*s;
+      const gr=h*0.16*s;
       const gg=ctx.createRadialGradient(apex[0],apex[1],0,apex[0],apex[1],gr);
-      gg.addColorStop(0,'rgba(255,248,220,0.55)'); gg.addColorStop(0.25,'rgba(244,228,191,0.28)');
-      gg.addColorStop(0.7,'rgba(220,195,150,0.06)'); gg.addColorStop(1,'rgba(220,195,150,0)');
+      gg.addColorStop(0,'rgba(255,252,230,0.80)'); gg.addColorStop(0.22,'rgba(244,228,191,0.45)');
+      gg.addColorStop(0.6,'rgba(220,195,150,0.10)'); gg.addColorStop(1,'rgba(220,195,150,0)');
       ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(apex[0],apex[1],gr,0,Math.PI*2); ctx.fill();
 
       const trail = st.trail.map(([fx,fy]) => sc(fx,fy));
