@@ -182,10 +182,11 @@ function MorphFX({ active }) {
 
       const ga = U.clamp((mp - 0.3) / 0.7, 0, 1);
       if (ga > 0.01) {
+        const apexF = w < 720 ? 1 / 3 : 1;
         const gg = ctx.createRadialGradient(v[0][0], v[0][1], 0, v[0][0], v[0][1], h * 0.13);
-        gg.addColorStop(0, `rgba(255,248,220,${0.55 * ga})`);
-        gg.addColorStop(0.25, `rgba(244,228,191,${0.28 * ga})`);
-        gg.addColorStop(0.7, `rgba(220,195,150,${0.06 * ga})`);
+        gg.addColorStop(0, `rgba(255,248,220,${0.55 * ga * apexF})`);
+        gg.addColorStop(0.25, `rgba(244,228,191,${0.28 * ga * apexF})`);
+        gg.addColorStop(0.7, `rgba(220,195,150,${0.06 * ga * apexF})`);
         gg.addColorStop(1, 'rgba(220,195,150,0)');
         ctx.fillStyle = gg;
         ctx.beginPath(); ctx.arc(v[0][0], v[0][1], h * 0.13, 0, Math.PI * 2); ctx.fill();
@@ -288,7 +289,8 @@ function ConstellSky({ active, constel, setConstel }) {
         const target = constelRef.current === id ? 1 : 0;
         P[id] += (target - P[id]) * 0.055;
         const p = P[id];
-        const px = C.stars.map(([nx, ny]) => [nx * w, ny * h]);
+        const yOff = (id === 'uma' && w < 720) ? h * 0.14 : 0;
+        const px = C.stars.map(([nx, ny]) => [nx * w, ny * h + yOff]);
 
         if (p > 0.015) {
           ctx.lineWidth = 1;
@@ -396,8 +398,9 @@ export function Scene4({ active }) {
     setTextVis(false);
   }, [active]);
   const dyn = constel ? ECO_DYN[constel] : null;
+  const isMobS4 = typeof window !== 'undefined' && window.innerWidth < 720;
   return e('section', { className: 'scene s4', 'data-active': active, 'data-screen-label': '04' },
-    e(StarField, { density: 0.12, twinkle: true, radiusScale: 0.22, className: 'fx fx-ambient', style: { WebkitMaskImage: 'linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,0.35) 78%, transparent 100%)', maskImage: 'linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,0.35) 78%, transparent 100%)' } }),
+    e(StarField, { density: isMobS4 ? 0.06 : 0.12, twinkle: true, radiusScale: 0.22, className: 'fx fx-ambient', style: { WebkitMaskImage: 'linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,0.35) 78%, transparent 100%)', maskImage: 'linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,0.35) 78%, transparent 100%)' } }),
     e(MorphFX, { active }),
     e(ConstellSky, { active, constel, setConstel }),
     e('div', { className: 'scene-inner' },

@@ -1303,6 +1303,8 @@ html, body {
   /* Scene 4 — copy spans full mobile width, hint stays centred */
   .s4 .s4-copy { max-width: 100%; }
   .s4-scroll-hint { display: none; }
+  /* push copy toward bottom edge */
+  .s4 .scene-inner { padding-bottom: clamp(32px, 5vh, 56px); }
 }
 
 /* utility: hide native scrollbars on any nested scroll (none expected) */
