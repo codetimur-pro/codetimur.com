@@ -2,15 +2,17 @@ import React from 'react';
 import { useFxCanvas } from './useFxCanvas';
 import { rand } from './utils';
 
-export function DustField({ active, density = 1, className = 'fx', style }) {
+export function DustField({ active, density = 1, xRange = [0, 1], className = 'fx', style }) {
+  const x0 = xRange[0], x1 = xRange[1], span = x1 - x0;
+
   const ref = useFxCanvas({
     active: true,
     init: (ctx, w, h) => {
-      const count = Math.round((w * h) / 10000 * density);
+      const count = Math.round((w * h * span) / 10000 * density);
       const particles = [];
       for (let i = 0; i < count; i++) {
         particles.push({
-          x: Math.random() * w,
+          x: (x0 + Math.random() * span) * w,
           y: Math.random() * h,
           r: rand(0.5, 2.4),
           vx: rand(-0.05, 0.05),
@@ -30,9 +32,9 @@ export function DustField({ active, density = 1, className = 'fx', style }) {
       for (const p of st.particles) {
         p.x += p.vx + Math.sin(t * p.wobbleSp + p.wobblePh) * p.wobbleAmp;
         p.y += p.vy;
-        if (p.y < -12) { p.y = h + 8; p.x = Math.random() * w; }
-        if (p.x < -12) p.x = w + 12;
-        if (p.x > w + 12) p.x = -12;
+        if (p.y < -12) { p.y = h + 8; p.x = (x0 + Math.random() * span) * w; }
+        if (p.x < x0 * w - 12) p.x = x1 * w + 12;
+        if (p.x > x1 * w + 12) p.x = x0 * w - 12;
         const tw = 0.5 + 0.5 * Math.sin(t * p.sp + p.ph);
         const a = p.base * tw;
         if (a < 0.01) continue;
@@ -46,6 +48,7 @@ export function DustField({ active, density = 1, className = 'fx', style }) {
         ctx.fill();
       }
     },
+    deps: [x0, x1, density],
   });
   return React.createElement('canvas', { ref, className, style });
 }

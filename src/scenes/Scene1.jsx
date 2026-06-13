@@ -8,6 +8,7 @@ export function Scene1({ active }) {
   return e('section', { className: 'scene s1', 'data-active': active, 'data-screen-label': '01' },
     e(StarField, { density: 0.7, twinkle: true }),
     e(DustField, { density: 1.4, style: { zIndex: 4 } }),
+    e(DustField, { density: 3.2, xRange: [0, 0.52], style: { zIndex: 4 } }),
     e('div', { className: 's1-art' },
       e('div', { className: 'portrait', style: { backgroundImage: 'url("assets/portrait.png")' } })
     ),

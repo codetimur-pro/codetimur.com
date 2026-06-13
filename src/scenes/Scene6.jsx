@@ -36,20 +36,20 @@ function S6MtnFX({ active }) {
 
       const sp = U.easeInOutCubic(U.clamp(el / 1.6, 0, 1));
       const isMob = typeof window !== 'undefined' && window.innerWidth < 720;
-      const s  = U.lerp(1.0, isMob ? 0.66 : 0.44, sp);
-      const cx = isMob ? w * 0.65 : w * 0.50;
+      const s  = U.lerp(1.0, isMob ? 0.72 : 0.44, sp);
+      const cx = isMob ? w * 0.74 : w * 0.50;
       function sc(fx, fy) { return [cx+(fx*w-cx)*s, h+(fy*h-h)*s]; }
 
       const apex=sc(0.680,0.190), bL=sc(0.208,1.0), bR=sc(1.042,1.0);
 
-      ctx.save(); ctx.globalAlpha = 0.70;
+      ctx.save(); ctx.globalAlpha = 0.88;
       const bg=ctx.createLinearGradient(apex[0],apex[1],(bL[0]+bR[0])*0.5,h);
       bg.addColorStop(0,'rgba(30,28,42,1.0)'); bg.addColorStop(0.45,'rgba(20,18,30,1.0)'); bg.addColorStop(1,'rgba(10,9,15,1.0)');
       ctx.beginPath(); ctx.moveTo(apex[0],apex[1]); ctx.lineTo(bL[0],bL[1]); ctx.lineTo(bR[0],bR[1]);
       ctx.closePath(); ctx.fillStyle=bg; ctx.fill();
-      ctx.lineWidth=0.8;
-      ctx.strokeStyle='rgba(195,190,182,0.14)'; ctx.beginPath(); ctx.moveTo(apex[0],apex[1]); ctx.lineTo(bL[0],bL[1]); ctx.stroke();
-      ctx.strokeStyle='rgba(195,190,182,0.10)'; ctx.beginPath(); ctx.moveTo(apex[0],apex[1]); ctx.lineTo(bR[0],bR[1]); ctx.stroke();
+      ctx.lineWidth=1.2;
+      ctx.strokeStyle='rgba(212,180,140,0.32)'; ctx.beginPath(); ctx.moveTo(apex[0],apex[1]); ctx.lineTo(bL[0],bL[1]); ctx.stroke();
+      ctx.strokeStyle='rgba(212,180,140,0.24)'; ctx.beginPath(); ctx.moveTo(apex[0],apex[1]); ctx.lineTo(bR[0],bR[1]); ctx.stroke();
       ctx.restore();
 
       const gr=h*0.13*s;

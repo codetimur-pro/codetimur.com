@@ -740,12 +740,15 @@ html, body {
     align-items: flex-start;
     justify-content: flex-end;
     padding-top: 0;
-    padding-bottom: clamp(72px, 11vh, 108px);
+    padding-bottom: clamp(44px, 7vh, 80px);
+    padding-left: 16px;
+    padding-right: 16px;
   }
   /* Reset flex-grow so copy doesn't fill whole height */
   .s1 .s1-copy {
     flex: none;
     max-width: 100%;
+    width: 100%;
   }
   /* Larger heading for better readability */
   .s1 .s1-copy h1 { font-size: clamp(44px, 11.5vw, 60px); }
@@ -1370,7 +1373,5 @@ html, body {
   transform: translateY(0);
 }
 @media (max-width: 600px) {
-  .g-foot--fixed { padding: 16px 20px; }
-  /* Keep the fixed homepage footer compact — links don't fit, so hide them */
-  .g-foot--fixed .g-foot-nav { display: none; }
+  .g-foot--fixed { display: none; }
 }
