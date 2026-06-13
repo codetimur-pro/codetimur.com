@@ -2,9 +2,22 @@ import React, { useRef, useEffect } from 'react';
 import { useFxCanvas } from './useFxCanvas';
 import { rand, clamp, easeOutCubic } from './utils';
 
-// Gold palette matching apps/ page
-const G1 = '232,199,154';
-const G2 = '212,165,116';
+// Exact glowDot from Scene4 — bright core + soft outer halo
+function glowDot(ctx, x, y, r, glowR, alpha) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, glowR);
+  g.addColorStop(0,    `rgba(245,220,165,${0.52 * alpha})`);
+  g.addColorStop(0.30, `rgba(220,185,110,${0.28 * alpha})`);
+  g.addColorStop(1,    'rgba(200,160,80,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, glowR, 0, Math.PI * 2); ctx.fill();
+
+  const cr = ctx.createRadialGradient(x, y, 0, x, y, r);
+  cr.addColorStop(0,    `rgba(252,232,185,${alpha * 0.90})`);
+  cr.addColorStop(0.55, `rgba(238,205,145,${alpha * 0.65})`);
+  cr.addColorStop(1,    `rgba(215,175,100,${alpha * 0.10})`);
+  ctx.fillStyle = cr;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+}
 
 export function StarField({
   active: sceneActive = true,
@@ -32,26 +45,36 @@ export function StarField({
       const stars = [];
       for (let i = 0; i < count; i++) {
         const dis = dissolveSet.has(i);
-        // 18% are constellation nodes (larger glowing balls)
-        // 12% of remaining are pixel-square stars
-        const isNode = Math.random() < 0.18;
-        const isSq   = !isNode && Math.random() < 0.12;
+        // 20% are constellation node balls (glowDot style)
+        const isNode = Math.random() < 0.20;
         stars.push({
           x: Math.random() * w,
           y: Math.random() * h * yMax,
+          // nodes: 1.4–2.2px core; tiny: 0.4–0.9px
           r: isNode
-            ? rand(1.4, 2.4) * radiusScale
-            : rand(0.3, 1.0) * radiusScale,
-          base: isNode ? rand(0.38, 0.68) : rand(0.08, 0.42),
+            ? rand(1.4, 2.2) * radiusScale
+            : rand(0.4, 0.9) * radiusScale,
+          base: isNode ? rand(0.50, 0.82) : rand(0.10, 0.38),
           ph: Math.random() * Math.PI * 2,
-          sp: rand(0.28, 1.1),
+          sp: rand(0.30, 1.0),
           isNode,
-          isSq,
           dissolves: dis,
           dissolveDelay: dis ? Math.random() * 2.0 : 0,
         });
       }
-      return { stars, dissolveStart: null, wasActive: false };
+
+      // Constellation lines: pick node pairs that are close enough
+      const nodes = stars.filter(s => s.isNode);
+      const maxD = Math.min(w * 0.13, 95);
+      const lines = [];
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+          if (d < maxD) lines.push([nodes[i], nodes[j], d / maxD]);
+        }
+      }
+
+      return { stars, nodes, lines, dissolveStart: null, wasActive: false };
     },
 
     frame: (ctx, w, h, t, st) => {
@@ -62,24 +85,17 @@ export function StarField({
 
       ctx.clearRect(0, 0, w, h);
 
-      // Constellation lines between nearby node stars
-      const nodes = st.stars.filter(s => s.isNode);
-      const maxD = Math.min(w * 0.12, 88);
+      // Draw constellation lines
       ctx.lineWidth = 0.5;
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
-          if (d < maxD) {
-            ctx.strokeStyle = `rgba(${G2},${(1 - d / maxD) * 0.10})`;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
+      for (const [a, b, ratio] of st.lines) {
+        ctx.strokeStyle = `rgba(212,165,116,${(1 - ratio) * 0.09})`;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
       }
 
-      // Draw all stars
+      // Draw stars
       for (const s of st.stars) {
         let am = 1;
         if (s.dissolves && st.dissolveStart !== null) {
@@ -94,32 +110,13 @@ export function StarField({
         const a  = s.base * tw * am;
 
         if (s.isNode) {
-          // Large glowing ball — constellation node
-          const glowR = s.r * 3.5;
-          const gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
-          gr.addColorStop(0,    `rgba(255,240,210,${Math.min(1, a * 1.25)})`);
-          gr.addColorStop(0.22, `rgba(${G1},${a})`);
-          gr.addColorStop(0.55, `rgba(${G2},${a * 0.32})`);
-          gr.addColorStop(1,    'rgba(0,0,0,0)');
-          ctx.fillStyle = gr;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (s.isSq) {
-          // Pixel-square micro star
-          const ss = s.r * 2;
-          ctx.fillStyle = `rgba(${G1},${a})`;
-          ctx.fillRect(s.x - ss / 2, s.y - ss / 2, ss, ss);
+          // Exact Scene4 glowDot: bright core + golden halo
+          glowDot(ctx, s.x, s.y, s.r, s.r * 3.8, a);
         } else {
-          // Tiny round twinkling star
-          const glowR = s.r * 2.6;
-          const gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
-          gr.addColorStop(0,   `rgba(255,243,220,${Math.min(1, a)})`);
-          gr.addColorStop(0.38,`rgba(${G1},${a * 0.42})`);
-          gr.addColorStop(1,   'rgba(0,0,0,0)');
-          ctx.fillStyle = gr;
+          // Tiny flat dot — no gradient, clean pixel-like appearance
+          ctx.fillStyle = `rgba(232,199,154,${a})`;
           ctx.beginPath();
-          ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
           ctx.fill();
         }
       }
