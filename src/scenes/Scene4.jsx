@@ -49,6 +49,38 @@ export function drawSideMountains(ctx, w, h, alpha) {
   ctx.restore();
 }
 
+// Scene4-only back mountains: flattened/wide, same apps/ palette + warm ridge
+// as the main peak. (The shared drawSideMountains above is kept for Scene5.)
+function drawSideMountainsS4(ctx, w, h, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.shadowBlur = 0;
+  function peak(baseL, apexX, apexY, baseR) {
+    const g = ctx.createLinearGradient(0, apexY * h, 0, h);
+    g.addColorStop(0,    'rgba(33,30,46,0.97)');
+    g.addColorStop(0.6,  'rgba(24,21,33,0.97)');
+    g.addColorStop(1,    'rgba(17,16,24,0.97)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(baseL * w, h + 2);
+    ctx.lineTo(apexX * w, apexY * h);
+    ctx.lineTo(baseR * w, h + 2);
+    ctx.closePath(); ctx.fill();
+    // warm ridge glow (apps/ GL edge)
+    ctx.strokeStyle = 'rgba(232,199,154,0.13)';
+    ctx.lineWidth = 1.2;
+    ctx.shadowColor = 'rgba(232,199,154,0.14)'; ctx.shadowBlur = 7;
+    ctx.beginPath();
+    ctx.moveTo(baseL * w, h + 2); ctx.lineTo(apexX * w, apexY * h); ctx.lineTo(baseR * w, h + 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+  // Flat, wide back peaks framing the main mountain
+  peak(-0.10, 0.19, 0.52, 0.55);
+  peak(0.46, 0.82, 0.47, 1.10);
+  ctx.restore();
+}
+
 function MorphFX({ active }) {
   const ref = useFxCanvas({
     active,
@@ -93,7 +125,7 @@ function MorphFX({ active }) {
       const v = pV.map((p, i) => [U.lerp(p[0], mV[i][0], mp), U.lerp(p[1], mV[i][1], mp)]);
 
       const sa = U.clamp((mp - 0.52) / 0.48, 0, 1);
-      if (sa > 0.01) drawSideMountains(ctx, w, h, sa);
+      if (sa > 0.01) drawSideMountainsS4(ctx, w, h, sa);
 
       ctx.save();
       const bg = ctx.createLinearGradient(v[0][0], v[0][1], (v[1][0] + v[2][0]) * 0.5, h);
@@ -191,9 +223,9 @@ const CONSTELLATIONS = {
   uma: {
     key: 4,
     stars: [
-      [0.052, 0.315], [0.092, 0.262], [0.132, 0.238],
-      [0.172, 0.245], [0.228, 0.228],
-      [0.238, 0.310], [0.178, 0.322],
+      [0.052, 0.205], [0.092, 0.152], [0.132, 0.128],
+      [0.172, 0.135], [0.228, 0.118],
+      [0.238, 0.200], [0.178, 0.212],
     ],
     links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]],
   },
@@ -241,7 +273,7 @@ function ConstellSky({ active, constel, setConstel }) {
     active,
     init: () => ({
       meteor: null,
-      next: 2 + Math.random() * 3,
+      next: 2,
       tw: CONST_IDS.reduce((m, id) => {
         m[id] = CONSTELLATIONS[id].stars.map(() => ({ ph: Math.random() * 6.28, sp: U.rand(1.8, 2.8) }));
         return m;
@@ -276,12 +308,21 @@ function ConstellSky({ active, constel, setConstel }) {
           }
         }
 
+        const cx0 = w > 900 ? w * 0.68 : w * 0.5;
+        const cy0 = h / 2;
         for (let i = 0; i < px.length; i++) {
+          // Constellation stars fly out from the morph centre (same origin as
+          // the picture coming from the previous screen) and fade in only after
+          // the picture has formed (~2s).
+          const intro = U.easeOutCubic(U.clamp((t - 2.0 - (i % 4) * 0.12) / 1.3, 0, 1));
+          if (intro <= 0.001) continue;
+          const sxp = U.lerp(cx0, px[i][0], intro);
+          const syp = U.lerp(cy0, px[i][1], intro);
           const tws = st.tw[id][i];
           const tw = 0.55 + 0.45 * Math.sin(t * tws.sp + tws.ph);
           const r = 3.0 + 1.4 * p;
-          glowDot(ctx, px[i][0], px[i][1], r, r * (3.2 + 2.0 * p), tw * (0.62 + 0.38 * p));
-          if (i === C.key && p < 0.4) {
+          glowDot(ctx, sxp, syp, r, r * (3.2 + 2.0 * p), intro * tw * (0.62 + 0.38 * p));
+          if (i === C.key && p < 0.4 && intro > 0.98) {
             const ringR = 9 + 3.5 * Math.sin(t * 1.4 + 1);
             ctx.beginPath(); ctx.arc(px[i][0], px[i][1], ringR, 0, Math.PI * 2);
             ctx.strokeStyle = `rgba(221,189,125,${0.3 * (1 - p) * (0.6 + 0.4 * Math.sin(t * 1.4))})`;
@@ -308,7 +349,7 @@ function ConstellSky({ active, constel, setConstel }) {
         const age = t - m.born;
         if (age > m.life) {
           st.meteor = null;
-          st.next = t + 3 + Math.random() * 2;
+          st.next = t + 5;
         } else {
           const env = Math.sin(Math.PI * U.clamp(age / m.life, 0, 1));
           const hx = m.x + m.vx * age, hy = m.y + m.vy * age;
