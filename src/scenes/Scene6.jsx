@@ -36,7 +36,7 @@ function S6MtnFX({ active }) {
 
       const sp = U.easeInOutCubic(U.clamp(el / 1.6, 0, 1));
       const isMob = typeof window !== 'undefined' && window.innerWidth < 720;
-      const s  = U.lerp(1.0, isMob ? 0.55 : 0.44, sp);
+      const s  = U.lerp(1.0, isMob ? 0.66 : 0.44, sp);
       const cx = isMob ? w * 0.65 : w * 0.50;
       function sc(fx, fy) { return [cx+(fx*w-cx)*s, h+(fy*h-h)*s]; }
 

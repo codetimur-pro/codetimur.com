@@ -309,7 +309,11 @@ html, body {
 
 .g-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; opacity: .92; transition: opacity .3s; }
 .g-logo:hover { opacity: 1; }
-.g-logo img { height: 30px; width: auto; display: block; }
+/* Optical compensation: the wordmark has a small "TIMUR" line + trailing
+   whitespace below "CODE", so the image's geometric centre sits below the
+   big "CODE" letters. Nudge the image down so the centre of "CODE" lines up
+   with the centre of the burger icon. Tuned by eye. */
+.g-logo img { height: 30px; width: auto; display: block; transform: translateY(6px); }
 
 .g-nav-r { display: flex; align-items: center; gap: 18px; margin-left: auto; flex-shrink: 0; }
 
@@ -382,10 +386,6 @@ html, body {
 
 @media (max-width: 600px) {
   .g-nav { padding: 14px 20px; }
-  /* Two-line wordmark reads optically high vs the burger — nudge it down so
-     the logo and menu sit on one visual line. */
-  .g-logo { transform: translateY(2px); }
-  .g-burger { transform: translateY(-1px); }
 }
 
 /* progress rail (right side) */
@@ -941,25 +941,25 @@ html, body {
 
   /* full-width portrait at top, fades out at the bottom */
   .s6-portrait {
-    top: 0;
+    top: 6%;
     left: 0;
     right: 0;
     bottom: auto;
     width: 100%;
-    height: 58%;
+    height: 72%;
     border-radius: 0;
     overflow: hidden;
     box-shadow: none;
     z-index: 6;
-    -webkit-mask-image: linear-gradient(180deg, #000 48%, rgba(0,0,0,0.72) 70%, transparent 100%);
-    mask-image:         linear-gradient(180deg, #000 48%, rgba(0,0,0,0.72) 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 52%, rgba(0,0,0,0.72) 74%, transparent 100%);
+    mask-image:         linear-gradient(180deg, #000 52%, rgba(0,0,0,0.72) 74%, transparent 100%);
   }
   .s6-portrait-img {
     top: 0; left: 0; right: 0;
     bottom: auto;
     width: 100%; height: 100%;
     object-fit: cover;
-    object-position: top center;
+    object-position: center top;
   }
 
   /* text at the very bottom */
@@ -1027,7 +1027,7 @@ html, body {
   }
   .s7 .scene-inner {
     align-items: flex-end;
-    padding-bottom: clamp(56px, 10vh, 88px);
+    padding-bottom: clamp(80px, 13vh, 112px);
     pointer-events: none;
   }
   .s7 .scene-inner .btn { pointer-events: auto; }
@@ -1371,7 +1371,6 @@ html, body {
 }
 @media (max-width: 600px) {
   .g-foot--fixed { padding: 16px 20px; }
-  /* Show the 4 page links in the fixed homepage footer too (compact) */
-  .g-foot--fixed .g-foot-row { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .g-foot--fixed .g-foot-nav { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+  /* Keep the fixed homepage footer compact — links don't fit, so hide them */
+  .g-foot--fixed .g-foot-nav { display: none; }
 }

@@ -322,13 +322,6 @@ function ConstellSky({ active, constel, setConstel }) {
           const tw = 0.55 + 0.45 * Math.sin(t * tws.sp + tws.ph);
           const r = 3.0 + 1.4 * p;
           glowDot(ctx, sxp, syp, r, r * (3.2 + 2.0 * p), intro * tw * (0.62 + 0.38 * p));
-          if (i === C.key && p < 0.4 && intro > 0.98) {
-            const ringR = 9 + 3.5 * Math.sin(t * 1.4 + 1);
-            ctx.beginPath(); ctx.arc(px[i][0], px[i][1], ringR, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(221,189,125,${0.3 * (1 - p) * (0.6 + 0.4 * Math.sin(t * 1.4))})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
         }
       }
 
