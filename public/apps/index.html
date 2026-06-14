@@ -2752,7 +2752,18 @@ window.__startTree = function () {
     drawer.classList.toggle('is-open', open);
     if(backdrop) backdrop.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', open);
-    document.body.style.overflow = open ? 'hidden' : '';
+    if(open){
+      var sbW = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      if(sbW > 0){
+        document.body.style.paddingRight = sbW + 'px';
+        nav.style.paddingRight = (parseFloat(getComputedStyle(nav).paddingRight) + sbW) + 'px';
+      }
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      nav.style.paddingRight = '';
+    }
   }
 
   burger.addEventListener('click', function(){ setOpen(!burger.classList.contains('is-open')); });
