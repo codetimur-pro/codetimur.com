@@ -53,7 +53,7 @@
 /* Убираем синюю/серую подсветку при тапе на мобиле */
 * { -webkit-tap-highlight-color: transparent; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 
 body {
   background: var(--black);
@@ -762,6 +762,7 @@ section.fullshot { border-top: none; padding: 0 !important; }
   -webkit-tap-highlight-color:transparent;
   flex-shrink:0;
   overflow:hidden;
+  contain:layout;
 }
 .g-burger:hover{color:#d4a574}
 .g-burger svg{
@@ -771,7 +772,6 @@ section.fullshot { border-top: none; padding: 0 !important; }
   pointer-events:none;
 }
 .g-burger svg path{
-  transition:d .42s cubic-bezier(.4,0,.2,1);
   vector-effect:non-scaling-stroke;
 }
 /* 3 lines → triangle ▲ */

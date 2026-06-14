@@ -25,7 +25,8 @@
 
   *, *::before, *::after { box-sizing: border-box; }
 
-  html, body {
+  html { margin: 0; padding: 0; scrollbar-gutter: stable; }
+  body {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--ink);
@@ -641,6 +642,7 @@
   -webkit-tap-highlight-color:transparent;
   flex-shrink:0;
   overflow:hidden;
+  contain:layout;
 }
 .g-burger:hover{color:#d4a574}
 .g-burger svg{
@@ -650,7 +652,6 @@
   pointer-events:none;
 }
 .g-burger svg path{
-  transition:d .42s cubic-bezier(.4,0,.2,1);
   vector-effect:non-scaling-stroke;
 }
 /* 3 lines → triangle ▲ */

@@ -27,7 +27,8 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; background: var(--black); color: var(--text); }
+html { margin: 0; padding: 0; scrollbar-gutter: stable; }
+body { margin: 0; padding: 0; background: var(--black); color: var(--text); }
 body {
   font-family: var(--body);
   font-weight: 300;
@@ -322,6 +323,7 @@ section + section { border-top: 1px solid var(--line-soft); }
   -webkit-tap-highlight-color:transparent;
   flex-shrink:0;
   overflow:hidden;
+  contain:layout;
 }
 .g-burger:hover{color:#d4a574}
 .g-burger svg{
@@ -331,7 +333,6 @@ section + section { border-top: 1px solid var(--line-soft); }
   pointer-events:none;
 }
 .g-burger svg path{
-  transition:d .42s cubic-bezier(.4,0,.2,1);
   vector-effect:non-scaling-stroke;
 }
 /* 3 lines → triangle ▲ */
