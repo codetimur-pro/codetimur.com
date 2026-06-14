@@ -50,13 +50,10 @@ const TWEAK_DEFAULTS = {
 
 export default function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [step, setStep] = useState(() => {
-    const s = parseInt(localStorage.getItem('ct_home_step_v2') || '0', 10);
-    return isNaN(s) ? 0 : Math.max(0, Math.min(LAST, s));
-  });
+  const [step, setStep] = useState(0); // always start at scene 0
   const lockRef = useRef(0);
   const stepRef = useRef(step);
-  useEffect(() => { stepRef.current = step; localStorage.setItem('ct_home_step_v2', String(step)); }, [step]);
+  useEffect(() => { stepRef.current = step; }, [step]);
 
   const go = useCallback((n) => {
     if (window.__launchLock && !window.__rocketFlying && n !== 0) return;
@@ -65,6 +62,13 @@ export default function App() {
   }, []);
   const advance = useCallback(() => go(stepRef.current + 1), [go]);
   useEffect(() => { window.__ctGoTo = go; return () => { delete window.__ctGoTo; }; }, [go]);
+
+  // Reset to scene 0 when returning via back button (bfcache restore)
+  useEffect(() => {
+    function onPageShow(e) { if (e.persisted) setStep(0); }
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -80,7 +84,7 @@ export default function App() {
     function gate(dir) {
       if (window.__launchLock) return;
       const now = performance.now();
-      if (now - lockRef.current < 850) return;
+      if (now - lockRef.current < 700) return;
       lockRef.current = now;
       go(stepRef.current + dir);
     }

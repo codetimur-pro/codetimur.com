@@ -6,16 +6,19 @@ export function useFxCanvas(opts) {
   const stateRef = useRef(null);
   const rafRef = useRef(0);
   const startRef = useRef(0);
+  const sizeRef = useRef({ w: 1, h: 1 }); // cached — avoids per-frame getBoundingClientRect
 
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     function resize() {
       const r = canvas.getBoundingClientRect();
-      w = Math.max(1, r.width); h = Math.max(1, r.height);
+      const w = Math.max(1, r.width);
+      const h = Math.max(1, r.height);
+      sizeRef.current = { w, h };
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -38,10 +41,10 @@ export function useFxCanvas(opts) {
 
     function loop(now) {
       if (!running) return;
-      const r = canvas.getBoundingClientRect();
-      const w = r.width, h = r.height;
-      const t = (now - startRef.current) / 1000;
-      if (frame && stateRef.current) frame(ctx, w, h, t, stateRef.current, active);
+      const { w, h } = sizeRef.current;
+      if (w > 0 && h > 0 && frame && stateRef.current) {
+        frame(ctx, w, h, (now - startRef.current) / 1000, stateRef.current, active);
+      }
       rafRef.current = requestAnimationFrame(loop);
     }
     if (active || autostartMs) {

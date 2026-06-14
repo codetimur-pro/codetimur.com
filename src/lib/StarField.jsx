@@ -20,7 +20,7 @@ export function StarField({
   useEffect(() => { sceneActiveRef.current = sceneActive; }, [sceneActive]);
 
   const ref = useFxCanvas({
-    active: true,
+    active: sceneActive,   // pause RAF for inactive scenes
     init: (ctx, w, h) => {
       // Exact formula from apps/index.html buildBgStars(), scaled by density
       const n = Math.max(28, Math.round(w * h / 5500 * density));

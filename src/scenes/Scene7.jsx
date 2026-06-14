@@ -247,7 +247,7 @@ function EarthGlobe({ active }) {
     },
     onMouseUp: () => { showMsg(); dragRef.current.down = false; },
     onMouseLeave: () => { dragRef.current.down = false; },
-    onTouchStart: (ev) => { dragRef.current.down = true; dragRef.current.lastX = ev.touches[0].clientX; dragRef.current.lastY = ev.touches[0].clientY; dragRef.current.moved = false; },
+    onTouchStart: (ev) => { ev.stopPropagation(); dragRef.current.down = true; dragRef.current.lastX = ev.touches[0].clientX; dragRef.current.lastY = ev.touches[0].clientY; dragRef.current.moved = false; },
     onTouchMove: (ev) => {
       if (!dragRef.current.down || !ev.touches.length) return;
       const dx = ev.touches[0].clientX - dragRef.current.lastX;
@@ -261,7 +261,7 @@ function EarthGlobe({ active }) {
           internalsRef.current.group.rotation.x + dy * 0.005));
       }
     },
-    onTouchEnd: () => { showMsg(); dragRef.current.down = false; },
+    onTouchEnd: (ev) => { ev.stopPropagation(); showMsg(); dragRef.current.down = false; },
     style: {
       zIndex: 5,
       pointerEvents: active ? 'auto' : 'none',
