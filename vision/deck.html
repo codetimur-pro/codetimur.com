@@ -1,0 +1,1929 @@
+<!DOCTYPE html><html lang="ru"><head>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Покори Олимп</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<template id="__bundler_thumbnail" data-bg-color="#05060e">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#05060e"/>
+    <!-- Mountain silhouette -->
+    <polygon points="600,120 760,460 440,460" fill="#0d1726"/>
+    <polygon points="600,120 680,340 520,340" fill="#12203a"/>
+    <!-- Stars -->
+    <circle cx="200" cy="80" r="2" fill="#EDE8DF" opacity=".7"/>
+    <circle cx="400" cy="50" r="1.5" fill="#EDE8DF" opacity=".5"/>
+    <circle cx="700" cy="60" r="2" fill="#EDE8DF" opacity=".6"/>
+    <circle cx="950" cy="90" r="1.5" fill="#EDE8DF" opacity=".5"/>
+    <circle cx="1100" cy="55" r="2" fill="#EDE8DF" opacity=".7"/>
+    <circle cx="320" cy="140" r="1.5" fill="#EDE8DF" opacity=".4"/>
+    <circle cx="850" cy="110" r="1.5" fill="#EDE8DF" opacity=".4"/>
+    <!-- Golden glow -->
+    <radialGradient id="tg" cx="50%" cy="80%" r="50%">
+      <stop offset="0%" stop-color="#E6C173" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#E6C173" stop-opacity="0"/>
+    </radialGradient>
+    <rect width="1200" height="800" fill="url(#tg)"/>
+    <!-- Title -->
+    <text x="600" y="580" font-family="serif" font-size="80" font-weight="bold" fill="#ECEAE3" text-anchor="middle" letter-spacing="8">ПОКОРИ ОЛИМП</text>
+    <!-- Gold line -->
+    <line x1="480" y1="610" x2="720" y2="610" stroke="#E6C173" stroke-width="1.5" opacity=".7"/>
+    <!-- Subtitle -->
+    <text x="600" y="650" font-family="serif" font-size="28" fill="#E6C173" text-anchor="middle" letter-spacing="3" opacity=".8">путь к вершине себя</text>
+  </svg>
+</template>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&amp;family=Cormorant+SC:wght@300;400;500&amp;family=Onest:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  deck-stage:not(:defined){ visibility:hidden }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  body{ background:#000; -webkit-font-smoothing:antialiased; }
+
+  :root{
+    --bg:    #05050a;
+    --text:  #F2EDE2;
+    --dim:   #7A7268;
+    --dim2:  #3E3A35;
+    --gold:  #CFA96B;
+    --goldb: #EAD49A;
+    --goldd: #896D3A;
+    --line:  rgba(207,169,107,.22);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sc:    'Cormorant SC', Georgia, serif;
+    --sans:  'Onest', system-ui, sans-serif;
+  }
+
+  /* ── Shell ── */
+  .slide{ position:absolute; inset:0; overflow:hidden; background:var(--bg); }
+
+  /* ── Photo helpers ── */
+  .pbg{ position:absolute; inset:0; z-index:1; background-size:cover; background-position:center; }
+  .ov-l{ position:absolute; inset:0; z-index:2; background:linear-gradient(to right,rgba(4,4,8,.95) 38%,rgba(4,4,8,.65) 62%,rgba(4,4,8,.22) 100%); }
+  .ov-full{ position:absolute; inset:0; z-index:2; background:rgba(4,4,8,.72); }
+  .ov-cx{ position:absolute; inset:0; z-index:2; background:rgba(3,4,12,.68); }
+  .photo-r{ position:absolute; top:0; right:0; bottom:0; left:50%; z-index:1; background-size:cover; background-position:center; }
+  .photo-r-fade{ position:absolute; inset:0; z-index:2; background:linear-gradient(to right,rgba(5,5,10,1) 0%,rgba(5,5,10,.72) 30%,rgba(5,5,10,.1) 100%); }
+
+  /* ── Content wrapper ── */
+  .c{ position:absolute; inset:0; z-index:4; padding:96px 130px; display:flex; flex-direction:column; }
+  .c.mid{ justify-content:center }
+  .c.cent{ align-items:center; justify-content:center; text-align:center }
+
+  /* ── Typography ── */
+  /* Kicker — big, gold, left anchor */
+  .kicker{ font-family:var(--sc); font-size:52px; font-weight:400; letter-spacing:.1em; color:var(--gold); line-height:1; background:none !important; }
+
+  .h-hero{ font-family:var(--serif); font-size:162px; font-weight:300; line-height:.88; letter-spacing:-.02em; color:var(--text); }
+  .h-hero em{ color:var(--goldb); font-style:italic; font-weight:400 }
+
+  .h-title{ font-family:var(--serif); font-size:96px; font-weight:400; line-height:.97; letter-spacing:-.01em; color:var(--text); }
+  .h-title em{ color:var(--goldb); font-style:italic }
+
+  /* Statement */
+  .h-statement{ font-family:var(--serif); font-size:102px; font-weight:400; line-height:1.04; letter-spacing:-.015em; color:var(--text); max-width:18ch; }
+  .h-statement em{ color:var(--goldb); font-style:italic }
+
+  .h-block{ font-family:var(--serif); font-size:92px; font-weight:400; line-height:.96; letter-spacing:-.015em; color:var(--text); }
+  .h-block em{ color:var(--goldb); font-style:italic }
+
+  .lead{ font-family:var(--sans); font-size:32px; font-weight:300; line-height:1.6; color:var(--dim); }
+  .lead strong{ color:var(--text); font-weight:400 }
+
+  .rule{ height:1px; background:linear-gradient(90deg,var(--gold),transparent) }
+  .rulecx{ height:1px; background:linear-gradient(90deg,transparent,var(--goldd) 40%,transparent) }
+
+  /* ── Block divider ── */
+  .div-shell{ display:flex; flex-direction:column; gap:0; max-width:1000px; }
+  .div-number{ font-family:var(--serif); font-size:380px; font-weight:300; line-height:.80; letter-spacing:-.04em; color:transparent; -webkit-text-stroke:2px var(--goldd); user-select:none; margin-bottom:16px; }
+  .div-label{ font-family:var(--sc); font-size:30px; font-weight:400; letter-spacing:.22em; color:var(--gold); margin-bottom:22px; }
+  .div-rule{ height:1px; background:linear-gradient(90deg,var(--gold),transparent); max-width:640px; margin-top:22px; }
+
+  /* ── Chips ── */
+  .chip{ font-family:var(--sans); font-size:28px; font-weight:300; color:var(--dim); padding:14px 28px; border:1px solid var(--line); border-radius:100px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:14px }
+
+  /* ── Flow ── */
+  .flow{ display:flex; align-items:flex-start; gap:0; width:100% }
+  .flow .node{ flex:1; display:flex; flex-direction:column; gap:12px }
+  .flow .nidx{ font-family:var(--sc); font-size:22px; letter-spacing:.16em; color:var(--goldd) }
+  .flow .nname{ font-family:var(--serif); font-size:52px; font-weight:400; color:var(--text); line-height:1 }
+  .flow .nname em{ color:var(--goldb); font-style:italic }
+  .flow .ndesc{ font-family:var(--sans); font-size:26px; color:var(--dim); line-height:1.4; max-width:18ch }
+  .flow .arr{ flex:0 0 auto; color:var(--goldd); font-size:42px; padding:0 32px; margin-top:48px }
+
+  /* ── Analogy rows ── */
+  .arow{ display:flex; align-items:baseline; gap:24px; font-family:var(--sans); font-size:34px; line-height:1.2; }
+  .arow .af{ color:var(--dim); min-width:14ch; }
+  .arow .al{ color:var(--goldd); width:28px; }
+  .arow .at{ color:var(--text); font-weight:400; }
+  .arow.key .af{ color:var(--text); font-weight:500; }
+  .arow.key .at{ color:var(--goldb); font-weight:600; }
+
+  /* ── Pillars (4-col) ── */
+  .pillars{ display:grid; grid-template-columns:repeat(4,1fr); gap:48px; width:100%; }
+  .pillar{ border-top:1px solid var(--line); padding-top:28px; display:flex; flex-direction:column; gap:16px; }
+  .pillar .pidx{ font-family:var(--sc); font-size:20px; letter-spacing:.18em; color:var(--goldd); }
+  .pillar .pname{ font-family:var(--serif); font-size:46px; font-weight:400; color:var(--text); }
+  .pillar .pdesc{ font-family:var(--sans); font-size:26px; color:var(--dim); line-height:1.45; }
+  .pillar.hi{ border-top-color:var(--gold); }
+  .pillar.hi .pname{ color:var(--goldb); }
+
+  /* ── Feature list ── */
+  .flist{ display:flex; flex-direction:column; gap:20px; }
+  .fitem{ display:flex; gap:22px; align-items:baseline; }
+  .fitem .fm{ color:var(--gold); font-size:28px; flex:0 0 auto; }
+  .fitem .ft{ font-family:var(--serif); font-size:42px; font-weight:400; color:var(--text); line-height:1.2; }
+
+  /* ── Contrast split ── */
+  .contrast{ display:grid; grid-template-columns:1fr 1px 1fr; gap:60px; width:100%; }
+  .contrast .cr{ background:var(--line); }
+  .ccol{ display:flex; flex-direction:column; gap:18px; }
+  .ccol .ctag{ font-family:var(--sc); font-size:24px; letter-spacing:.16em; color:var(--dim2); }
+  .ccol .chead{ font-family:var(--serif); font-size:56px; font-weight:400; line-height:1.04; color:var(--text); }
+  .ccol .cdesc{ font-family:var(--sans); font-size:28px; color:var(--dim); line-height:1.5; }
+  .ccol.hi .ctag{ color:var(--goldd); }
+  .ccol.hi .chead{ color:var(--goldb); }
+
+  /* ── Watermark ── */
+  .mark{ position:absolute; bottom:44px; left:130px; z-index:5; font-family:var(--sc); font-size:15px; font-weight:300; letter-spacing:.16em; color:var(--dim2); }
+
+  /* ── Animations ── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes scUp   { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }
+  @keyframes trailD { from{stroke-dashoffset:1800} to{stroke-dashoffset:0} }
+  @keyframes glowP  { 0%,100%{opacity:.55} 50%{opacity:.95} }
+  @keyframes oCW    { to{transform:rotate(360deg)} }
+  @keyframes oCCW   { to{transform:rotate(-360deg)} }
+  @keyframes ripple { 0%{transform:scale(.1);opacity:.5} 100%{transform:scale(1);opacity:0} }
+  @keyframes twink  { 0%,100%{opacity:.4} 50%{opacity:.9} }
+
+  section[aria-hidden="false"] .a0 { animation:scUp   .65s        ease both }
+  section[aria-hidden="false"] .a1 { animation:fadeUp .55s .07s   ease both }
+  section[aria-hidden="false"] .a2 { animation:fadeUp .55s .16s   ease both }
+  section[aria-hidden="false"] .a3 { animation:fadeUp .55s .25s   ease both }
+  section[aria-hidden="false"] .a4 { animation:fadeUp .55s .34s   ease both }
+  section[aria-hidden="false"] .a5 { animation:fadeUp .55s .43s   ease both }
+  section[aria-hidden="false"] .af { animation:fadeIn .9s  .2s    ease both }
+  section[aria-hidden="false"] .trail{ stroke-dasharray:1800; animation:trailD 1.8s .5s cubic-bezier(.4,0,.2,1) both; }
+  section[aria-hidden="false"] .gp  { animation:glowP 3.5s ease-in-out infinite }
+  section[aria-hidden="false"] .oc1 { animation:oCW   11s linear infinite; transform-origin:50% 50% }
+  section[aria-hidden="false"] .oc2 { animation:oCCW  16s linear infinite; transform-origin:50% 50% }
+  section[aria-hidden="false"] .oc3 { animation:oCW    7s linear infinite; transform-origin:50% 50% }
+  section[aria-hidden="false"] .rip1{ animation:ripple 5s 0s   ease-out infinite; transform-origin:50% 50% }
+  section[aria-hidden="false"] .rip2{ animation:ripple 5s 1.7s ease-out infinite; transform-origin:50% 50% }
+  section[aria-hidden="false"] .rip3{ animation:ripple 5s 3.4s ease-out infinite; transform-origin:50% 50% }
+  section[aria-hidden="false"] .tw1 { animation:twink 3.2s .0s  ease-in-out infinite }
+  section[aria-hidden="false"] .tw2 { animation:twink 2.6s .9s  ease-in-out infinite }
+  section[aria-hidden="false"] .tw3 { animation:twink 4.0s 1.8s ease-in-out infinite }
+</style>
+</head>
+<body style="">
+<deck-stage width="2160" height="1080" style="--deck-rail-w: 188px;">
+
+
+<!-- ══════════════════════════════════════
+     0 · HERO
+══════════════════════════════════════ -->
+<section data-label="Покори Олимп">
+<div class="slide a0">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=3840&amp;h=2160&amp;fit=crop&amp;q=95&amp;auto=format'); background-position:center 30%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.55);"></div>
+
+  <!-- subtle golden cross marker at peak -->
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:40px; font-size:48px; letter-spacing:.18em;">Экосистема раскрытия потенциала</div>
+    <h1 class="h-hero a2" style="font-size:172px; margin-bottom:38px; text-align:center; white-space:nowrap;">Покори <em>Олимп</em></h1>
+    <div class="rulecx a3" style="width:340px; margin-bottom:36px;"></div>
+    <p class="lead a4" style="max-width:24ch; font-size:42px; text-align:center; color:var(--text);">Путь к вершине <strong>себя</strong>.</p>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     1 · DIVIDER — БЛОК 01
+══════════════════════════════════════ -->
+<section data-label="Блок 01">
+<div class="slide" style="background:linear-gradient(135deg,#0a0c18 0%,#070810 55%,#05050a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1100" cy="80" r="1.2" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1400" cy="55" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1700" cy="95" r="1.3" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="1950" cy="50" r=".9" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1250" cy="135" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+    <circle cx="1550" cy="115" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1800" cy="145" r=".9" fill="#EDE8DF" opacity=".4"></circle>
+    <circle cx="900" cy="165" r=".8" fill="#EDE8DF" class="tw3"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-number">01</div>
+      <div class="div-label">Блок первый</div>
+      <h2 class="h-block a2">Главные проблемы<br><em>человека и мира</em></h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     2 · Современный человек
+══════════════════════════════════════ -->
+<section data-label="Современный человек">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format');">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; width:100%;">
+      <div style="display:flex; flex-direction:column; gap:32px;">
+        <div class="kicker a1">Современный человек</div>
+        <h2 class="h-title a2">Возможностей больше,<br>чем когда-либо</h2>
+        <div class="rule a3" style="width:220px;"></div>
+        <p class="lead a4" style="max-width:30ch;">Но понимания себя — <strong>всё меньше</strong>. Информации больше, чем когда-либо. Но всё реже понятно, какие вопросы по-настоящему важны.</p>
+      </div>
+
+      <!-- right col removed -->
+      <div style="display:none;">
+        <svg viewBox="0 0 500 500" width="460" height="460" class="af" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="cg0" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#CFA96B" stop-opacity=".65"></stop>
+              <stop offset="55%" stop-color="#CFA96B" stop-opacity=".08"></stop>
+              <stop offset="100%" stop-color="#CFA96B" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+          <circle cx="250" cy="250" r="66" fill="url(#cg0)" class="gp"></circle>
+          <circle cx="250" cy="250" r="92" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"></circle>
+          <circle cx="250" cy="250" r="140" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"></circle>
+          <circle cx="250" cy="250" r="194" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1" stroke-dasharray="4 7"></circle>
+          <g class="oc3">
+            <circle cx="250" cy="158" r="7" fill="rgba(255,255,255,.14)" stroke="#896D3A" stroke-width="1"></circle>
+            <circle cx="342" cy="250" r="5" fill="rgba(255,255,255,.11)" stroke="#896D3A" stroke-width="1"></circle>
+            <circle cx="250" cy="342" r="7" fill="rgba(255,255,255,.14)" stroke="#896D3A" stroke-width="1"></circle>
+            <circle cx="158" cy="250" r="5" fill="rgba(255,255,255,.11)" stroke="#896D3A" stroke-width="1"></circle>
+          </g>
+          <g class="oc2">
+            <circle cx="250" cy="110" r="6" fill="rgba(255,255,255,.1)" stroke="#5A4A30" stroke-width="1"></circle>
+            <circle cx="390" cy="250" r="8" fill="rgba(255,255,255,.1)" stroke="#5A4A30" stroke-width="1"></circle>
+            <circle cx="250" cy="390" r="6" fill="rgba(255,255,255,.1)" stroke="#5A4A30" stroke-width="1"></circle>
+            <circle cx="110" cy="250" r="8" fill="rgba(255,255,255,.1)" stroke="#5A4A30" stroke-width="1"></circle>
+          </g>
+          <g class="oc1">
+            <circle cx="250" cy="56" r="7" fill="rgba(255,255,255,.07)" stroke="#3A2F1A" stroke-width="1"></circle>
+            <circle cx="444" cy="250" r="6" fill="rgba(255,255,255,.07)" stroke="#3A2F1A" stroke-width="1"></circle>
+            <circle cx="250" cy="444" r="7" fill="rgba(255,255,255,.07)" stroke="#3A2F1A" stroke-width="1"></circle>
+            <circle cx="56" cy="250" r="6" fill="rgba(255,255,255,.07)" stroke="#3A2F1A" stroke-width="1"></circle>
+          </g>
+          <circle cx="250" cy="250" r="24" fill="rgba(5,5,10,.5)" stroke="#CFA96B" stroke-width="1.3"></circle>
+          <circle cx="250" cy="250" r="9" fill="#E8CE94"></circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     3 · Корни проблемы
+══════════════════════════════════════ -->
+<section data-label="Корни проблемы">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=2560&h=1440&fit=crop&q=88&auto=format'); background-position:50% center;">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:32px;">
+      <div class="kicker a1">Корни проблемы</div>
+      <h2 class="h-title a2">Системы борются<br>за <em>наше внимание</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:30ch;">Образование даёт знания, но редко учит жить. Соцсети дают стимулы, но редко дают <strong>направление</strong>. Человек знает многое — и не понимает, что для него важно.</p>
+      <div class="chips a5">
+        <span class="chip">информационный шум</span>
+        <span class="chip">навязанные желания</span>
+        <span class="chip">клиповое мышление</span>
+        <span class="chip">бесконечное сравнение</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     4 · Состояние мира  — statement ×2
+══════════════════════════════════════ -->
+
+
+
+<!-- ══════════════════════════════════════
+     5 · Порядок изменений
+══════════════════════════════════════ -->
+<section data-label="Порядок изменений">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=2560&h=1440&fit=crop&q=90&auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(3,5,14,.72);"></div>
+
+  <div class="c cent" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:52px; align-items:center;">
+      <div style="display:flex; flex-direction:column; gap:24px; align-items:center;">
+        <div class="kicker a1" style="justify-content:center;">Порядок изменений</div>
+        <h2 class="h-title a2" style="text-align:center;">Любые большие перемены<br>начинаются с <em>человека</em></h2>
+        <div class="rulecx a3" style="width:320px;"></div>
+      </div>
+      <div class="flow a4" style="max-width:1400px;">
+        <div class="node">
+          <div class="nidx">01</div>
+          <div class="nname"><em>Человек</em></div>
+          <div class="ndesc">Внутренняя трансформация</div>
+        </div>
+        <div class="arr">→</div>
+        <div class="node">
+          <div class="nidx">02</div>
+          <div class="nname">Системы</div>
+          <div class="ndesc">Меняются решения — меняются правила</div>
+        </div>
+        <div class="arr">→</div>
+        <div class="node">
+          <div class="nidx">03</div>
+          <div class="nname">Планета</div>
+          <div class="ndesc">Меняются системы — меняется мир</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section><section data-label="Состояние мира">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=2560&amp;h=1440&amp;fit=crop&amp;q=90&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-cx"></div>
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:34px; justify-content:center;">Ключевой вывод</div>
+    <h2 class="h-statement a2" style="font-size: 120px;">Состояние мира — это <em style="font-size: 120px;">отражение</em> состояния человека</h2>
+    <div class="rulecx a3" style="width:440px; margin:34px 0 30px;"></div>
+    <p class="lead a4" style="max-width: 48ch; text-align: center; font-size: 40px;">Сегодня мы боремся со следствиями: кризисами, конфликтами, разрушением природы. Но причина — внутри самого человека.</p>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     6 · DIVIDER — БЛОК 02
+══════════════════════════════════════ -->
+<section data-label="Блок 02">
+<div class="slide" style="background:linear-gradient(135deg,#080a1a 0%,#060810 55%,#05050a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1200" cy="85" r="1.2" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1550" cy="60" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1800" cy="100" r="1.3" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="2000" cy="55" r=".9" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1350" cy="140" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+    <circle cx="1680" cy="125" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-number">02</div>
+      <div class="div-label">Блок второй</div>
+      <h2 class="h-block a2">Система устройства<br><em>и развития</em> человека</h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     7 · Зачем нужна система
+══════════════════════════════════════ -->
+<section data-label="Зачем нужна система">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=1440&h=810&fit=crop&q=82&auto=format'); background-position:center;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,5,14,.96) 42%,rgba(4,5,14,.72) 64%,rgba(4,5,14,.3) 100%);"></div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:40px; max-width:52%;">
+      <div style="display:flex; flex-direction:column; gap:26px;">
+        <div class="kicker a1">Зачем нужна система</div>
+        <h2 class="h-title a2" style="font-size:84px;">Чтобы управлять собой —<br>нужно понять, как ты <em>устроен</em></h2>
+        <div class="rule a3" style="width:220px;"></div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:22px;" class="a4">
+        <p class="lead" style="max-width:36ch;">У каждого человека есть <strong>фундаментальные параметры</strong> — ценности, состояния, качества, привычки. Именно они определяют результаты во всех сферах жизни.</p>
+        <p class="lead" style="max-width:36ch;">Большинство людей пытаются менять следствия. Система помогает найти <strong>причины</strong> и работать с ними осознанно.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     8 · История поиска
+══════════════════════════════════════ -->
+<section data-label="История поиска">
+<div class="slide" style="background:linear-gradient(160deg,#07091a 0%,#05060e 60%,#03040a 100%);">
+
+  <!-- (фото убрано — чистый тёмный фон) -->
+  <svg style="display:none" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#05060e" stop-opacity="1"/><stop offset="12%" stop-color="#05060e" stop-opacity="0"/><stop offset="88%" stop-color="#05060e" stop-opacity="0"/><stop offset="100%" stop-color="#05060e" stop-opacity="1"/></linearGradient>
+      <linearGradient id="lfade" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#05060e" stop-opacity="1"/><stop offset="28%" stop-color="#05060e" stop-opacity="0"/></linearGradient>
+      <linearGradient id="s1f" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E6C173" stop-opacity="0"/><stop offset="14%" stop-color="#E6C173" stop-opacity=".78"/><stop offset="86%" stop-color="#E6C173" stop-opacity=".78"/><stop offset="100%" stop-color="#E6C173" stop-opacity="0"/></linearGradient>
+      <linearGradient id="s2f" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7BB8D8" stop-opacity="0"/><stop offset="14%" stop-color="#7BB8D8" stop-opacity=".65"/><stop offset="86%" stop-color="#7BB8D8" stop-opacity=".65"/><stop offset="100%" stop-color="#7BB8D8" stop-opacity="0"/></linearGradient>
+      <filter id="hgl"><feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="hgl2"><feGaussianBlur in="SourceGraphic" stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <ellipse cx="594" cy="540" rx="260" ry="440" fill="rgba(180,140,70,0.04)"/>
+    <!-- Strand 1 gold -->
+    <path d="M594,60 C861,60 861,180 594,180 C327,180 327,300 594,300 C861,300 861,420 594,420 C327,420 327,540 594,540 C861,540 861,660 594,660 C327,660 327,780 594,780 C861,780 861,900 594,900 C327,900 327,1020 594,1020" fill="none" stroke="url(#s1f)" stroke-width="2.8" filter="url(#hgl)"/>
+    <!-- Strand 2 blue -->
+    <path d="M594,60 C327,60 327,180 594,180 C861,180 861,300 594,300 C327,300 327,420 594,420 C861,420 861,540 594,540 C327,540 327,660 594,660 C861,660 861,780 594,780 C327,780 327,900 594,900 C861,900 861,1020 594,1020" fill="none" stroke="url(#s2f)" stroke-width="2.8" filter="url(#hgl)"/>
+    <!-- Rungs -->
+    <line x1="394" y1="120" x2="794" y2="120" stroke="rgba(230,193,115,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="240" x2="794" y2="240" stroke="rgba(123,184,216,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="360" x2="794" y2="360" stroke="rgba(230,193,115,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="480" x2="794" y2="480" stroke="rgba(123,184,216,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="600" x2="794" y2="600" stroke="rgba(230,193,115,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="720" x2="794" y2="720" stroke="rgba(123,184,216,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="840" x2="794" y2="840" stroke="rgba(230,193,115,.2)" stroke-width="1.2"/>
+    <line x1="394" y1="960" x2="794" y2="960" stroke="rgba(123,184,216,.2)" stroke-width="1.2"/>
+    <!-- Gold crossing dots -->
+    <circle cx="594" cy="180" r="5" fill="#E6C173" opacity=".85" filter="url(#hgl)"/>
+    <circle cx="594" cy="300" r="5" fill="#E6C173" opacity=".85" filter="url(#hgl)"/>
+    <circle cx="594" cy="420" r="5" fill="#E6C173" opacity=".85" filter="url(#hgl)"/>
+    <circle cx="594" cy="540" r="7.5" fill="#F4DCA0" opacity=".95" filter="url(#hgl2)"/>
+    <circle cx="594" cy="660" r="5" fill="#E6C173" opacity=".85" filter="url(#hgl)"/>
+    <circle cx="594" cy="780" r="5" fill="#E6C173" opacity=".85" filter="url(#hgl)"/>
+    <circle cx="594" cy="900" r="5" fill="#E6C173" opacity=".85" filter="url(#hgl)"/>
+    <!-- Gold strand peak dots -->
+    <circle cx="794" cy="120" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="240" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="360" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="480" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="600" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="720" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="840" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="960" r="4" fill="#E6C173" opacity=".7" filter="url(#hgl)"/>
+    <!-- Blue strand peak dots -->
+    <circle cx="394" cy="120" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="240" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="360" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="480" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="600" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="720" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="394" cy="840" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+    <circle cx="794" cy="960" r="4" fill="#7BB8D8" opacity=".7" filter="url(#hgl)"/>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:grid; grid-template-columns:auto 1fr; gap:100px; align-items:center;">
+      <!-- Big stat -->
+      <div class="a1" style="display:flex; flex-direction:column; gap:0;">
+        <div style="font-family:var(--serif); font-size:240px; font-weight:300; line-height:.85; letter-spacing:-.04em; color:transparent; -webkit-text-stroke:1.5px var(--goldd);">15</div>
+        <div style="font-family:var(--sc); font-size:34px; letter-spacing:.18em; color:var(--gold); margin-top:8px;">лет</div>
+      </div>
+      <!-- Text -->
+      <div style="display:flex; flex-direction:column; gap:30px;">
+        <div class="kicker a1">История поиска</div>
+        <h2 class="h-title a2" style="font-size:80px;">«Если убрать всё лишнее —<br>что останется в основе?»</h2>
+        <div class="rule a3" style="width:220px;"></div>
+        <p class="lead a4" style="max-width:38ch;">Я не пытался создать новую систему. Я искал <strong>закономерности, которые уже существуют</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     9 · Триединая структура
+══════════════════════════════════════ -->
+<section data-label="Триединая структура">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=2560&amp;h=1440&amp;fit=crop&amp;q=90&amp;auto=format'); background-position:center 60%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(3,4,12,.95) 38%,rgba(3,4,12,.72) 62%,rgba(3,4,12,.15) 100%);"></div>
+
+  <!-- Triangle perfectly inscribed in circle, centered at (1620,540) r=330 -->
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="s9tgl"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="s9tgl2"><feGaussianBlur in="SourceGraphic" stdDeviation="16" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <radialGradient id="s9glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#CFA96B" stop-opacity=".18"/>
+        <stop offset="100%" stop-color="#CFA96B" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="s9tside" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#F4DCA0" stop-opacity=".95"/>
+        <stop offset="100%" stop-color="#B8923F" stop-opacity=".75"/>
+      </linearGradient>
+    </defs>
+    <!-- Glow background -->
+    <circle cx="1620" cy="540" r="380" fill="url(#s9glow)"/>
+    <!-- Outer rotating ring — circumscribed circle (r=330) -->
+    <circle cx="1620" cy="540" r="330" fill="none" stroke="rgba(207,169,107,.38)" stroke-width="1.8" class="oc1" filter="url(#s9tgl)"/>
+    <!-- Inner dashed ring -->
+    <circle cx="1620" cy="540" r="200" fill="none" stroke="rgba(207,169,107,.14)" stroke-width="1" stroke-dasharray="5 12" class="oc2"/>
+    <!-- Equilateral triangle inscribed in r=330, center (1620,540)
+         Top: (1620, 210)
+         Bottom-right: (1620 + 330*sin120°, 540 + 330*0.5) = (1620+285.8, 705) ≈ (1906, 705)
+         Bottom-left:  (1620 - 285.8, 705) ≈ (1334, 705)  -->
+    <polygon points="1620,210 1906,705 1334,705"
+             fill="rgba(230,193,115,0.05)" filter="url(#s9tgl2)"/>
+    <polygon points="1620,210 1906,705 1334,705"
+             fill="none" stroke="url(#s9tside)" stroke-width="2.6"
+             stroke-linejoin="round" filter="url(#s9tgl)"/>
+    <!-- Vertex dots -->
+    <circle cx="1620" cy="210" r="8" fill="#F4DCA0" opacity=".95" filter="url(#s9tgl)"/>
+    <circle cx="1906" cy="705" r="8" fill="#F4DCA0" opacity=".95" filter="url(#s9tgl)"/>
+    <circle cx="1334" cy="705" r="8" fill="#F4DCA0" opacity=".95" filter="url(#s9tgl)"/>
+    <!-- Centre dot -->
+    <circle cx="1620" cy="540" r="11" fill="#F4DCA0" opacity=".65" filter="url(#s9tgl)"/>
+    <circle cx="1620" cy="540" r="4"  fill="#FFFFFF" opacity=".9"/>
+  </svg>
+
+  <div class="c mid" style="z-index:5;">
+    <div style="display:flex; flex-direction:column; gap:36px; max-width:50%;">
+      <div class="kicker a1">Триединая структура</div>
+      <h2 class="h-statement a2" style="font-size:96px;">Одна и та же структура<br>проявляется повсюду</h2>
+      <div class="chips a3" style="margin-top:4px; max-width:760px;">
+        <span class="chip">развитие</span>
+        <span class="chip">психология</span>
+        <span class="chip">философия</span>
+        <span class="chip">религии</span>
+        <span class="chip">здоровье</span>
+        <span class="chip">бизнес</span>
+        <span class="chip">социальные системы</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     10 · Свойства системы
+══════════════════════════════════════ -->
+<section data-label="Свойства системы">
+<div class="slide" style="background:linear-gradient(160deg,#080a1a 0%,#05060e 55%,#03040a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1600" cy="75" r="1.1" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1900" cy="50" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="2100" cy="90" r="1.2" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="1750" cy="130" r=".9" fill="#EDE8DF" opacity=".35"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:56px;">
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div class="kicker a1">Свойства системы</div>
+        <h2 class="h-title a2" style="font-size:84px;">Карта, по которой<br>можно ориентироваться</h2>
+        <div class="rule a3" style="width:240px;"></div>
+      </div>
+      <div class="pillars a4">
+        <div class="pillar hi">
+          <div class="pidx">01</div>
+          <div class="pname">Простота</div>
+          <div class="pdesc">Несколько фундаментальных принципов в основе.</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">02</div>
+          <div class="pname">Фрактальность</div>
+          <div class="pdesc">Те же закономерности на разных уровнях.</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">03</div>
+          <div class="pname">Универсальность</div>
+          <div class="pdesc">Помогает понимать не только человека.</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">04</div>
+          <div class="pname">Практичность</div>
+          <div class="pdesc">Нужна для решений и развития, не для теории.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     11 · Что даёт система
+══════════════════════════════════════ -->
+<section data-label="Что даёт система">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:50% 30%;">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; width:100%;">
+      <div style="display:flex; flex-direction:column; gap:32px;">
+        <div class="kicker a1">Что даёт система</div>
+        <h2 class="h-title a2" style="font-size:84px;">Целостная картина<br>вместо <em>фрагментов</em></h2>
+        <div class="rule a3" style="width:220px;"></div>
+        <p class="lead a4" style="max-width:30ch;">Но карта — это ещё не сам человек. Возникает вопрос: как применить её к <strong>конкретному человеку</strong>?</p>
+      </div>
+      <div class="flist a4">
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Видеть целостную картину</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Понимать взаимосвязи</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Находить первопричины проблем</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Определять приоритеты</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Выбирать направление развития</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     12 · DIVIDER — БЛОК 03
+══════════════════════════════════════ -->
+<section data-label="Блок 03">
+<div class="slide" style="background:linear-gradient(135deg,#0a0a1c 0%,#060810 55%,#05050a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1300" cy="75" r="1.2" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1650" cy="55" r="1.0" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="1900" cy="95" r="1.3" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="2050" cy="50" r=".9" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1450" cy="135" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-number">03</div>
+      <div class="div-label">Блок третий</div>
+      <h2 class="h-block a2">Цифровой аватар<br><em>человека</em></h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     13 · От карты к аватару
+══════════════════════════════════════ -->
+<section data-label="От карты к аватару">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 50%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 45%,rgba(4,4,8,.78) 68%,rgba(4,4,8,.4) 100%);"></div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:48px; max-width:56%;">
+      <div style="display:flex; flex-direction:column; gap:26px;">
+        <div class="kicker a1">От карты к аватару</div>
+        <h2 class="h-title a2" style="font-size:88px;">Живая модель<br><em>конкретного человека</em></h2>
+        <div class="rule a3" style="width:220px;"></div>
+      </div>
+      <div class="contrast a4" style="max-width:960px;">
+        <div class="ccol">
+          <div class="ctag">Система</div>
+          <div class="chead">Устройство<br>человека в целом</div>
+          <div class="cdesc">Общие закономерности, единые для всех.</div>
+        </div>
+        <div class="cr"></div>
+        <div class="ccol hi">
+          <div class="ctag">Аватар</div>
+          <div class="chead">Именно<br>этот человек</div>
+          <div class="cdesc">Его ценности, сильные стороны, цели этого этапа.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+
+<!-- ══════════════════════════════════════
+     14 · Как рождается аватар
+══════════════════════════════════════ -->
+<section data-label="Как рождается аватар">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:60% center;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 42%,rgba(4,4,8,.7) 65%,rgba(4,4,8,.2) 100%);"></div>
+
+  <div class="c mid" style="z-index:4; max-width:58%;">
+    <div style="display:flex; flex-direction:column; gap:36px;">
+      <div class="kicker a1">Как рождается аватар</div>
+      <h2 class="h-title a2" style="font-size:88px;">Не через анкеты —<br>через <em>жизнь в системе</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <div class="chips a4">
+        <span class="chip">тесты</span>
+        <span class="chip">игры</span>
+        <span class="chip">задания</span>
+        <span class="chip">привычки</span>
+        <span class="chip">цели</span>
+        <span class="chip">выборы</span>
+        <span class="chip">поведение</span>
+        <span class="chip">обратная связь</span>
+      </div>
+      <p class="lead a5" style="max-width:36ch;">Человек просто развивается — а система понимает его <strong>всё глубже</strong>.</p>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     15 · Что изучает аватар
+══════════════════════════════════════ -->
+<section data-label="Что изучает аватар">
+<div class="slide" style="background:linear-gradient(155deg,#07091a 0%,#050610 55%,#03040a 100%);">
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:48px;">
+      <div class="kicker a1">Что изучает аватар</div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:56px;" class="a2">
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="width:44px; height:2px; background:var(--gold);"></div>
+          <div style="font-family:var(--serif); font-size:48px; font-weight:400; color:var(--goldb); line-height:1;">Сферы жизни</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span class="lead" style="font-size:30px;">Здоровье</span>
+            <span class="lead" style="font-size:30px;">Отношения</span>
+            <span class="lead" style="font-size:30px;">Благосостояние</span>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="width:44px; height:2px; background:var(--gold);"></div>
+          <div style="font-family:var(--serif); font-size:48px; font-weight:400; color:var(--goldb); line-height:1;">Способности</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span class="lead" style="font-size:30px;">Привычки</span>
+            <span class="lead" style="font-size:30px;">Навыки</span>
+            <span class="lead" style="font-size:30px;">Качества</span>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="width:44px; height:2px; background:var(--gold);"></div>
+          <div style="font-family:var(--serif); font-size:48px; font-weight:400; color:var(--goldb); line-height:1;">Самореализация</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span class="lead" style="font-size:30px;">Роли</span>
+            <span class="lead" style="font-size:30px;">Проекты</span>
+            <span class="lead" style="font-size:30px;">Миссии</span>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:28px;" class="a3">
+        <div style="font-family:var(--sc); font-size:22px; letter-spacing:.16em; color:var(--dim2); margin-bottom:16px;">Дополнительные инструменты</div>
+        <div class="chips">
+          <span class="chip">психотипы</span><span class="chip">архетипы</span><span class="chip">ценности</span><span class="chip">мотивация</span><span class="chip">сильные стороны</span><span class="chip">ограничения</span><span class="chip">генные ключи</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     16 · Не «второй мозг»
+══════════════════════════════════════ -->
+<section data-label="Не второй мозг">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format');">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:40px;">
+      <div class="kicker a1">Не «второй мозг»</div>
+      <h2 class="h-title a2" style="font-size:84px;">Количество данных<br>не равно <em>пониманию</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <div class="contrast a4" style="max-width:860px;">
+        <div class="ccol">
+          <div class="ctag">«Второй мозг»</div>
+          <div class="chead">Библиотека<br>информации</div>
+          <div class="cdesc">Тысячи заметок — и по-прежнему слабое понимание себя.</div>
+        </div>
+        <div class="cr"></div>
+        <div class="ccol hi">
+          <div class="ctag">Покори Олимп</div>
+          <div class="chead">Модель<br>человека</div>
+          <div class="cdesc">Каждый факт не складируется — он уточняет аватар.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     17 · Структура аватара
+══════════════════════════════════════ -->
+<section data-label="Структура аватара">
+<div class="slide" style="background:linear-gradient(155deg,#080a1c 0%,#050610 55%,#03040a 100%);">
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:44px;">
+      <div style="display:flex; flex-direction:column; gap:20px;" class="a1">
+        <div class="kicker">Структура аватара</div>
+        <h2 class="h-title" style="font-size:80px;">Не отдельные данные — живая система связей</h2>
+        <p class="lead" style="font-size:28px; max-width:52ch;">Изменение одной области влияет на остальные.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:16px; width:100%;" class="a2">
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">01</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Ценности</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">02</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Роли</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">03</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Проекты</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">04</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Привычки</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">05</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Навыки</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">06</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Качества</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">07</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Цели</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">08</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Состояния</div>
+        </div>
+        <div style="border:1.5px solid var(--goldd); border-radius:4px; padding:22px 20px; background:rgba(207,169,107,.07);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--gold); margin-bottom:12px;">09</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--goldb);">Сильные стороны</div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:4px; padding:22px 20px; background:rgba(255,255,255,.015);">
+          <div style="font-family:var(--sc); font-size:16px; letter-spacing:.12em; color:var(--goldd); margin-bottom:12px;">10</div>
+          <div style="font-family:var(--serif); font-size:32px; color:var(--text);">Ограничения</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     18 · Данные против понимания (STATEMENT)
+══════════════════════════════════════ -->
+<section data-label="Данные vs понимание">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=2560&h=1440&fit=crop&q=92&auto=format'); background-position:center 45%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.74);"></div>
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:40px;">Ключевой вывод</div>
+    <p style="font-family:var(--serif); font-size:80px; font-weight:300; color:var(--dim); line-height:1.1; text-align:center; max-width:22ch;" class="a2">Большинство систем собирают <em style="color:var(--dim); font-style:italic;">данные</em> о человеке.</p>
+    <p style="font-family:var(--serif); font-size:80px; font-weight:300; color:var(--text); line-height:1.1; text-align:center; max-width:22ch; margin-top:24px;" class="a3">Покори Олимп собирает <em style="color:var(--goldb); font-style:italic;">понимание</em>.</p>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     19 · DIVIDER — БЛОК 04
+══════════════════════════════════════ -->
+<section data-label="Блок 04">
+<div class="slide" style="background:linear-gradient(135deg,#09091c 0%,#060810 55%,#05050a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1350" cy="80" r="1.2" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1700" cy="55" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1950" cy="95" r="1.3" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="2080" cy="50" r=".9" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1500" cy="135" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-number">04</div>
+      <div class="div-label">Блок четвёртый</div>
+      <h2 class="h-block a2">Экосистема<br><em>развития</em></h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     20 · От понимания к развитию
+══════════════════════════════════════ -->
+<section data-label="От понимания к развитию">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(4,4,12,.8);"></div>
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:50px;">От понимания к развитию</div>
+    <div style="display:flex; align-items:center; gap:64px;" class="a2">
+      <div style="text-align:right;">
+        <div style="font-family:var(--serif); font-size:72px; font-weight:400; color:var(--text); line-height:1.05;">Аватар</div>
+        <div style="font-family:var(--sans); font-size:30px; font-weight:300; color:var(--dim); margin-top:8px;">понимает человека</div>
+      </div>
+      <div style="color:var(--goldd); font-size:60px; font-family:var(--serif);">→</div>
+      <div style="text-align:left;">
+        <div style="font-family:var(--serif); font-size:72px; font-weight:400; color:var(--goldb); line-height:1.05;">Экосистема</div>
+        <div style="font-family:var(--sans); font-size:30px; font-weight:300; color:var(--dim); margin-top:8px;">развивает его</div>
+      </div>
+    </div>
+    <div class="rulecx a3" style="width:440px; margin:44px 0 0;"></div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     21 · Экосистема сервисов
+══════════════════════════════════════ -->
+<section data-label="Экосистема сервисов">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format');">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:36px;">
+      <div class="kicker a1">Экосистема сервисов</div>
+      <h2 class="h-title a2" style="font-size:84px;">Не набор приложений —<br><em>единая модель</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:30ch;">Все сервисы объединены <strong>единой моделью человека</strong>. Каждый понимает остальные.</p>
+      <div class="chips a5">
+        <span class="chip">медитации</span><span class="chip">привычки</span><span class="chip">психология</span><span class="chip">самореализация</span><span class="chip">здоровье</span><span class="chip">отношения</span><span class="chip">обучение</span><span class="chip">цели</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     22 · Инструменты и практики
+══════════════════════════════════════ -->
+<section data-label="Инструменты и практики">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format');">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:36px;">
+      <div class="kicker a1">Инструменты и практики</div>
+      <h2 class="h-title a2" style="font-size:84px;">Знания превращаются<br>в <em>действия</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <div class="chips a4">
+        <span class="chip">тесты</span><span class="chip">практики</span><span class="chip">упражнения</span><span class="chip">алгоритмы</span><span class="chip">разборы</span><span class="chip">методики</span><span class="chip">формулы</span>
+      </div>
+      <p class="lead a5" style="max-width:34ch;">Система помогает не только понять проблему — но и работать с ней, устраняя причины и <strong>усиливая сильные стороны</strong>.</p>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     23 · База знаний
+══════════════════════════════════════ -->
+<section data-label="База знаний">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1483347756197-71ef80e95f73?w=1440&h=810&fit=crop&q=82&auto=format'); background-position:center 40%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.96) 42%,rgba(4,4,8,.72) 65%,rgba(4,4,8,.28) 100%);"></div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:32px; max-width:52%;">
+      <div class="kicker a1">База знаний</div>
+      <h2 class="h-title a2" style="font-size:84px;">Не библиотека —<br><em>карта знаний</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:30ch;">Всё структурировано через систему устройства человека. Человек перестаёт <strong>тонуть в информации</strong>.</p>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     24 · Три пути развития
+══════════════════════════════════════ -->
+<section data-label="Три пути развития">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1467890947394-8171244e5410?w=1440&h=810&fit=crop&q=82&auto=format'); background-position:center 45%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 38%,rgba(4,4,8,.85) 60%,rgba(4,4,8,.4) 100%);"></div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:52px; max-width:80%;">
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div class="kicker a1">Три пути развития</div>
+        <h2 class="h-title a2" style="font-size:84px;">Каждый человек движется по-своему</h2>
+        <div class="rule a3" style="width:220px;"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px;" class="a4">
+        <div class="pillar hi">
+          <div class="pidx">Путь 01</div>
+          <div class="pname">Индивидуальный</div>
+          <div class="pdesc">Система определяет следующий лучший шаг именно сейчас.</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">Путь 02</div>
+          <div class="pname">Миссии</div>
+          <div class="pdesc">Полноценные образовательные маршруты — пошаговое обучение.</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">Путь 03</div>
+          <div class="pname">Сквозные пути</div>
+          <div class="pdesc">Крупные направления: здоровье, любовь, благосостояние, самореализация.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     25 · Навигатор пути
+══════════════════════════════════════ -->
+<section data-label="Навигатор пути">
+<div class="slide" style="background:linear-gradient(155deg,#080a1c 0%,#050610 55%,#03040a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="navg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#CFA96B" stop-opacity=".45"></stop>
+        <stop offset="100%" stop-color="#CFA96B" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+    <circle cx="1680" cy="540" r="280" fill="url(#navg)" class="gp" opacity=".5"></circle>
+    <circle cx="1680" cy="540" r="180" fill="none" stroke="rgba(207,169,107,.25)" stroke-width="1.2" class="oc2"></circle>
+    <circle cx="1680" cy="540" r="100" fill="none" stroke="rgba(207,169,107,.35)" stroke-width="1.2" class="oc1"></circle>
+    <circle cx="1680" cy="540" r="48" fill="none" stroke="rgba(207,169,107,.55)" stroke-width="1.3" class="oc3"></circle>
+    <circle cx="1680" cy="540" r="14" fill="#EAD49A" class="gp"></circle>
+    <!-- Cardinal lines -->
+    <line x1="1680" y1="360" x2="1680" y2="460" stroke="rgba(207,169,107,.3)" stroke-width="1"></line>
+    <line x1="1680" y1="620" x2="1680" y2="720" stroke="rgba(207,169,107,.3)" stroke-width="1"></line>
+    <line x1="1500" y1="540" x2="1600" y2="540" stroke="rgba(207,169,107,.3)" stroke-width="1"></line>
+    <line x1="1760" y1="540" x2="1860" y2="540" stroke="rgba(207,169,107,.3)" stroke-width="1"></line>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:50px; max-width:52%;">
+      <div style="display:flex; flex-direction:column; gap:26px;">
+        <div class="kicker a1">Навигатор пути</div>
+        <h2 class="h-title a2" style="font-size:84px;">Следующий лучший шаг —<br>вместо <em>сотен вариантов</em></h2>
+        <div class="rule a3" style="width:220px;"></div>
+      </div>
+      <div class="flist a4">
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Какой сервис нужен сейчас</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Какой навык развивать</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Какую проблему решать первой</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Главный фокус прямо сейчас</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     26 · Последовательность развития (STATEMENT)
+══════════════════════════════════════ -->
+<section data-label="Последовательность развития">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=2560&amp;h=1440&amp;fit=crop&amp;q=90&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.8);"></div>
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1080" cy="490" r="300" fill="none" stroke="rgba(207,169,107,.07)" stroke-width="1" class="oc1"></circle>
+    <circle cx="1080" cy="490" r="160" fill="none" stroke="rgba(207,169,107,.06)" stroke-width="1" class="oc2"></circle>
+  </svg>
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:40px;">Ключевой вывод</div>
+    <p style="font-family:var(--serif); font-size:72px; font-weight:300; color:var(--dim); text-align:center; max-width:24ch;" class="a2">Ценность платформы — не в количестве контента.</p>
+    <p style="font-family:var(--serif); font-size:88px; font-weight:400; color:var(--text); text-align:center; max-width:20ch; margin-top:22px;" class="a3">А в персональном <em style="color:var(--goldb); font-style:italic;">пути</em> развития</p>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     27 · DIVIDER — БЛОК 05
+══════════════════════════════════════ -->
+<section data-label="Блок 05">
+<div class="slide" style="background:linear-gradient(135deg,#0a091c 0%,#060810 55%,#05050a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1450" cy="80" r="1.2" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1750" cy="55" r="1.0" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="2000" cy="90" r="1.3" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1600" cy="130" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-number">05</div>
+      <div class="div-label">Блок пятый</div>
+      <h2 class="h-block a2">Мотивация<br><em>и вовлечение</em></h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     28 · Разрыв знание–действие
+══════════════════════════════════════ -->
+<section data-label="Разрыв знание–действие">
+<div class="slide" style="background:linear-gradient(155deg,#080a1c 0%,#050610 60%,#03040a 100%);">
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:52px;">
+      <div style="display:flex; flex-direction:column; gap:24px;" class="a1">
+        <div class="kicker">Разрыв между знанием и действием</div>
+        <h2 class="h-title" style="font-size:84px;">Знать — ещё не значит <em>делать</em></h2>
+        <div class="rule" style="width:220px;"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px;" class="a2">
+        <div class="pillar">
+          <div class="pidx">01</div>
+          <div class="pname" style="font-size:40px;">Книги</div>
+          <div class="pdesc">Внедряют единицы процентов читателей</div>
+        </div>
+        <div class="pillar">
+          <div class="pidx">02</div>
+          <div class="pname" style="font-size:40px;">Онлайн-курсы</div>
+          <div class="pdesc">Проходит до конца меньшинство</div>
+        </div>
+        <div class="pillar">
+          <div class="pidx">03</div>
+          <div class="pname" style="font-size:40px;">С наставником</div>
+          <div class="pdesc">Даже при сопровождении результат редко стопроцентный</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     29 · Три источника мотивации
+══════════════════════════════════════ -->
+<section data-label="Три источника мотивации">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 40%,rgba(4,4,8,.88) 62%,rgba(4,4,8,.45) 100%);"></div>
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:52px; max-width:80%;">
+      <div style="display:flex; flex-direction:column; gap:24px;" class="a1">
+        <div class="kicker">Формула мотивации</div>
+        <h2 class="h-title" style="font-size:84px;">Три источника, которые<br>работают <em>вместе</em></h2>
+        <div class="rule" style="width:220px;"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px;" class="a2">
+        <div class="pillar hi">
+          <div class="pidx">01</div>
+          <div class="pname">Интерес</div>
+          <div class="pdesc">помогает <span style="color:var(--text);">начать</span> путь</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">02</div>
+          <div class="pname">Ценность</div>
+          <div class="pdesc">помогает <span style="color:var(--text);">продолжать</span> путь</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">03</div>
+          <div class="pname">Смысл</div>
+          <div class="pdesc">помогает <span style="color:var(--text);">пройти до конца</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     30 · Интерес — вселенная развития
+══════════════════════════════════════ -->
+<section data-label="Интерес">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 60%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 40%,rgba(4,4,8,.72) 65%,rgba(4,4,8,.2) 100%);"></div>
+
+  <div class="c cent" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:34px; align-items:center; text-align:center;">
+      <div class="kicker a1" style="justify-content:center;">1. Интерес</div>
+      <h2 class="h-title a2" style="font-size:84px;">Развитие как приключение<br>в <em>игровой вселенной</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:32ch; text-align:center;">Обучение через атмосферный мир, персонажей и сюжет — как в хороших фильмах и играх. Когда интересно — <strong>учишься быстрее</strong>.</p>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     31 · Ценность — майнинг развития
+══════════════════════════════════════ -->
+<section data-label="Ценность">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 50%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.8);"></div>
+
+  <div class="c cent" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:36px; align-items:center; text-align:center;">
+      <div class="kicker a1" style="justify-content:center;">2. Ценность</div>
+      <h2 class="h-title a2" style="font-size:84px;">Развитие становится —<br><em>новой валютой</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:42ch; font-size:30px; text-align:center;">Ты растёшь, помогаешь другим, вносишь реальный вклад — и получаешь за это <strong>внешнюю ценность</strong>: ресурсы, финансы, новые возможности.</p>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     32 · Рейтинг и влияние
+══════════════════════════════════════ -->
+<section data-label="Рейтинг и влияние">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format');">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:36px;">
+      <div class="kicker a1">Рейтинг и влияние</div>
+      <h2 class="h-title a2" style="font-size:84px;">Развитие открывает<br><em>новые возможности</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <div class="flist a4">
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Влиятельность и признание</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Новые связи и партнёрства</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Ресурсы для реализации</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Финансовые возможности</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     33 · Смысл — пробуждение предназначения
+══════════════════════════════════════ -->
+<section data-label="Смысл">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=2560&amp;h=1440&amp;fit=crop&amp;q=90&amp;auto=format'); background-position:center 30%;"></div>
+  <div class="ov-cx" style="background:rgba(3,4,12,.7);"></div>
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:36px;">3. Смысл · предназначение</div>
+    <p style="font-family:var(--serif); font-size:52px; font-weight:300; color:var(--dim); text-align:center; max-width:28ch;" class="a2">Кто я? Для чего я живу? Что хочу оставить после себя?</p>
+    <p style="font-family:var(--serif); font-size:84px; font-weight:400; color:var(--text); text-align:center; max-width:22ch; margin-top:28px;" class="a3">Самая сильная мотивация рождается из <em style="color:var(--goldb); font-style:italic;">внутреннего смысла</em></p>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     34 · DIVIDER — БЛОК 06
+══════════════════════════════════════ -->
+<section data-label="Блок 06">
+<div class="slide" style="background:linear-gradient(135deg,#09091c 0%,#060810 55%,#05050a 100%);">
+
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1500" cy="80" r="1.2" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="1800" cy="55" r="1.0" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="2050" cy="90" r="1.3" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="1650" cy="130" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+  </svg>
+
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-number">06</div>
+      <div class="div-label">Блок шестой</div>
+      <h2 class="h-block a2">Объединение<br><em>людей</em></h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     35 · Сила окружения
+══════════════════════════════════════ -->
+<section data-label="Сила окружения">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=1440&h=810&fit=crop&q=82&auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(4,4,8,.6);"></div>
+
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:40px;">Сила окружения</div>
+    <h2 class="h-statement a2" style="font-size:96px; max-width:22ch;">Развитие ускоряется рядом с теми, кто движется в том же направлении</h2>
+    <div class="rulecx a3" style="width:400px; margin:36px 0 30px;"></div>
+    <p class="lead a4" style="max-width:46ch; text-align:center; font-size:30px;">На развитие влияют знания, действия, привычки, состояние. Но особенно сильно влияет <strong>окружение</strong>.</p>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     36 · Единомышленники
+══════════════════════════════════════ -->
+<section data-label="Единомышленники">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1440&h=810&fit=crop&q=82&auto=format'); background-position:center 30%;">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:34px;">
+      <div class="kicker a1">Единомышленники</div>
+      <h2 class="h-title a2" style="font-size:84px;">Когда система хорошо понимает человека —<br><em>совместимость становится точнее</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:30ch;">Аватар знает ценности, цели, уровень и сильные стороны — и находит <strong>по-настоящему близких людей</strong>.</p>
+      <div class="chips a5">
+        <span class="chip">партнёры по спорту</span><span class="chip">друзья</span><span class="chip">попутчики</span><span class="chip">бизнес-партнёры</span><span class="chip">участники проектов</span><span class="chip">спутники жизни</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     37 · Офлайн-мир
+══════════════════════════════════════ -->
+<section data-label="Офлайн-мир">
+<div class="slide">
+
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 50%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 40%,rgba(4,4,8,.7) 65%,rgba(4,4,8,.18) 100%);"></div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:34px;">
+      <div class="kicker a1">Офлайн-мир</div>
+      <h2 class="h-title a2" style="font-size:84px;">Развитие выходит<br>за пределы <em>экрана</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:28ch;">Образование становится не только знанием, но и <strong>опытом</strong>.</p>
+      <div class="chips a5">
+        <span class="chip">мероприятия</span><span class="chip">путешествия</span><span class="chip">тур-квесты</span><span class="chip">живые встречи</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     38 · Наставники
+══════════════════════════════════════ -->
+<section data-label="Наставники">
+<div class="slide" style="background:linear-gradient(155deg,#07091a 0%,#050610 55%,#03040a 100%);">
+
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:52px;">
+      <div style="display:flex; flex-direction:column; gap:24px;" class="a1">
+        <div class="kicker">Наставники</div>
+        <h2 class="h-title" style="font-size:84px;">Самые важные изменения<br>происходят через <em>людей</em></h2>
+        <div class="rule" style="width:220px;"></div>
+        <p class="lead" style="max-width:38ch; font-size:30px;">Искусственный интеллект масштабирует знания. Наставник помогает их <strong>прожить</strong>.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px;" class="a2">
+        <div class="pillar hi">
+          <div class="pidx">Роль 01</div>
+          <div class="pname">Ментор</div>
+          <div class="pdesc">помогает выстраивать стратегию развития</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">Роль 02</div>
+          <div class="pname">Эксперт</div>
+          <div class="pdesc">помогает решать конкретные задачи</div>
+        </div>
+        <div class="pillar hi">
+          <div class="pidx">Роль 03</div>
+          <div class="pname">Трекер</div>
+          <div class="pdesc">помогает не сходить с пути и доводить до результата</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     39 · Платформа для экспертов
+══════════════════════════════════════ -->
+<section data-label="Платформа для экспертов">
+<div class="slide">
+
+  <div class="photo-r af" style="background-image:url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format');">
+    <div class="photo-r-fade"></div>
+  </div>
+
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:34px;">
+      <div class="kicker a1">Платформа для экспертов</div>
+      <h2 class="h-title a2" style="font-size:80px;">Эксперт создаёт знания.<br><em>Система находит тех, кому они нужны.</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <div class="flist a4">
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Создавать курсы и практики</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Строить образовательные программы</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Сопровождать участников</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft">Внутри единой структуры — без хаоса</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     40 · Лидеры и миссии
+══════════════════════════════════════ -->
+<section data-label="Лидеры и миссии">
+<div class="slide">
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-l" style="background:linear-gradient(to right,rgba(4,4,8,.97) 40%,rgba(4,4,8,.7) 65%,rgba(4,4,8,.18) 100%);"></div>
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:34px;">
+      <div class="kicker a1">Лидеры и миссии</div>
+      <h2 class="h-title a2" style="font-size:84px;">От наставничества<br>к <em>лидерству</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:28ch;">Когда появляется миссия и желание создавать изменения, нужны уже не только знания — нужны инструменты <strong>лидерства и реализации</strong>.</p>
+      <div class="flist a5" style="gap:16px;">
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:36px;">Найти последователей</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:36px;">Собрать команду вокруг миссии</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:36px;">Получить ресурсы для реализации</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     41 · Три направления миссии
+══════════════════════════════════════ -->
+<section data-label="Три направления миссии">
+<div class="slide" style="background:linear-gradient(155deg,#07091a 0%,#050610 55%,#03040a 100%);">
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:52px;">
+      <div style="display:flex; flex-direction:column; gap:24px;" class="a1">
+        <div class="kicker">Три направления миссии</div>
+        <h2 class="h-title" style="font-size:84px;">Изменение мира начинается<br>с <em>человека</em></h2>
+        <div class="rule" style="width:220px;"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px;" class="a2">
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="width:44px; height:2px; background:var(--gold);"></div>
+          <div style="font-family:var(--serif); font-size:52px; font-weight:400; color:var(--goldb);">Человек</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span class="lead" style="font-size:28px;">Здоровье</span>
+            <span class="lead" style="font-size:28px;">Отношения</span>
+            <span class="lead" style="font-size:28px;">Самореализация</span>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="width:44px; height:2px; background:var(--gold);"></div>
+          <div style="font-family:var(--serif); font-size:52px; font-weight:400; color:var(--goldb);">Системы</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span class="lead" style="font-size:28px;">Образование · Медицина</span>
+            <span class="lead" style="font-size:28px;">Наука · Экономика</span>
+            <span class="lead" style="font-size:28px;">Социальные институты</span>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="width:44px; height:2px; background:var(--gold);"></div>
+          <div style="font-family:var(--serif); font-size:52px; font-weight:400; color:var(--goldb);">Планета</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span class="lead" style="font-size:28px;">Земля · Вода · Воздух</span>
+            <span class="lead" style="font-size:28px;">Экологические проекты</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     42 · Главная идея
+══════════════════════════════════════ -->
+<section data-label="Главная идея">
+<div class="slide">
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=2560&amp;h=1440&amp;fit=crop&amp;q=90&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.82);"></div>
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:50px;">Главная идея проекта</div>
+    <div style="display:flex; align-items:center; gap:60px;" class="a2">
+      <div style="text-align:center;">
+        <div style="font-family:var(--sc); font-size:26px; letter-spacing:.18em; color:var(--goldd); margin-bottom:14px;">01</div>
+        <div style="font-family:var(--serif); font-size:88px; font-weight:400; color:var(--text);">Раскрыть</div>
+        <div style="font-family:var(--sans); font-size:30px; color:var(--dim); margin-top:10px;">потенциал</div>
+      </div>
+      <div style="color:var(--goldd); font-size:56px; font-family:var(--serif); margin-top:-20px;">→</div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--sc); font-size:26px; letter-spacing:.18em; color:var(--goldd); margin-bottom:14px;">02</div>
+        <div style="font-family:var(--serif); font-size:88px; font-weight:400; color:var(--text);">Объединить</div>
+        <div style="font-family:var(--sans); font-size:30px; color:var(--dim); margin-top:10px;">людей</div>
+      </div>
+      <div style="color:var(--goldd); font-size:56px; font-family:var(--serif); margin-top:-20px;">→</div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--sc); font-size:26px; letter-spacing:.18em; color:var(--gold); margin-bottom:14px;">03</div>
+        <div style="font-family:var(--serif); font-size:88px; font-weight:400; color:var(--goldb);">Изменить</div>
+        <div style="font-family:var(--sans); font-size:30px; color:var(--dim); margin-top:10px;">мир</div>
+      </div>
+    </div>
+    <div class="rulecx a3" style="width:600px; margin-top:44px;"></div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     43 · DIVIDER — Финальный блок
+══════════════════════════════════════ -->
+<section data-label="Финал">
+<div class="slide" style="background:linear-gradient(135deg,#08091c 0%,#060810 55%,#05050a 100%);">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1600" cy="80" r="1.2" fill="#EDE8DF" class="tw1"></circle>
+    <circle cx="1900" cy="55" r="1.0" fill="#EDE8DF" class="tw2"></circle>
+    <circle cx="2080" cy="90" r="1.2" fill="#EDE8DF" class="tw3"></circle>
+    <circle cx="1750" cy="130" r=".8" fill="#EDE8DF" opacity=".35"></circle>
+  </svg>
+  <div class="c mid" style="z-index:4;">
+    <div class="div-shell a1">
+      <div class="div-label" style="margin-bottom:28px;">Финальный блок</div>
+      <h2 class="h-block a2">Что уже существует<br><em>сегодня</em></h2>
+      <div class="div-rule a3"></div>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     44 · Зачем я об этом рассказываю
+══════════════════════════════════════ -->
+<section data-label="Зачем рассказываю">
+<div class="slide">
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=2560&amp;h=1440&amp;fit=crop&amp;q=90&amp;auto=format'); background-position:center 50%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.8);"></div>
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:40px;">Зачем я об этом рассказываю</div>
+    <p style="font-family:var(--serif); font-size:72px; font-weight:300; color:var(--dim); text-align:center; max-width:22ch;" class="a2">Это не презентация готового продукта.</p>
+    <p style="font-family:var(--serif); font-size:88px; font-weight:400; color:var(--text); text-align:center; max-width:18ch; margin-top:22px;" class="a3">Это приглашение <em style="color:var(--goldb); font-style:italic;">строить будущее</em>.</p>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     45 · Наставничество
+══════════════════════════════════════ -->
+<section data-label="Наставничество">
+<div class="slide">
+  <div class="photo-r af" style="background-image:url('slide46-observatory.jpg'); background-position:70% 40%;">
+    <div class="photo-r-fade"></div>
+  </div>
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:36px; max-width:58%;">
+      <div class="kicker a1">Наставничество</div>
+      <h2 class="h-title a2" style="font-size:84px;">Наставничество — это<br><em>исследовательская лаборатория</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:52ch; font-size:30px;">Через работу с людьми я проверяю идеи, уточняю формулы и убираю лишнее. Моя задача — переводить лучшее из наставничества в систему, чтобы <strong>качественная помощь стала доступна большему числу людей</strong>.</p>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     46 · IT-проекты
+══════════════════════════════════════ -->
+<section data-label="IT-проекты">
+<div class="slide">
+  <div class="photo-r af" style="background-color:#06050c; background-image:url('slide47-space.svg'); background-size:cover; background-position:center center;"><div class="photo-r-fade"></div></div>
+  <div class="c mid" style="z-index:4; max-width:56%;">
+    <div style="display:flex; flex-direction:column; gap:34px;">
+      <div class="kicker a1">IT-проекты</div>
+      <h2 class="h-title a2" style="font-size:84px;">Каждый сервис — инструмент.<br>Все вместе — <em>единая система</em></h2>
+      <div class="rule a3" style="width:220px;"></div>
+      <p class="lead a4" style="max-width:32ch; font-size:30px;">Стратегическая цель — не десятки приложений, а <strong>единый навигатор развития человека</strong>.</p>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     47 · Сообщество
+══════════════════════════════════════ -->
+<section data-label="Сообщество">
+<div class="slide">
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=2560&h=1440&fit=crop&q=90&auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(3,5,16,0.74);"></div>
+  <div class="c cent" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:36px; align-items:center; text-align:center;">
+      <div class="kicker a1" style="justify-content:center;">Движение и сообщество</div>
+      <h2 class="h-title a2" style="font-size:92px; text-align:center;">Среда, которая помогает<br><em>двигаться вперёд</em></h2>
+      <div class="rulecx a3" style="width:320px;"></div>
+      <p class="lead a4" style="max-width:34ch; text-align:center; color:rgba(224,218,200,.95);">Это не клуб по интересам и не очередная соцсеть. Правильное окружение <strong>многократно ускоряет</strong> развитие.</p>
+      <div style="display:flex; gap:32px; flex-wrap:wrap; justify-content:center; margin-top:8px;" class="a5">
+        <span style="font-size:32px; color:var(--text); padding:14px 30px; border:1px solid rgba(230,193,115,.3); border-radius:100px;">Общение</span>
+        <span style="font-size:32px; color:var(--text); padding:14px 30px; border:1px solid rgba(230,193,115,.3); border-radius:100px;">Проекты</span>
+        <span style="font-size:32px; color:var(--text); padding:14px 30px; border:1px solid rgba(230,193,115,.3); border-radius:100px;">Обмен опытом</span>
+        <span style="font-size:32px; color:var(--text); padding:14px 30px; border:1px solid rgba(230,193,115,.3); border-radius:100px;">Наставники</span>
+      </div>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     48 · Первый шаг
+══════════════════════════════════════ -->
+<section data-label="Первый шаг">
+<div class="slide" style="background:linear-gradient(155deg,#07091a 0%,#050610 55%,#03040a 100%);">
+  <div class="c mid" style="z-index:4;">
+    <div style="display:flex; flex-direction:column; gap:48px;">
+      <div style="display:flex; flex-direction:column; gap:24px;" class="a1">
+        <div class="kicker">Что можно сделать уже сейчас</div>
+        <h2 class="h-title" style="font-size:84px;">Первый шаг можно<br>сделать <em>сегодня</em></h2>
+        <div class="rule" style="width:220px;"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px 56px;" class="a2">
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:34px;">Изучать систему</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:34px;">Пользоваться сервисами</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:34px;">Участвовать в проектах</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:34px;">Вступить в сообщество</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:34px;">Проходить наставничество</span></div>
+        <div class="fitem"><span class="fm">◆</span><span class="ft" style="font-size:34px;">Создавать свои проекты</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     49 · Почему я этим занимаюсь
+══════════════════════════════════════ -->
+<section data-label="Главная метрика">
+<div class="slide">
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=2560&amp;h=1440&amp;fit=crop&amp;q=88&amp;auto=format'); background-position:center 40%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.72);"></div>
+  <div class="c cent" style="z-index:5;">
+    <div class="kicker a1" style="margin-bottom:40px; justify-content:center;">Главная метрика экосистемы</div>
+    <p style="font-family:var(--serif); font-size:82px; font-weight:300; color:rgba(200,195,185,.85); text-align:center; max-width:32ch;" class="a2">Если каждый день ты становишься<br>немного счастливее —</p>
+    <p style="font-family:var(--serif); font-size:92px; font-weight:400; color:var(--text); text-align:center; max-width:18ch; margin-top:22px;" class="a3">ты идёшь по <em style="color:var(--goldb); font-style:italic;">истинному пути</em></p>
+    <p style="font-family:var(--sc); font-size:34px; letter-spacing:.1em; color:var(--gold); text-align:center; margin-top:44px; opacity:.9; max-width:36ch; line-height:1.55;" class="a4">КОГДА ЧЕЛОВЕК СЧАСТЛИВ — ЕМУ НЕ ХОЧЕТСЯ ВОЕВАТЬ.<br>ЕМУ ХОЧЕТСЯ СОЗИДАТЬ.</p>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     50 · FINAL
+══════════════════════════════════════ -->
+<section data-label="Покори Олимп · финал" data-deck-last-visible="">
+<div class="slide">
+  <div class="pbg" style="background-image:url('https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=3840&h=2160&fit=crop&q=95&auto=format'); background-position:center 30%;"></div>
+  <div class="ov-full" style="background:rgba(3,4,12,.52);"></div>
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;" viewBox="0 0 2160 1080" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="tgf" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#896D3A" stop-opacity=".04"></stop>
+        <stop offset="50%" stop-color="#CFA96B" stop-opacity=".55"></stop>
+        <stop offset="100%" stop-color="#EAD49A" stop-opacity="1"></stop>
+      </linearGradient>
+      <radialGradient id="pkf" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#EAD49A" stop-opacity=".9"></stop>
+        <stop offset="40%" stop-color="#CFA96B" stop-opacity=".28"></stop>
+        <stop offset="100%" stop-color="#CFA96B" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+  </svg>
+  <div class="c cent" style="z-index:5;">
+    <div style="display:flex; gap:40px; align-items:center; margin-bottom:44px; flex-wrap:wrap; justify-content:center;" class="a1">
+      <span style="font-family: var(--sc); font-size: 36px; color: rgb(234, 212, 154); letter-spacing: .1em">Раскрыть потенциал</span>
+      <span style="color:var(--goldd); font-size:32px;">·</span>
+      <span style="font-family: var(--sc); font-size: 36px; color: rgb(234, 212, 154); letter-spacing: .1em">Объединить</span>
+      <span style="color:var(--goldd); font-size:32px;">·</span>
+      <span style="font-family:var(--sc); font-size:36px; color:var(--goldb); letter-spacing:.1em;">Изменить мир</span>
+    </div>
+    <h1 class="h-hero a2" style="font-size:172px; margin-bottom:40px; text-align:center; white-space:nowrap;">Покори <em>Олимп</em></h1>
+    <div class="rulecx a3" style="width:340px; margin-bottom:36px;"></div>
+    <p class="lead a4" style="max-width:24ch; font-size:42px; text-align:center; color:var(--text);">Путь к вершине <strong>себя</strong>.</p>
+  </div>
+  <div class="mark a1">Покори Олимп · 2026</div>
+</div>
+</section>
+
+
+</deck-stage>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Здравствуйте. Меня зовут — и за последние пятнадцать лет я искал ответ на один вопрос: что на самом деле помогает человеку раскрыть себя. То, что я хочу показать сегодня, я называю «Покори Олимп». Сразу скажу главное: это не путь к вершине мира. Это путь к вершине себя. И я приглашаю вас пройти его вместе.",
+  "Давайте начнём с простого вопроса — почему это вообще необходимо. В этом первом блоке я хочу, чтобы мы вместе посмотрели на современного человека, на корни его проблем, и поняли, где на самом деле начинается решение.",
+  "Сегодня у человека больше возможностей, чем когда-либо в истории. Но при этом растёт число людей, которые чувствуют потерю смысла, тревожность, выгорание. Информации всё больше — а понимания себя всё меньше. Главная проблема уже не в нехватке информации — она в отсутствии понимания себя и своего пути.",
+  "Почему так происходит? Огромное количество систем конкурирует за наше внимание — соцсети, медиа, реклама. Образование часто даёт знания, но редко учит жить. Человек знает многое — и не понимает, что для него по-настоящему важно.",
+  "И вот ключевая мысль. Состояние общества — это отражение состояния человека. Когда человеком управляют страхи и навязанные желания, это отражается на всём мире. Сегодня мы в основном боремся со следствиями. Но причина — внутри самого человека.",
+  "Если причина внутри человека — значит, именно с него начинаются изменения. Невозможно устойчиво изменить мир, не изменив человека. Поэтому порядок именно такой: сначала человек, потом системы, потом планета.",
+  "Чтобы ответить на вопрос «как понять человека», мне понадобилась система. Сейчас расскажу, почему без неё не обойтись, как она появилась и что она даёт.",
+  "Подумайте: если человек хочет управлять машиной — изучает машину. Хочет управлять бизнесом — изучает бизнес. Но если человек хочет управлять собственной жизнью, он должен понять устройство самого себя.",
+  "Более пятнадцати лет я исследовал человека и разные системы развития. Постоянно задавал вопрос: если убрать всё лишнее — что останется в основе? Я не пытался создать новую систему — я стремился обнаружить закономерности, которые уже существуют.",
+  "Снова и снова я приходил к одной и той же трёхчастной структуре. Она проявлялась в развитии человека, психологии, философии, религиях, здоровье, бизнесе. Одни и те же закономерности на разных уровнях. Я не создатель этой структуры — я исследователь, который её обнаружил.",
+  "У этой системы несколько важных свойств: простота в основе, фрактальность на всех уровнях, универсальность применения и практичность — она нужна для решений и развития, а не для теории.",
+  "Эта карта помогает видеть целостную картину, понимать взаимосвязи, находить первопричины проблем, определять приоритеты, выбирать направление развития. Но сама по себе карта — это ещё не человек. Нужна живая модель конкретного человека.",
+  "Так появляется цифровой аватар. В этом блоке расскажу, как он формируется, что изучает и почему это принципиально отличается от популярного второго мозга.",
+  "Система описывает общие закономерности. Но каждый человек уникален. Поэтому следующий шаг — цифровой аватар. Система показывает устройство человека в целом. Аватар показывает именно этого человека.",
+  "Большинство людей не любят длинные анкеты и бесконечные тесты. Поэтому аватар создаётся постепенно — через взаимодействие с системой: тесты, игры, задания, привычки, цели, выборы, поведение, обратную связь. Человек просто развивается — а система понимает его всё глубже.",
+  "Что именно изучает аватар? Сферы жизни — здоровье, отношения, благосостояние. Способности — привычки, навыки, качества. Самореализацию — роли, проекты, миссии. И дополнительные инструменты: психотипы, архетипы, ценности, мотивация, сильные стороны, ограничения, генные ключи.",
+  "Сейчас популярна концепция второго мозга. Но проблема остаётся: количество информации не равно пониманию. Наш подход другой. Система не собирает библиотеку — она формирует модель человека. Каждый новый факт не складируется, а уточняет аватар.",
+  "Внутри аватара информация хранится не хаотично — у каждой части своё место: карта ценностей, ролей, проектов, привычек, навыков, качеств, целей, состояний, сильных сторон, ограничений. Аватар видит причинно-следственные связи.",
+  "И вот ключевой вывод всего блока. Большинство систем собирают данные о человеке. Покори Олимп собирает понимание человека. Главная цель — не собрать максимум данных, а максимально точно понять человека.",
+  "Понимание само по себе ещё не меняет жизнь. Важно использовать его для развития. Поэтому вокруг аватара создаётся экосистема, которая помогает человеку двигаться вперёд максимально эффективно. Аватар помогает понять человека — экосистема помогает его развивать.",
+  "От понимания к развитию.",
+  "Сегодня инструменты развития живут отдельно друг от друга. Но человек — единая система. Поэтому у нас все сервисы объединены через единую модель человека. Это не набор приложений — это единая экосистема развития.",
+  "Каждый сервис содержит практические инструменты: тесты, практики, упражнения, алгоритмы, разборы, методики, формулы. Система помогает не только понять проблему, но и работать с ней — устраняя причины и усиливая сильные стороны человека.",
+  "Кроме инструментов есть единая образовательная база. Всё структурировано через систему устройства человека. Человек перестаёт тонуть в информации и начинает видеть общую картину.",
+  "Двигаться по этой карте можно по-разному. Первый путь — индивидуальный. Второй — миссии. Третий — сквозные пути. Один путь не подходит всем, поэтому система подбирает путь под конкретного человека.",
+  "Сердце всей экосистемы — навигатор. Он помогает понять: какой сервис нужен сейчас, какой навык развивать, какую проблему решать первой. Человек больше не ищет ответы среди сотен вариантов — система помогает выбрать следующий лучший шаг.",
+  "И вот ключевой вывод этого блока. Главная ценность платформы — не в количестве контента. Главная ценность — в правильной последовательности развития.",
+  "Но даже самый точный путь бесполезен, если человек не хочет по нему идти. Поэтому отдельный, очень важный блок — мотивация и вовлечение.",
+  "Сегодня проблема не в отсутствии знаний — их более чем достаточно. Проблема в том, что большинство людей не применяют то, что знают. Значит, проблема не в знаниях, а в мотивации и вовлечении.",
+  "Поэтому мотивацию мы строим не на одном инструменте, а сразу на трёх уровнях: интерес, ценность, смысл. Интерес помогает начать путь. Ценность помогает продолжать. Смысл помогает пройти путь до конца.",
+  "Первый уровень — интерес. Обучение строится через атмосферную игровую вселенную: мир, персонажи, сюжетные линии, приключения. Когда человеку интересно — он учится быстрее, информация усваивается глубже. Развитие становится приключением, не обязанностью.",
+  "Второй уровень — ценность. У нас главным активом становится развитие человека: чем больше человек развивается, помогает другим, создаёт ценность — тем больше получает. Впервые главным ресурсом становится не вычислительная мощность, а развитие человека.",
+  "Но даже интерес и награды имеют предел. Когда человек находит ответы на вопросы «кто я» и «в чём мой путь» — появляется самая сильная форма мотивации: внутренний смысл. С этого момента внешние награды уходят на второй план.",
+  "По мере развития человек получает не только знания и навыки — он получает возможность влиять: на проекты, на людей, на развитие сообщества. Развитие превращается в реальное влияние на мир.",
+  "Но есть фактор, который влияет на развитие сильнее большинства методик — окружение. Развиваться в одиночку очень сложно. Поэтому следующий блок — объединение людей.",
+  "На развитие влияют знания, действия, привычки, состояние. Но особенно сильно влияет окружение. Люди рядом незаметно формируют наши взгляды, нормы, цели, ожидания от жизни. Поэтому одна из важнейших задач платформы — помочь человеку найти своё окружение.",
+  "Благодаря аватару система понимает человека гораздо глубже обычных соцсетей. Это позволяет находить людей с высокой совместимостью — для совместного развития, проектов, дружбы, бизнеса и жизни.",
+  "Развитие не должно оставаться только в приложении. Поэтому часть пути переносится в реальную жизнь: мероприятия, путешествия, тур-квесты, живые встречи. Так образование становится не только знанием, но и опытом.",
+  "Даже самая сильная система не заменяет живого человека. Поэтому в экосистеме есть наставники в трёх ролях: ментор выстраивает стратегию, эксперт решает конкретные задачи, трекер помогает не сходить с пути.",
+  "Экосистема создаётся не только для пользователей, но и для наставников и экспертов. Они могут создавать курсы, практики, методики, программы. Всё это — внутри единой структуры. Эксперты усиливают систему, а система усиливает экспертов.",
+  "Когда человек начинает создавать изменения вокруг себя — появляется проект, миссия, желание принести пользу. В этот момент платформа помогает найти единомышленников, собрать команду, получить поддержку. Развитие переходит в служение миру.",
+  "Все проекты внутри экосистемы делятся на три направления: развитие человека, трансформация систем, восстановление планеты. Изменение мира начинается с изменения человека.",
+  "В центре проекта — простая последовательность. Понять человека. Помочь человеку. Объединить людей. Создать условия для изменения мира. Платформа помогает человеку раскрыть свой потенциал.",
+  "Всё, что вы увидели, создаётся постепенно. Цель этой презентации — не доказать, что всё уже создано, а показать направление и найти людей, которым этот путь близок.",
+  "Это не презентация готового продукта. Это приглашение строить будущее вместе.",
+  "Сегодня главный инструмент развития системы — наставничество. Через работу с людьми я проверяю идеи на практике, уточняю формулы, нахожу ошибки. Наставничество для меня — исследовательская лаборатория.",
+  "Уже сегодня создаются цифровые продукты — часть будущей экосистемы. Что-то завершено, что-то в активной разработке, что-то существует как прототип. Стратегическая цель — единый навигатор развития человека.",
+  "Параллельно формируется сообщество людей, которым близки идеи осознанного развития. Это не клуб по интересам и не очередная соцсеть. Главная цель — создать среду, которая помогает человеку двигаться вперёд.",
+  "Если идеи проекта вам откликаются — первый шаг можно сделать уже сегодня: изучать систему, пользоваться существующими сервисами, вступить в сообщество, проходить наставничество, создавать свои проекты внутри общей миссии.",
+  "Почему я этим занимаюсь. В последние годы я всё чаще спрашивал себя: что действительно делает человека счастливее? Не успешнее, не богаче — именно счастливее. Большинство проблем начинается с непонимания самого себя. Поэтому главная цель проекта — помочь человеку понять себя и раскрыть свой истинный потенциал.",
+  "Итак. Сначала понять человека. Потом помочь человеку. Потом объединить людей. Потом изменить мир. Не через борьбу, а через осознанность, развитие, сотрудничество и раскрытие человеческого потенциала. Покори Олимп — это не путь к вершине мира. Это путь к вершине себя. Спасибо."
+]
+</script>
+
+<script src="deck-stage.js"></script>
+
+
+</body></html>
