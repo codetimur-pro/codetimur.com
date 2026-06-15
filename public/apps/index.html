@@ -244,7 +244,7 @@ section.screen {
 .hero__canvas { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; }
 .hero__pyramid-label {
   position: absolute; z-index: 2; pointer-events: none;
-  left: 70%; top: 58%;
+  left: 70%; top: 64%;
   transform: translateX(-50%);
   font-family: var(--display); font-style: italic; font-weight: 300;
   font-size: clamp(18px, 1.6vw, 26px);
@@ -1327,7 +1327,7 @@ window.__startTree = function () {
   }
 
   function cx() { return W < 700 ? W * 0.95 : W * 0.70; }
-  function cy() { return W < 700 ? H * 0.36 : H * 0.40; }
+  function cy() { return W < 700 ? H * 0.36 : H * 0.44; }
   /* Базовый масштаб пирамиды — на мобайле крупнее */
   function cs() {
     var breathScale = 1 + 0.08 * Math.sin(breath); /* заметнее дышит */
