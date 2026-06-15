@@ -335,12 +335,12 @@ section + section { border-top: 1px solid var(--line-soft); }
 .g-burger svg path{
   vector-effect:non-scaling-stroke;
   transform-box:fill-box;transform-origin:center;
-  transition:transform .3s ease,opacity .3s ease;
+  transition:transform .3s ease;
 }
-/* 3 lines → X */
-.g-burger.is-open .gb1{transform:translateY(7px) rotate(45deg)}
-.g-burger.is-open .gb2{opacity:0;transform:scaleX(0)}
-.g-burger.is-open .gb3{transform:translateY(-7px) rotate(-45deg)}
+/* 3 lines → ▲ triangle */
+.g-burger.is-open .gb1{transform:translate(-5px,6.5px) rotate(-59.5deg)}
+.g-burger.is-open .gb2{transform:translateY(8px)}
+.g-burger.is-open .gb3{transform:translate(5px,-7.5px) rotate(59.5deg)}
 
 /* backdrop */
 .g-backdrop{
