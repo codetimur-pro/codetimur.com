@@ -25,7 +25,8 @@
 
   *, *::before, *::after { box-sizing: border-box; }
 
-  html, body {
+  html { margin: 0; padding: 0; scrollbar-gutter: stable; }
+  body {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--ink);
@@ -72,7 +73,7 @@
     padding: 18px 0;
   }
   .brand { display: flex; align-items: center; }
-  .brand-logo { height: 38px; width: auto; display: block; opacity: .92; }
+  .brand-logo { height: 30px; width: auto; display: block; opacity: .92; }
   .nav-links {
     display: flex; gap: 32px;
     font-size: 13px; color: var(--muted);
@@ -615,7 +616,7 @@
 .g-nav.scrolled{background:rgba(7,7,7,.94);border-bottom-color:rgba(255,255,255,.07)}
 
 .g-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0}
-.g-logo img{height:34px;width:auto;opacity:.92;display:block}
+.g-logo img{height:30px;width:auto;opacity:.92;display:block;transform:translateY(6px)}
 
 .g-nav-r{display:flex;align-items:center;gap:18px;margin-left:auto;flex-shrink:0}
 
@@ -635,21 +636,30 @@
 /* burger button */
 .g-burger{
   width:36px;height:36px;
-  display:flex;align-items:center;justify-content:center;
-  background:none;border:none;cursor:pointer;padding:6px;
-  color:#f4ece2;transition:color .3s;
+  position:relative;
+  background:none;border:none;cursor:pointer;padding:0;
+  color:#d4a574;transition:color .3s;
   -webkit-tap-highlight-color:transparent;
   flex-shrink:0;
+  overflow:hidden;
+  contain:layout;
 }
 .g-burger:hover{color:#d4a574}
-.g-burger svg path{
-  transition:d .42s cubic-bezier(.4,0,.2,1);
-  vector-effect:non-scaling-stroke;
+.g-burger svg{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:24px;height:22px;display:block;
+  pointer-events:none;
 }
-/* 3 lines → triangle ▲ */
-.g-burger.is-open .gb1{d:path('M2,19 L12,2')}
-.g-burger.is-open .gb2{d:path('M2,19 L22,19')}
-.g-burger.is-open .gb3{d:path('M12,2 L22,19')}
+.g-burger svg path{
+  vector-effect:non-scaling-stroke;
+  transform-box:fill-box;transform-origin:center;
+  transition:transform .3s ease,opacity .3s ease;
+}
+/* 3 lines → X */
+.g-burger.is-open .gb1{transform:translateY(7px) rotate(45deg)}
+.g-burger.is-open .gb2{opacity:0;transform:scaleX(0)}
+.g-burger.is-open .gb3{transform:translateY(-7px) rotate(-45deg)}
 
 /* backdrop */
 .g-backdrop{
@@ -691,6 +701,7 @@
 .g-drawer.is-open .g-drawer-links a:nth-child(1){opacity:1;transform:none;transition-delay:.1s}
 .g-drawer.is-open .g-drawer-links a:nth-child(2){opacity:1;transform:none;transition-delay:.17s}
 .g-drawer.is-open .g-drawer-links a:nth-child(3){opacity:1;transform:none;transition-delay:.24s}
+.g-drawer.is-open .g-drawer-links a:nth-child(4){opacity:1;transform:none;transition-delay:.31s}
 .g-drawer-links a:hover{color:#d4a574}
 .g-drawer-links a.is-active{color:#d4a574;border-bottom-color:rgba(212,165,116,.2)}
 
@@ -761,7 +772,7 @@
 
 <!-- GLOBAL NAV -->
 <nav class="g-nav" id="g-nav">
-  <a href="/" class="g-logo"><img src="/assets/logo.png" alt="Code Timur"></a>
+  <a href="/" class="g-logo"><img src="/assets/logo.svg" alt="Code Timur"></a>
   <div class="g-nav-r">
     <button class="g-burger" id="g-burger" aria-label="Меню" aria-expanded="false">
       <svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" width="24" height="22">
@@ -777,6 +788,7 @@
   <nav class="g-drawer-links">
     <a href="/apps/">Экосистема</a>
     <a href="/mentorship/">Наставничество</a>
+    <a href="/teaching/">Учение</a>
     <a href="/vision/">Видение</a>
   </nav>
   <a class="g-drawer-tg" href="https://t.me/codetimur" target="_blank" rel="noopener">
@@ -792,10 +804,10 @@
   <div class="hero-left">
     <div class="hero-kicker">01 — Начало</div>
     <h1 class="hero-title">
-      Ускоритель<br>
-      твоего <span class="accent">развития</span>
+      Система устройства<br>
+      мира и <span class="accent">человека</span>
     </h1>
-    <p class="hero-sub">через ясность и системный подход</p>
+    <p class="hero-sub">Простота, глубина и универсальность</p>
     <div class="hero-meta">
       <span class="pill">Личная работа · Среда · Сервисы</span>
       <span class="scroll"><span class="scroll-line"></span> прокрути</span>
@@ -1313,10 +1325,11 @@
 <!-- GLOBAL FOOTER -->
 <footer class="g-foot">
   <div class="g-foot-row">
-    <a href="/" class="g-foot-logo"><img src="/assets/logo.png" alt="Code Timur"></a>
+    <a href="/" class="g-foot-logo"><img src="/assets/logo.svg" alt="Code Timur"></a>
     <nav class="g-foot-nav">
       <a href="/apps/">Экосистема</a>
       <a href="/mentorship/">Наставничество</a>
+      <a href="/teaching/">Учение</a>
       <a href="/vision/">Видение</a>
     </nav>
     <div class="g-foot-right">
@@ -1414,7 +1427,18 @@
     drawer.classList.toggle('is-open', open);
     if(backdrop) backdrop.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', open);
-    document.body.style.overflow = open ? 'hidden' : '';
+    if(open){
+      var sy = window.scrollY;
+      document.body.style.cssText += ';position:fixed;top:-'+sy+'px;width:100%;overflow:hidden';
+      document.body.dataset.sy = sy;
+    } else {
+      var sy = parseInt(document.body.dataset.sy || 0);
+      document.body.style.position='';
+      document.body.style.top='';
+      document.body.style.width='';
+      document.body.style.overflow='';
+      window.scrollTo(0, sy);
+    }
   }
 
   burger.addEventListener('click', function(){ setOpen(!burger.classList.contains('is-open')); });
