@@ -621,7 +621,7 @@ html, body {
    ============================================================ */
 .s1 .scene-inner { gap: 4vw; padding-bottom: clamp(90px, 14vh, 160px); }
 .s1 .s1-copy { flex: 1 1 52%; max-width: 640px; }
-.s1 .s1-copy h1 { font-size: clamp(36px, 4.2vw, 62px); margin: 0.34em 0 0.44em; }
+.s1 .s1-copy h1 { font-size: clamp(38px, 5.2vw, 80px); margin: 0.34em 0 0.44em; }
 .s1 .s1-copy .lead { margin-bottom: 1.8em; }
 .s1 .s1-art {
   flex: 1 1 48%;
@@ -759,7 +759,7 @@ html, body {
     width: 100%;
   }
   /* Larger heading for better readability */
-  .s1 .s1-copy h1 { font-size: clamp(36px, 10vw, 56px); }
+  .s1 .s1-copy h1 { font-size: clamp(38px, 11vw, 62px); }
   .s1 .s1-copy .lead { font-size: 16.5px; }
 }
 
