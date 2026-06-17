@@ -380,10 +380,19 @@ section.screen {
 .flip__back li b { font-weight: 500; color: var(--accent-light); }
 .flip__back li::before { content: ""; position: absolute; left: 0; top: 11px; width: 7px; height: 1px; background: var(--accent); }
 .flip__back li span { color: var(--muted); }
-@media (max-width: 860px) { 
+@media (max-width: 860px) {
   .tests { grid-template-columns: 1fr; }
   .flip__front { min-height: 420px; padding: 28px 26px; }
   .flip__back { padding: 28px 26px; }
+}
+/* Desktop hover flip */
+.flip .hint-mobile { display: inline; }
+.flip .hint-desktop { display: none; }
+@media (hover: hover) and (min-width: 861px) {
+  .flip:hover .flip__in { transform: rotateY(180deg); }
+  .flip__in { transition: transform .55s cubic-bezier(.4,.05,.2,1); }
+  .flip .hint-mobile { display: none; }
+  .flip .hint-desktop { display: inline; }
 }
 
 /* ============================================================
@@ -1001,7 +1010,7 @@ section.fullshot { border-top: none; padding: 0 !important; }
             <div class="tag">БАЗОВЫЙ ТЕСТ</div>
             <h3>Достижения</h3>
             <p class="desc">Внешние результаты и факты</p>
-            <div class="hint"><span class="dot"></span> Раскрыть</div>
+            <div class="hint"><span class="dot"></span><span class="hint-desktop">Наведи</span><span class="hint-mobile">Раскрыть</span></div>
           </div>
           <div class="flip__face flip__back">
             <div class="tag">ПРОШЛЫЕ ДЕЙСТВИЯ</div>
@@ -1021,7 +1030,7 @@ section.fullshot { border-top: none; padding: 0 !important; }
             <div class="tag">ОСНОВНОЙ ТЕСТ</div>
             <h3>Психотип</h3>
             <p class="desc">Твоё внутреннее состояние</p>
-            <div class="hint"><span class="dot"></span> Раскрыть</div>
+            <div class="hint"><span class="dot"></span><span class="hint-desktop">Наведи</span><span class="hint-mobile">Раскрыть</span></div>
           </div>
           <div class="flip__face flip__back">
             <div class="tag">КАКОЙ Я СЕЙЧАС?</div>
@@ -1041,7 +1050,7 @@ section.fullshot { border-top: none; padding: 0 !important; }
             <div class="tag">ГЛУБИННЫЙ ТЕСТ</div>
             <h3>Генетика</h3>
             <p class="desc">Врождённый потенциал</p>
-            <div class="hint"><span class="dot"></span> Раскрыть</div>
+            <div class="hint"><span class="dot"></span><span class="hint-desktop">Наведи</span><span class="hint-mobile">Раскрыть</span></div>
           </div>
           <div class="flip__face flip__back">
             <div class="tag">ПЛАН ДУШИ</div>
